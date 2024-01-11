@@ -1,0 +1,152 @@
+
+```{r}
+library(tidyverse)
+library(here)
+library(ggthemes)
+
+bd <- read_csv(here("data/behavioral_data/behavioral_d.csv"))
+eig_sd <- read_csv(here("data/model_sim_data/summarized_output.csv"))
+trial_info <- read_csv(here("data/model_sim_data/sim_info/trial_info_graded_dishab.csv"))
+param_info <- read_csv(here("data/model_sim_data/sim_info/eig_selfpaced.csv"))
+
+```
+# summarize bd
+
+```{r}
+bd %>% 
+  mutate(trial_type = case_when(
+    trial_type == "background" ~ "background", 
+    block_type == "deviant_block" & trial_type == "deviant" ~ violation_type
+  )) %>% 
+  ggplot(aes(x = trial_number, y = total_rt, color = trial_type)) + scale_y_log10() +
+   stat_summary(fun.data = "mean_cl_boot", position = position_dodge(width = .2)) + 
+    stat_summary(fun.data = "mean_cl_boot", geom = "line", position = position_dodge(width = .2)) + 
+  theme_few() 
+  
+```
+
+```{r}
+bd_fit_summary <- bd %>% 
+  mutate(trial_type = case_when(
+    trial_type == "background" ~ "background", 
+    block_type == "deviant_block" & trial_type == "deviant" ~ violation_type
+  )) %>% 
+   group_by(trial_number, trial_type) %>% 
+  summarise(mean_lt = mean(total_rt)) 
+
+bd_fit_summary %>% write_csv(here("data/behavioral_data/bd_fit.csv"))
+
+# %>%
+#  ggplot(aes(x = trial_number, y = mean_lt, color = trial_type)) +
+#  scale_y_log10() +
+#  geom_point() +
+#  geom_line(aes(group = trial_type)) +
+#  theme_few()
+```
+
+
+# summarize sim results 
+
+
+```{r}
+
+eig_summarized <- trial_info %>% 
+  select(-test_type) %>% 
+  distinct(trial_id, stim_id, fam_duration, violation_type) %>% 
+  right_join(eig_sd, by = c("trial_id", "stim_id")) %>% 
+  mutate(trial_number = index + 1) %>% 
+  select(param_id, trial_number, fam_duration, violation_type, sample_n_mean, sample_n_std) %>% 
+  mutate(trial_type = case_when(
+    violation_type == "background" ~ "background", 
+    violation_type == "identity" & (trial_number == fam_duration + 1) ~ "identity", 
+    violation_type == "number" & (trial_number == fam_duration + 1) ~ "number", 
+    violation_type == "pose" & (trial_number == fam_duration + 1) ~ "pose", 
+    violation_type == "animacy" & (trial_number == fam_duration + 1) ~ "animacy", 
+    TRUE ~ "background"
+  )) %>% 
+  select(param_id, trial_type, trial_number, sample_n_mean, sample_n_std) %>% 
+  group_by(param_id, trial_type, trial_number) %>% 
+  summarise(mean_sample = mean(sample_n_mean)) %>% # missing SD here!
+  ungroup() 
+  
+write_csv(eig_summarized, here("data/model_sim_data/eig_summarised.csv"))
+  
+eig_summarized %>%   
+   ggplot(aes(x = trial_number, y = mean_sample, color = trial_type)) +
+ scale_y_log10() +
+ geom_point() +
+ geom_line(aes(group = trial_type)) +
+ theme_few()
+  
+
+ 
+```
+
+
+```{r}
+trial_info %>% 
+  select(-test_type) %>% 
+  distinct(trial_id, stim_id, fam_duration, violation_type) %>% 
+  right_join(eig_sd, by = c("trial_id", "stim_id")) %>% 
+  mutate(trial_number = index + 1) %>% 
+  select(param_id, trial_id, stim_id, trial_number, fam_duration, violation_type, sample_n_mean, sample_n_std) %>% 
+  mutate(trial_type = case_when(
+    violation_type == "background" ~ "background", 
+    violation_type == "identity" & (trial_number == fam_duration + 1) ~ "identity", 
+    violation_type == "number" & (trial_number == fam_duration + 1) ~ "number", 
+    violation_type == "pose" & (trial_number == fam_duration + 1) ~ "pose", 
+    violation_type == "animacy" & (trial_number == fam_duration + 1) ~ "animacy", 
+    TRUE ~ "background"
+  )) %>% 
+  filter(violation_type == "animacy", fam_duration == 5) %>% 
+  filter(trial_number == 5 | trial_number == 6) %>% 
+  pivot_wider(names_from  = trial_type, values_from = sample_n_mean) 
+
+```
+
+```{r}
+eig_sd %>% 
+  ggplot(aes)
+```
+
+```{r}
+eig_hab_dishab <- trial_info %>% 
+  distinct(trial_id, fam_duration, violation_type) %>% 
+  left_join(eig_sd, by = c("trial_id")) %>% 
+  mutate(trial_number = index + 1) %>% 
+  select(param_id, trial_number, fam_duration, violation_type, sample_n_mean, sample_n_std) %>% 
+  mutate(trial_type = case_when(
+    violation_type == "background" ~ "background", 
+    violation_type != "background" & (trial_number == fam_duration + 1) ~ "deviant", 
+    TRUE ~ "background"
+  )) %>% 
+  mutate(total_trial_number = fam_duration +1 ) %>% 
+  select(param_id, trial_type, trial_number, total_trial_number, sample_n_mean, sample_n_std) %>% 
+  group_by(param_id, trial_type, trial_number, total_trial_number) %>% 
+  summarise(mean_sample = mean(sample_n_mean)) %>% # missing SD here!
+  ungroup() 
+
+eig_hab_dishab %>% write_csv(here("data/model_sim_data/eig_hab_dishab.csv"))
+```
+
+```{r}
+deviant_only_fit <- trial_info %>% 
+  distinct(trial_id, fam_duration, test_type) %>% 
+  left_join(eig_sd, by = c("trial_id")) %>% 
+  mutate(trial_number = index + 1) %>% 
+  select(param_id, trial_number, fam_duration, test_type, sample_n_mean, sample_n_std) %>% 
+  mutate(trial_type = case_when(
+    test_type == "background" ~ "background", 
+    test_type == "identity" & (trial_number == fam_duration + 1) ~ "identity", 
+    test_type == "number" & (trial_number == fam_duration + 1) ~ "number", 
+    test_type == "pose" & (trial_number == fam_duration + 1) ~ "pose", 
+    test_type == "animacy" & (trial_number == fam_duration + 1) ~ "animacy", 
+    TRUE ~ "background"
+  )) %>% 
+  group_by(param_id, trial_type) %>% 
+  summarise(mean_sample = mean(sample_n_mean)) %>% # missing SD here!
+  ungroup() 
+
+deviant_only_fit %>% write_csv(here("data/model_sim_data/eig_deviant_only.csv"))
+```
+
