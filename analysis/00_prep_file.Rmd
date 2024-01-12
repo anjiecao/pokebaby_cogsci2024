@@ -10,7 +10,11 @@ trial_info <- read_csv(here("data/model_sim_data/sim_info/trial_info_graded_dish
 param_info <- read_csv(here("data/model_sim_data/sim_info/eig_selfpaced.csv"))
 
 ```
-# summarize bd
+
+
+# behavioral dataset
+
+## Visualizing 
 
 ```{r}
 bd %>% 
@@ -24,6 +28,15 @@ bd %>%
   theme_few() 
   
 ```
+
+## Running Model 
+
+```{r}
+
+```
+
+
+## Full dataset summary (for parameter interpretation)
 
 ```{r}
 bd_fit_summary <- bd %>% 
@@ -45,7 +58,19 @@ bd_fit_summary %>% write_csv(here("data/behavioral_data/bd_fit.csv"))
 ```
 
 
-# summarize sim results 
+# Simulation results 
+
+## Visualizing / Sanity check 
+
+```{r}
+sd %>% 
+  mutate(trial_type_overall = if_else(trial_type == "background", "background", "deviant")) %>% 
+  ggplot(aes(x = trial_number, y = mean_sample, color = trial_type_overall)) + 
+  stat_summary(fun.data = "mean_cl_boot", position = position_dodge(width = .2)) 
+  
+```
+
+## summarize & merge sim results 
 
 
 ```{r}
@@ -82,32 +107,8 @@ eig_summarized %>%
  
 ```
 
+# Archive 
 
-```{r}
-trial_info %>% 
-  select(-test_type) %>% 
-  distinct(trial_id, stim_id, fam_duration, violation_type) %>% 
-  right_join(eig_sd, by = c("trial_id", "stim_id")) %>% 
-  mutate(trial_number = index + 1) %>% 
-  select(param_id, trial_id, stim_id, trial_number, fam_duration, violation_type, sample_n_mean, sample_n_std) %>% 
-  mutate(trial_type = case_when(
-    violation_type == "background" ~ "background", 
-    violation_type == "identity" & (trial_number == fam_duration + 1) ~ "identity", 
-    violation_type == "number" & (trial_number == fam_duration + 1) ~ "number", 
-    violation_type == "pose" & (trial_number == fam_duration + 1) ~ "pose", 
-    violation_type == "animacy" & (trial_number == fam_duration + 1) ~ "animacy", 
-    TRUE ~ "background"
-  )) %>% 
-  filter(violation_type == "animacy", fam_duration == 5) %>% 
-  filter(trial_number == 5 | trial_number == 6) %>% 
-  pivot_wider(names_from  = trial_type, values_from = sample_n_mean) 
-
-```
-
-```{r}
-eig_sd %>% 
-  ggplot(aes)
-```
 
 ```{r}
 eig_hab_dishab <- trial_info %>% 
@@ -150,3 +151,15 @@ deviant_only_fit <- trial_info %>%
 deviant_only_fit %>% write_csv(here("data/model_sim_data/eig_deviant_only.csv"))
 ```
 
+
+
+```{r}
+sd %>% 
+   filter(trial_type != "background") %>% 
+  group_by(param_id, trial_type) %>% 
+  summarise(mean_sample  = mean(mean_sample)) %>% 
+  ggplot(aes(x = trial_type, y = mean_sample, color = trial_type)) + 
+  geom_line(aes(group = param_id), alpha = .3) + 
+  #geom_point(position = position_dodge(width  = .2), alpha = .3) + 
+  stat_summary(fun.data = "mean_cl_boot", position = position_dodge(width = .2))
+```
