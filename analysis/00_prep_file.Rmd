@@ -63,17 +63,53 @@ bd_fit_summary %>% write_csv(here("data/behavioral_data/bd_fit.csv"))
 ## Visualizing / Sanity check 
 
 ```{r}
-sd %>% 
+eig_summarized %>% 
   mutate(trial_type_overall = if_else(trial_type == "background", "background", "deviant")) %>% 
   ggplot(aes(x = trial_number, y = mean_sample, color = trial_type_overall)) + 
   stat_summary(fun.data = "mean_cl_boot", position = position_dodge(width = .2)) 
+
+
+eig_summarized %>% 
+   filter(trial_type != "background") %>% 
+  group_by(param_id, trial_type) %>% 
+  summarise(mean_sample  = mean(mean_sample)) %>% 
+  ggplot(aes(x = trial_type, y = mean_sample, color = trial_type)) + 
+  #geom_point(position = position_dodge(width  = .2), alpha = .3) + 
+  stat_summary(fun.data = "mean_cl_boot", position = position_dodge(width = .2)) + 
+  facet_wrap(~trial_type)
   
 ```
 
 ## summarize & merge sim results 
 
+def pooled_sd(group):
+    n = 20  # Size of each subset
+    ssd = np.sum((n - 1) * group['n_samples_sd']**2)
+    count = group['n_samples_sd'].count()
+    return np.sqrt(np.sum((n - 1) * group['n_samples_sd']**2) / (n * count - count))
+    
+
+
 
 ```{r}
+
+
+# Function to calculate pooled standard deviation
+pooled_sd <- function(sd, n) {
+  sqrt(sum((n - 1) * sd^2) / sum(n - 1))
+}
+
+summary <- data %>%
+  group_by(trial_id, param_id) %>%
+  summarize(
+    mean_of_means = mean(n_samples_mean),
+    pooled_sd = pooled_sd(n_samples_sd, n = 20)  # Assuming each subset has 20 data points
+  )
+#function c
+
+#ssd = np.sum((n - 1) * group['n_samples_sd']**2)
+#count = group['n_samples_sd'].count()
+#return np.sqrt(ssd / (n * count - count))
 
 eig_summarized <- trial_info %>% 
   select(-test_type) %>% 
@@ -91,7 +127,14 @@ eig_summarized <- trial_info %>%
   )) %>% 
   select(param_id, trial_type, trial_number, sample_n_mean, sample_n_std) %>% 
   group_by(param_id, trial_type, trial_number) %>% 
-  summarise(mean_sample = mean(sample_n_mean)) %>% # missing SD here!
+  summarise(
+    count = n(),
+    #ssd = sum((20-1) * (sample_n_std ** 2)),
+    #sd_sample = (ssd / 20 * count - count) ** .5, 
+    sd_sample = pooled_sd(sample_n_std, 20),
+    mean_sample = mean(sample_n_mean), 
+    ub_sample = mean_sample + 1.96 * (sd_sample /((400 * count) ** .5)),
+    lb_sample = mean_sample - 1.96 * (sd_sample /((400 * count) ** .5)),) %>% # missing SD here!
   ungroup() 
   
 write_csv(eig_summarized, here("data/model_sim_data/eig_summarised.csv"))
@@ -106,6 +149,32 @@ eig_summarized %>%
 
  
 ```
+
+
+```{r}
+ trial_info %>% 
+  select(-test_type) %>% 
+  distinct(trial_id, stim_id, fam_duration, violation_type) %>% 
+  right_join(eig_sd, by = c("trial_id", "stim_id")) %>% 
+  mutate(trial_number = index + 1) %>% 
+  select(param_id, trial_number, fam_duration, violation_type, sample_n_mean, sample_n_std) %>% 
+  mutate(trial_type = case_when(
+    violation_type == "background" ~ "background", 
+    violation_type == "identity" & (trial_number == fam_duration + 1) ~ "identity", 
+    violation_type == "number" & (trial_number == fam_duration + 1) ~ "number", 
+    violation_type == "pose" & (trial_number == fam_duration + 1) ~ "pose", 
+    violation_type == "animacy" & (trial_number == fam_duration + 1) ~ "animacy", 
+    TRUE ~ "background"
+  )) %>% 
+  select(param_id, trial_type, trial_number, sample_n_mean, sample_n_std) %>% 
+  group_by(param_id, trial_type, trial_number)
+  
+```
+
+
+
+
+
 
 # Archive 
 
