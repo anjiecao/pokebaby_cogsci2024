@@ -2,6 +2,7 @@
 ```{r}
 library(tidyverse)
 library(here)
+library(colf)
 library(ggthemes)
 
 source(here('analysis/helper/summarize_behavioral_data.R'))
@@ -9,6 +10,7 @@ source(here('analysis/helper/summarize_behavioral_data.R'))
 raw_d <- read_csv(here("data/behavioral_data/trimmed_lt_d.csv"))
 
 eig_sim <- read_csv(here("data/model_sim_data/eig_summarised.csv"))
+eig_gen_sim <- read_csv(here("data/model_sim_data/eig_gen_summarised.csv"))
 nolearning_sim <- read_csv(here("data/model_sim_data/nolearning_summarised.csv"))
 nonoise_sim <- read_csv(here("data/model_sim_data/nonoise_summarised.csv"))
 permuted_sim <- read_csv(here("data/model_sim_data/permuted_eig_summarised.csv"))
@@ -17,28 +19,16 @@ permuted_sim <- read_csv(here("data/model_sim_data/permuted_eig_summarised.csv")
 # read in all the cached sim results 
 
 eig_fit_res <- readRDS(here("cached_data/eig_aligned_fit_res.Rds"))
+eig_gen_fit_res <- readRDS(here("cached_data/eig_gen_fit_res.Rds"))
 nolearning_fit_res <- readRDS(here("cached_data/nolearning_fit_res.Rds"))
-#nonoise_fit_res <- readRDS(here("cached_data/nonoise_fit_res.Rds"))
+nonoise_fit_res <- readRDS(here("cached_data/nonoise_fit_res.rds"))
 permuted_fit_res <- readRDS(here("cached_data/randomembedding_fit_res.Rds"))
 
 ```
 
 # get all the best fits!
 
-```{r}
-train_data = summarize_behavioral_data(raw_d %>% filter(prolific_id %in% train_subject)) %>% ungroup() %>% left_join(sd %>% filter(param_id == p_id) %>% ungroup(), by = c("trial_number", "trial_type"))
-    test_data = summarize_behavioral_data(raw_d %>% filter(!prolific_id %in% train_subject)) %>% ungroup() %>% left_join(sd %>% filter(param_id == p_id) %>% ungroup(), by = c("trial_number", "trial_type"))
-    
-    # fit the training set
-    
-    
-    fitted_stats = colf_nlxb(mean_lt ~ mean_sample, data = train_data, lower = c(-Inf, 0.0000001))
-    sample_slope = fitted_stats$coefficients["param_mean_sample"]
-    sample_intercept = fitted_stats$coefficients["param_X.Intercept."]
-    
-    test_scaled <- test_data %>% 
-      mutate(scaled_samples = mean_sample * sample_slope  + sample_intercept)
-```
+
 
 
 ```{r}
@@ -48,9 +38,10 @@ get_best_fit_res <- function(raw_d, fit_res, sim_res){
   
   data = summarize_behavioral_data(raw_d) %>% ungroup() %>% left_join(best_fit_res %>% ungroup(), by = c("trial_number", "trial_type"))
 
-  fitted_stats = colf_nlxb(mean_lt ~ mean_sample, data = data, lower = c(-Inf, 0.0000001))
-    sample_slope = fitted_stats$coefficients["param_mean_sample"]
-    sample_intercept = fitted_stats$coefficients["param_X.Intercept."]
+  #fitted_stats = colf_nlxb(mean_lt ~ mean_sample, data = data, lower = c(-Inf, 0.001))
+  fitted_stats = colf_nlxb(mean_lt ~ mean_sample, data = data)
+  sample_slope = fitted_stats$coefficients["param_mean_sample"]
+  sample_intercept = fitted_stats$coefficients["param_X.Intercept."]
     
     test_scaled <- data %>% 
       mutate(scaled_samples = mean_sample * sample_slope  + sample_intercept, 
@@ -62,8 +53,9 @@ get_best_fit_res <- function(raw_d, fit_res, sim_res){
 
 
 eig_best_fit <- get_best_fit_res(raw_d, eig_fit_res, eig_sim)
+eig_gen_best_fit <- get_best_fit_res(raw_d, eig_gen_fit_res, eig_gen_sim)
 nolearning_best_fit <- get_best_fit_res(raw_d, nolearning_fit_res, nolearning_sim)
-#nonoise_best_fit <- get_best_fit_res(nonoise_fit_res, nonoise_sim)
+nonoise_best_fit <- get_best_fit_res(raw_d, nonoise_fit_res, nonoise_sim)
 permuted_best_fit <- get_best_fit_res(raw_d, permuted_fit_res, permuted_sim)
 
 
@@ -80,14 +72,15 @@ ggpubr::as_ggplot(leg)
 
 ```{r}
 
-legend <- ggpubr::as_ggplot(leg)
+#legend <- ggpubr::as_ggplot(leg)
 
 behavioral_plot  <- raw_d %>% 
   mutate(trial_type = case_when(
     trial_type == "background" ~ "background", 
     block_type == "deviant_block" & trial_type == "deviant" ~ violation_type
   )) %>% 
-  ggplot(aes(x = trial_number, y = total_rt, color = trial_type)) + scale_y_log10() +
+  ggplot(aes(x = trial_number, y = total_rt, color = trial_type)) + 
+  #scale_y_log10() +
    stat_summary(fun.data = "mean_cl_boot", position = position_dodge(width = .2)) + 
     stat_summary(fun.data = "mean_cl_boot", geom = "line", position = position_dodge(width = .2)) + 
   theme_few() + 
@@ -100,7 +93,7 @@ behavioral_plot  <- raw_d %>%
 
 eig_search_plot <- eig_best_fit %>% 
   ggplot(aes(x = trial_number, y = scaled_samples, ymin = scaled_lb, ymax = scaled_ub, color  = trial_type)) + 
-  scale_y_log10() + 
+  #scale_y_log10() + 
   geom_pointrange(position = position_dodge(width = .2)) + 
   geom_line()+
   theme_few() + 
@@ -111,22 +104,22 @@ eig_search_plot <- eig_best_fit %>%
   theme(plot.title = element_text(hjust = 0.5))
 
 
-generalized_plot <- eig_best_fit %>% 
+eig_gen_plot <- eig_gen_best_fit %>% 
   ggplot(aes(x = trial_number, y = scaled_samples, ymin = scaled_lb, ymax = scaled_ub, color  = trial_type)) + 
-  scale_y_log10() + 
+  #scale_y_log10() + 
   geom_pointrange(position = position_dodge(width = .2)) + 
   geom_line()+
   theme_few()+ 
   theme(legend.position = "none") + 
   ylab("") + 
   xlab("") + 
-  ggtitle("FAKE") + 
+  ggtitle("Generalized params") + 
   theme(plot.title = element_text(hjust = 0.5))
 
 
 permuted_plot <- permuted_best_fit %>% 
   ggplot(aes(x = trial_number, y = scaled_samples, ymin = scaled_lb, ymax = scaled_ub, color  = trial_type)) + 
-  scale_y_log10() + 
+  #scale_y_log10() + 
   geom_pointrange(position = position_dodge(width = .2)) + 
   geom_line()+
   theme_few()+ 
@@ -138,7 +131,7 @@ permuted_plot <- permuted_best_fit %>%
 
 nolearning_plot <- nolearning_best_fit %>% 
   ggplot(aes(x = trial_number, y = scaled_samples, ymin = scaled_lb, ymax = scaled_ub, color  = trial_type)) + 
-  scale_y_log10() + 
+  #scale_y_log10() + 
   geom_pointrange(position = position_dodge(width = .2)) + 
   geom_line()+
   theme_few()+ 
@@ -148,9 +141,9 @@ nolearning_plot <- nolearning_best_fit %>%
   ggtitle("No Learning") + 
   theme(plot.title = element_text(hjust = 0.5))
 
-nonoise_plot <- nolearning_best_fit %>% 
+nonoise_plot <- nonoise_best_fit %>% 
   ggplot(aes(x = trial_number, y = scaled_samples, ymin = scaled_lb, ymax = scaled_ub, color  = trial_type)) + 
-  scale_y_log10() + 
+  #scale_y_log10() + 
   geom_pointrange(position = position_dodge(width = .2)) + 
   geom_line()+
   theme_few()+ 
@@ -163,11 +156,30 @@ nonoise_plot <- nolearning_best_fit %>%
 
 ```
 
+```{r}
+eig_best_fit
+
+
+raw_d %>% 
+  mutate(trial_type = case_when(
+    trial_type == "background" ~ "background", 
+    block_type == "deviant_block" & trial_type == "deviant" ~ violation_type
+  )) %>% 
+  group_by(trial_number, trial_type) %>% 
+  summarise(mean = mean(total_rt))
+```
 
 ```{r}
 library(patchwork)
 
- behavioral_plot + eig_search_plot + generalized_plot + 
+ behavioral_plot + eig_search_plot
+```
+
+
+```{r}
+library(patchwork)
+
+ behavioral_plot + eig_search_plot + eig_gen_plot + 
    permuted_plot + nolearning_plot + nonoise_plot + plot_layout(nrow = 2, widths = c(1, 1, 1))
 ```
 
