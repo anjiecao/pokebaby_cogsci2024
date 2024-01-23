@@ -1,0 +1,106 @@
+
+
+```{r}
+library(tidyverse)
+library(here)
+library(caret)
+library(ggthemes)
+
+
+new <- read_csv(here("data/behavioral_data/trimmed_lt_d.csv"))
+old <- read_csv(here("data/behavioral_data/old.csv"))
+```
+
+```{r}
+new <- new %>% 
+  mutate(is_first_trial = trial_number == 1) %>% 
+  mutate(violation_type_with_background = case_when(
+    trial_type == "background" ~ "background", 
+    TRUE ~ violation_type
+  )) %>% 
+  mutate(
+    animacy = case_when(
+    grepl("inanimate", background_type) ~ "inanimate", 
+    TRUE ~ "animate"), 
+    
+    number = case_when(
+    grepl("single", background_type) ~ "single", 
+    TRUE ~ "pair"
+  ),
+  
+    pose = case_when(
+    grepl("left", background_type) ~ "left", 
+    TRUE ~ "right"
+  )
+    )
+
+old <- old %>% 
+  mutate(is_first_trial = trial_number == 1) %>% 
+  mutate(violation_type_with_background = case_when(
+    trial_type == "background" ~ "background", 
+    TRUE ~ violation_type
+  )) %>% 
+  mutate(
+    animacy = case_when(
+    grepl("inanimate", background_type) ~ "inanimate", 
+    TRUE ~ "animate"), 
+    
+    number = case_when(
+    grepl("single", background_type) ~ "single", 
+    TRUE ~ "pair"
+  ),
+  
+    pose = case_when(
+    grepl("left", background_type) ~ "left", 
+    TRUE ~ "right"
+  )
+    )
+```
+
+# fit fixed effects  model 
+
+```{r}
+new_m <- lm(
+  log(total_rt) ~ trial_number * is_first_trial,
+  data = new %>% filter(trial_type == "background")
+)
+
+old_m <- lm(
+  log(total_rt) ~ trial_number * is_first_trial,
+  data = old %>% filter(trial_type == "background")
+)
+
+```
+
+```{r}
+new_m %>% summary()
+old_m %>% summary()
+```
+# fix mixed effect model 
+
+```{r}
+new_m <- lmerTest::lmer(
+  log(total_rt) ~ trial_number * is_first_trial + (1|prolific_id) + 
+    trial_number * is_first_trial * number + 
+    trial_number * is_first_trial * pose + 
+    trial_number * is_first_trial * animacy + 
+    trial_number * is_first_trial * violation_type_with_background + log(block_number),
+  data = new 
+)
+
+old_m <- lmerTest::lmer(
+  log(total_rt) ~ trial_number * is_first_trial + (1|prolific_id) + 
+    trial_number * is_first_trial * number + 
+    trial_number * is_first_trial * pose + 
+    trial_number * is_first_trial * animacy + 
+    trial_number * is_first_trial * violation_type_with_background + log(block_number),
+  data = old 
+)
+
+new_m %>% summary()
+old_m %>% summary()
+```
+
+
+
+#

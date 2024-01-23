@@ -9,23 +9,28 @@ library(Metrics)
 source(here("analysis/helper/summarize_behavioral_data.R"))
 source(here("analysis/helper/run_k_fold.R"))
 
-raw_d <- read_csv(here("data/behavioral_data/behavioral_d.csv"))
+raw_d <- read_csv(here("data/behavioral_data/trimmed_lt_d.csv"))
 
-bd <- read_csv(here("data/behavioral_data/bd_fit.csv"))
-sd <- read_csv(here("data/model_sim_data/eig_summarised.csv"))
+#bd <- read_csv(here("data/behavioral_data/bd_fit.csv"))
+eig_sim <- read_csv(here("data/model_sim_data/eig_summarised.csv"))
+nolearning_sim <- read_csv(here("data/model_sim_data/nolearning_summarised.csv"))
+nonoise_sim <- read_csv(here("data/model_sim_data/nonoise_summarised.csv"))
+permuted_sim <- read_csv(here("data/model_sim_data/permuted_eig_summarised.csv"))
 ```
 
 
 
-# Plain 
+# With log block id! 
 
 ```{r}
 
-
+# eig 
 full_k_fold_res <- lapply(
-  unique(sd$param_id), 
+  unique(permuted_sim$param_id), 
   function(id){
-    run_k_fold(p_id = id, raw_bd = raw_d, sd = sd)
+    run_k_fold(p_id = id, 
+               raw_bd = raw_d, 
+               sd = permuted_sim)
   }
 ) %>% 
   bind_rows()
@@ -42,6 +47,9 @@ full_k_fold_res %>%
 
 
 ```
+
+
+
 
 
 
@@ -67,15 +75,46 @@ test_scaled %>%
 
 
 ```{r}
-full_ds <- bd %>% 
-  left_join(sd %>% filter(param_id == 60), by = c("trial_number", "trial_type"))
+distance_d <- raw_d %>% 
+  filter(block_type != "background_block") %>% 
+  filter(trial_number == total_trial_number) %>% 
+  mutate(
+    violation_type = case_when(
+      # animacy violation
+      same_animacy == FALSE & same_number == TRUE & same_pose == TRUE  ~ "animacy", 
+      # pose violation 
+      same_animacy == TRUE & same_number == TRUE & same_pose == FALSE & same_id == TRUE ~ "pose", 
+      # identity violation 
+      same_animacy == TRUE & same_number == TRUE & same_pose == TRUE & same_id == FALSE ~ "identity", 
+      # number violation
+      same_animacy == TRUE & same_number == FALSE & same_pose == TRUE & same_id == TRUE ~ "number", 
+      block_type == "background_block" ~ "background", 
+      TRUE ~ "error!"
+    )
+  ) %>% 
+  select(prolific_id, violation_type, trial_number, val) %>% 
+  group_by(trial_number, violation_type) %>% 
+  summarise(val = mean(val)) %>% 
+  mutate("val_category" = "embedding_distance") %>% 
+  rename(trial_type = violation_type) %>% 
+  mutate(type = "embedding_distance")
+```
+
+```{r}
+full_summarised_d <- summarize_behavioral_data(raw_d)
+
+full_ds <- full_summarised_d %>% 
+  #140 vs #92
+  left_join(sd %>% filter(param_id == 46), by = c("trial_number", "trial_type"))
 
 fitted_stats = colf_nlxb(mean_lt ~ mean_sample, data = full_ds, lower = c(-Inf, 0))
 sample_slope = fitted_stats$coefficients["param_mean_sample"]
 sample_intercept = fitted_stats$coefficients["param_X.Intercept."]
   
 test_scaled <- full_ds %>% 
-      mutate(scaled_samples = mean_sample * sample_slope + sample_intercept)
+      mutate(scaled_samples = mean_sample * sample_slope + sample_intercept, 
+             lb_sample = lb_sample * sample_slope + sample_intercept, 
+             ub_sample = ub_sample * sample_slope+ sample_intercept  ) 
   
   # save results for each fold 
 rsquare <- cor(test_scaled$mean_lt, test_scaled$scaled_samples)^2
@@ -88,12 +127,55 @@ test_scaled %>%
   geom_line(aes(group = trial_type))+
   facet_wrap( ~type, scales = "free")
 
-test_scaled %>% 
-  pivot_longer(cols = c("mean_lt", "scaled_samples"), names_to = "type", values_to = "val") %>% 
-  ggplot(aes(x = trial_type, y = val, color = type)) + 
-  stat_summary(fun.data = "mean_cl_boot", position = position_dodge(width = .2))
+
+
+# get the CI for behavioral dataset 
+bd_with_ci <- raw_d %>% 
+  filter(trial_type != "background") %>% 
+  select(-trial_type) %>% 
+  rename(trial_type = violation_type) %>% 
+  group_by(trial_type) %>% 
+  summarise(
+    mean_lt = mean(total_rt), 
+     count = n(),
+              #ssd = sum((20-1) * (sample_n_std ** 2)),
+              #sd_sample = (ssd / 20 * count - count) ** .5, 
+    sd_lt = sd(total_rt),
+    ub_lt = mean_lt + 1.96 * (sd_lt /(count ** .5)),
+     lb_lt = mean_lt - 1.96 * (sd_lt /(count ** .5))
+  ) %>% 
+  select(-count) %>% 
+  rename(
+    mean = mean_lt, 
+    ub = ub_lt, 
+    lb = lb_lt
+  ) %>% 
+  mutate(val_type = "behavioral results")
+
+sim_with_ci <- test_scaled %>% 
+  filter(trial_type != "background") %>% 
+  group_by(trial_type) %>% 
+  summarise(
+    mean = mean(scaled_samples), 
+              #ssd = sum((20-1) * (sample_n_std ** 2)),
+              #sd_sample = (ssd / 20 * count - count) ** .5,
+    ub = mean(ub_sample), 
+    lb = mean(lb_sample)
+  ) %>% 
+  mutate(val_type = "sim results")
+
+
+bind_rows(bd_with_ci, sim_with_ci) %>% 
+  ggplot(aes(x = trial_type, y = mean, color = val_type)) + 
+  geom_pointrange(aes(ymin = lb, ymax = ub), position = position_dodge(width = .2)) 
 ```
 
+
+```{r}
+full_summarised_d %>% 
+  ggplot(aes(x = trial_type, y = mean_lt, color = trial_type)) + 
+  geom_pointrange(aes(ymin = lb_lt, ymax = ub_lt))
+```
 
 
 
