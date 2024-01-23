@@ -3,7 +3,11 @@
         {
             "columnIndex": 2,
             "ascending": true
+        },
+        {
+            "columnIndex": 3,
+            "ascending": false
         }
     ],
-    "path": "~/Desktop/projects/pokebaby_cogsci2024/writing "
+    "path": "~/Desktop/projects/pokebaby_cogsci2024/cached_data"
 }
