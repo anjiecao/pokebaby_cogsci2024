@@ -1,0 +1,44 @@
+
+
+
+
+### Parameter generalizability 
+
+```{r}
+eig_gen_stats <- readRDS(here("cached_data/writing_cache/clean_eig_gen_stats.Rds"))
+eig_qual_order <- readRDS(here("cached_data/writing_cache/clean_eig_gen_qual_order.Rds"))
+```
+
+
+
+### Parameter robustness 
+
+```{r}
+all_eig_params <- readRDS(here("cached_data/eig_aligned_fit_res.Rds"))
+best_fit_id <- (all_eig_params %>% arrange(-mean_rsquared))$param_id[[1]]
+n_params <- nrow(all_eig_params)
+eig_rsquared_mean <- round(mean(all_eig_params$mean_rsquared), 2)
+eig_rsquared_sd <- round(sd(all_eig_params$mean_rsquared), 2)
+eig_rmse_mean <- round(mean(all_eig_params$mean_rmse), 2)
+eig_rmse_sd <- round(sd(all_eig_params$mean_rmse), 2)
+
+eig_stats <- readRDS(here("cached_data/writing_cache/clean_eig_stats.Rds"))
+eig_qual_order <- readRDS(here("cached_data/writing_cache/clean_eig_qual_order.Rds"))
+
+
+# read_csv(here("data/model_sim_data/eig_summarised.csv")) %>% 
+#   filter(param_id == best_fit_id) %>% 
+#   filter(trial_type != "background") %>% 
+#   group_by(trial_type) %>% 
+#   summarise(mean_sample = mean(mean_sample)) %>% 
+#   pivot_wider(names_from = trial_type, values_from = mean_sample) %>% saveRDS(here("cached_data/writing_cache/clean_eig_qual_order.Rds"))
+```
+
+
+
+### Comparison with alternative models
+
+```{r}
+nonoise_stats <- readRDS(here("cached_data/writing_cache/clean_eig_gen_stats.Rds"))
+```
+
