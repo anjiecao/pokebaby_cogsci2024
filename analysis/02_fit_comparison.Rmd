@@ -58,7 +58,42 @@ nolearning_best_fit <- get_best_fit_res(raw_d, nolearning_fit_res, nolearning_si
 nonoise_best_fit <- get_best_fit_res(raw_d, nonoise_fit_res, nonoise_sim)
 permuted_best_fit <- get_best_fit_res(raw_d, permuted_fit_res, permuted_sim)
 
+```
 
+## fit to the full dataset 
+
+```{r}
+# fitting the eig gen to the full dataset
+
+rmse_interval <- function(rmse, deg_free, p_lower = 0.025, p_upper = 0.975){
+    tibble(.pred_lower = sqrt(deg_free / qchisq(p_upper, df = deg_free)) * rmse,
+           .pred_upper = sqrt(deg_free / qchisq(p_lower, df = deg_free)) * rmse)
+}
+
+rsquared <- cor(permuted_best_fit$mean_lt, permuted_best_fit$scaled_samples)^2
+r_conf <- confintr::ci_cor(permuted_best_fit$mean_lt, permuted_best_fit$scaled_samples, method = "pearson", type = "bootstrap")["interval"][[1]]
+r_conf_print <- paste0("[", round(r_conf[1],2), ", ", round(r_conf[2],2), "]")
+
+rmse_interval
+
+rmse <- rmse(permuted_best_fit$mean_lt, permuted_best_fit$scaled_samples)
+rmse_interval <- rmse_interval(rmse, nrow(permuted_best_fit))
+rmse_conf_print <- paste0("[", round(rmse_interval$.pred_lower,2), ", ", 
+                              round(rmse_interval$.pred_upper,2), "]")
+
+fit_stats_df <- tibble(
+  "type" = c("random_embedding"), 
+  "rsquared" = rsquared, 
+  "r_conf_lb" = r_conf[[1]], 
+  "r_conf_ub" = r_conf[[2]], 
+  "r_conf_print" = r_conf_print, 
+  "rmse"= rmse, 
+  "rmse_interval_lb" = rmse_interval$.pred_lower, 
+  "rmse_interval_ub" = rmse_interval$.pred_upper, 
+  "rmse_conf_print" = rmse_conf_print
+)
+
+saveRDS(fit_stats_df, here("random_embedding.Rds"))
 ```
 
 
