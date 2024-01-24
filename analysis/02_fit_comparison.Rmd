@@ -79,6 +79,7 @@ behavioral_plot  <- raw_d %>%
     trial_type == "background" ~ "background", 
     block_type == "deviant_block" & trial_type == "deviant" ~ violation_type
   )) %>% 
+  filter(trial_type != "background") %>% 
   ggplot(aes(x = trial_number, y = total_rt, color = trial_type)) + 
   #scale_y_log10() +
    stat_summary(fun.data = "mean_cl_boot", position = position_dodge(width = .2)) + 
@@ -92,6 +93,7 @@ behavioral_plot  <- raw_d %>%
 
 
 eig_search_plot <- eig_best_fit %>% 
+  filter(trial_type != "background") %>% 
   ggplot(aes(x = trial_number, y = scaled_samples, ymin = scaled_lb, ymax = scaled_ub, color  = trial_type)) + 
   #scale_y_log10() + 
   geom_pointrange(position = position_dodge(width = .2)) + 
@@ -105,6 +107,7 @@ eig_search_plot <- eig_best_fit %>%
 
 
 eig_gen_plot <- eig_gen_best_fit %>% 
+  filter(trial_type != "background") %>% 
   ggplot(aes(x = trial_number, y = scaled_samples, ymin = scaled_lb, ymax = scaled_ub, color  = trial_type)) + 
   #scale_y_log10() + 
   geom_pointrange(position = position_dodge(width = .2)) + 
@@ -117,7 +120,8 @@ eig_gen_plot <- eig_gen_best_fit %>%
   theme(plot.title = element_text(hjust = 0.5))
 
 
-permuted_plot <- permuted_best_fit %>% 
+permuted_plot <- permuted_best_fit %>%
+  filter(trial_type != "background") %>% 
   ggplot(aes(x = trial_number, y = scaled_samples, ymin = scaled_lb, ymax = scaled_ub, color  = trial_type)) + 
   #scale_y_log10() + 
   geom_pointrange(position = position_dodge(width = .2)) + 
@@ -130,6 +134,7 @@ permuted_plot <- permuted_best_fit %>%
   theme(plot.title = element_text(hjust = 0.5))
 
 nolearning_plot <- nolearning_best_fit %>% 
+  filter(trial_type != "background") %>% 
   ggplot(aes(x = trial_number, y = scaled_samples, ymin = scaled_lb, ymax = scaled_ub, color  = trial_type)) + 
   #scale_y_log10() + 
   geom_pointrange(position = position_dodge(width = .2)) + 
@@ -142,6 +147,7 @@ nolearning_plot <- nolearning_best_fit %>%
   theme(plot.title = element_text(hjust = 0.5))
 
 nonoise_plot <- nonoise_best_fit %>% 
+  filter(trial_type != "background") %>% 
   ggplot(aes(x = trial_number, y = scaled_samples, ymin = scaled_lb, ymax = scaled_ub, color  = trial_type)) + 
   #scale_y_log10() + 
   geom_pointrange(position = position_dodge(width = .2)) + 
@@ -169,17 +175,135 @@ raw_d %>%
   summarise(mean = mean(total_rt))
 ```
 
-```{r}
-library(patchwork)
 
- behavioral_plot + eig_search_plot
-```
 
+# big plot 
 
 ```{r}
 library(patchwork)
 
  behavioral_plot + eig_search_plot + eig_gen_plot + 
    permuted_plot + nolearning_plot + nonoise_plot + plot_layout(nrow = 2, widths = c(1, 1, 1))
+```
+
+# habituation plot 
+
+```{r}
+b_background_d <- raw_d %>% 
+  mutate(trial_type = case_when(
+    trial_type == "background" ~ "background", 
+    block_type == "deviant_block" & trial_type == "deviant" ~ violation_type
+  )) %>% 
+  filter(trial_type == "background") %>% 
+  select(trial_number, total_rt) %>% 
+  rename(val = total_rt) %>% 
+  mutate(type = "behavior")
+
+
+eig_background_d <- eig_best_fit %>% filter(trial_type == "background") %>% 
+  select(trial_number, scaled_samples) %>% 
+  rename(val = scaled_samples) %>% 
+  mutate(type = "eig")
+
+eig_gen_background_d <- eig_gen_best_fit %>% filter(trial_type == "background") %>% 
+  select(trial_number, scaled_samples) %>% 
+  rename(val = scaled_samples) %>% 
+  mutate(type = "eig_gen")
+
+
+nonoise_backgrounds_d <- nonoise_best_fit %>% filter(trial_type == "background") %>% 
+  select(trial_number, scaled_samples) %>% 
+  rename(val = scaled_samples) %>% 
+  mutate(type = "no noise")
+
+nolearning_backgrounds_d <- nolearning_best_fit %>% filter(trial_type == "background") %>% 
+  select(trial_number, scaled_samples) %>% 
+  rename(val = scaled_samples) %>% 
+  mutate(type = "no learning")
+
+permuted_backgrounds_d <- permuted_best_fit %>% filter(trial_type == "background") %>% 
+  select(trial_number, scaled_samples) %>% 
+  rename(val = scaled_samples) %>% 
+  mutate(type = "random embeddings")
+
+bind_rows(b_background_d, 
+          eig_background_d, 
+          eig_gen_background_d, 
+          nonoise_backgrounds_d, 
+          nolearning_backgrounds_d, 
+          permuted_backgrounds_d
+          ) %>% 
+  ggplot(aes(x = trial_number, y  = val, color = type)) + 
+  stat_summary(fun.data = "mean_cl_boot", position = position_dodge(width = .2)) + 
+  stat_summary(fun.data = "mean_cl_boot", geom = "line", position = position_dodge(width = .2), aes(group = type))
+```
+
+
+# dishabituation plot 
+
+```{r}
+
+b_deviants_d <- raw_d %>% 
+  mutate(trial_type = case_when(
+    trial_type == "background" ~ "background", 
+    block_type == "deviant_block" & trial_type == "deviant" ~ violation_type
+  )) %>% 
+  filter(trial_type != "background") %>% 
+  select(trial_type, total_rt) %>% 
+  rename(val = total_rt) %>% 
+  mutate(type = "behavior")
+
+
+eig_deviants_d <- eig_best_fit %>% filter(trial_type != "background") %>% 
+  select(trial_type, scaled_samples) %>% 
+  rename(val = scaled_samples) %>% 
+  mutate(type = "eig")
+
+eig_gen_deviants_d <- eig_gen_best_fit %>% filter(trial_type != "background") %>% 
+  select(trial_type, scaled_samples) %>% 
+  rename(val = scaled_samples) %>% 
+  mutate(type = "eig_gen")
+
+nonoise_deviants_d <- nonoise_best_fit %>% filter(trial_type != "background") %>% 
+  select(trial_type, scaled_samples) %>% 
+  rename(val = scaled_samples) %>% 
+  mutate(type = "no noise")
+
+nolearning_deviants_d <- nolearning_best_fit %>% filter(trial_type != "background") %>% 
+  select(trial_type, scaled_samples) %>% 
+  rename(val = scaled_samples) %>% 
+  mutate(type = "no learning")
+
+permuted_deviants_d <- permuted_best_fit %>% filter(trial_type != "background") %>% 
+  select(trial_type, scaled_samples) %>% 
+  rename(val = scaled_samples) %>% 
+  mutate(type = "random embeddings")
+
+
+bind_rows(b_deviants_d, 
+          eig_deviants_d, 
+          eig_gen_deviants_d, 
+          nonoise_deviants_d, 
+          nolearning_deviants_d, 
+          permuted_deviants_d) %>% 
+  ggplot(aes(x = trial_type, y  = val, color = type)) + 
+  stat_summary(fun.data = "mean_cl_boot", position = position_dodge(width = .2)) + 
+  stat_summary(fun.data = "mean_cl_boot", geom = "line", position = position_dodge(width = .2), aes(group = type)) + 
+  facet_wrap(~type)
+
+
+```
+
+
+```{r}
+bind_rows(b_deviants_d, 
+          eig_deviants_d, 
+          eig_gen_deviants_d, 
+          nonoise_deviants_d, 
+          nolearning_deviants_d, 
+          permuted_deviants_d) %>% 
+  ggplot(aes(x = type, y = val)) + 
+  stat_summary(fun.data = "mean_cl_boot") + 
+  facet_wrap(~trial_type)
 ```
 
