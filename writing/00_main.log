@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.3.17)  23 JAN 2024 17:35
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.3.17)  24 JAN 2024 19:55
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -313,32 +313,32 @@ File: l3backend-pdftex.def 2023-01-16 L3 backend support: PDF output (pdfTeX)
 ) (./00_main.aux)
 \openout1 = `00_main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Checking defaults for OMS/pzccm/m/n on input line 66.
-LaTeX Font Info:    Trying to load font information for OMS+pzccm on input line 66.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for OMS/pzccm/m/n on input line 67.
+LaTeX Font Info:    Trying to load font information for OMS+pzccm on input line 67.
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/psnfss/omspzccm.fd
 File: omspzccm.fd 2000/01/03 Fontinst v1.801 font definitions for OMS/pzccm.
 )
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: hyperref package is loaded.
 Package caption Info: End \AtBeginDocument code.
-Package hyperref Info: Link coloring OFF on input line 66.
+Package hyperref Info: Link coloring OFF on input line 67.
 (./00_main.out) (./00_main.out)
 \@outlinefile=\write4
 \openout4 = `00_main.out'.
@@ -355,81 +355,143 @@ File: english.apc 2013/07/21 v6.03 apacite language file
 LaTeX Info: Redefining \BPBI on input line 129.
 LaTeX Info: Redefining \BHBI on input line 130.
 )
-LaTeX Font Info:    Trying to load font information for OT1+ptmcm on input line 69.
+LaTeX Font Info:    Trying to load font information for OT1+ptmcm on input line 70.
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/psnfss/ot1ptmcm.fd
 File: ot1ptmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OT1/ptmcm.
 )
-LaTeX Font Info:    Trying to load font information for OML+ptmcm on input line 69.
+LaTeX Font Info:    Trying to load font information for OML+ptmcm on input line 70.
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/psnfss/omlptmcm.fd
 File: omlptmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OML/ptmcm.
 )
-LaTeX Font Info:    Trying to load font information for OMX+psycm on input line 69.
+LaTeX Font Info:    Trying to load font information for OMX+psycm on input line 70.
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/psnfss/omxpsycm.fd
 File: omxpsycm.fd 2000/01/03 Fontinst v1.801 font definitions for OMX/psycm.
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 69.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 70.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 69.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 70.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 69.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 69.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 70.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 70.
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 69.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 70.
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Underfull \vbox (badness 10000) detected at line 69
+Underfull \vbox (badness 10000) detected at line 70
  []
 
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 182.
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 182.
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 182.
 [1{/Users/caoanjie/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 
 
 ]
-<figs/2-col-image-1.pdf, id=97, 146.5475pt x 144.54pt>
-File: figs/2-col-image-1.pdf Graphic file (type pdf)
-<use figs/2-col-image-1.pdf>
-Package pdftex.def Info: figs/2-col-image-1.pdf  used on input line 216.
-(pdftex.def)             Requested size: 146.54712pt x 144.53963pt.
+Underfull \hbox (badness 6592) in paragraph at lines 190--202
+[]\OT1/ptm/m/n/10 To do so, we ran adults through a habituation-
+ []
+
+
+Underfull \vbox (badness 1803) has occurred while \output is active []
+
+<figs/design_fig-1.pdf, id=64, 252.945pt x 150.5625pt>
+File: figs/design_fig-1.pdf Graphic file (type pdf)
+<use figs/design_fig-1.pdf>
+Package pdftex.def Info: figs/design_fig-1.pdf  used on input line 221.
+(pdftex.def)             Requested size: 252.94438pt x 150.56212pt.
+
+Overfull \hbox (9.03313pt too wide) in paragraph at lines 221--222
+ [][] 
+ []
+
+[2 <./figs/design_fig-1.pdf>]
+Underfull \hbox (badness 1852) in paragraph at lines 282--292
+\OT1/ptm/m/n/10 re-cruited from Pro-lific(Mean Age: SD:). Par-tic-i-pants
+ []
+
+LaTeX Font Info:    Trying to load font information for OML+ptm on input line 327.
+(/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/psnfss/omlptm.fd
+File: omlptm.fd 
+)
+LaTeX Font Info:    Font shape `OML/ptm/m/n' in size <10> not available
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 327.
+
+LaTeX Warning: Citation `chater' undefined on input line 338.
+
+
+LaTeX Warning: Citation `dubey' undefined on input line 338.
+
+
+LaTeX Warning: Citation `cao2023habituation' undefined on input line 341.
+
+
+LaTeX Warning: Citation `raz2023modeling' undefined on input line 341.
+
+<figs/model_fig-1.pdf, id=88, 252.945pt x 150.5625pt>
+File: figs/model_fig-1.pdf Graphic file (type pdf)
+<use figs/model_fig-1.pdf>
+Package pdftex.def Info: figs/model_fig-1.pdf  used on input line 357.
+(pdftex.def)             Requested size: 252.94438pt x 150.56212pt.
+
+Overfull \hbox (9.03313pt too wide) in paragraph at lines 357--358
+ [][] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[3] [4 <./figs/model_fig-1.pdf>]
+<figs/lol-1.pdf, id=126, 444.66125pt x 328.22626pt>
+File: figs/lol-1.pdf Graphic file (type pdf)
+<use figs/lol-1.pdf>
+Package pdftex.def Info: figs/lol-1.pdf  used on input line 486.
+(pdftex.def)             Requested size: 444.66016pt x 328.22545pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<figs/image-1.pdf, id=98, 144.54pt x 110.4125pt>
-File: figs/image-1.pdf Graphic file (type pdf)
-<use figs/image-1.pdf>
-Package pdftex.def Info: figs/image-1.pdf  used on input line 234.
-(pdftex.def)             Requested size: 144.53963pt x 110.41222pt.
-<figs/plot-1.pdf, id=100, 135.50626pt x 132.495pt>
-File: figs/plot-1.pdf Graphic file (type pdf)
-<use figs/plot-1.pdf>
-Package pdftex.def Info: figs/plot-1.pdf  used on input line 254.
-(pdftex.def)             Requested size: 135.5059pt x 132.49466pt.
-[2 <./figs/image-1.pdf> <./figs/plot-1.pdf>] [3 <./figs/2-col-image-1.pdf>] (./00_main.aux)
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
+(Font)              Font shape `OMS/pzccm/m/n' tried instead on input line 510.
+
+Underfull \hbox (badness 1168) in paragraph at lines 552--560
+\OT1/ptm/m/n/10 mod-el-ing of adult, and even-tu-ally in-fant, look-ing time,
+ []
+
+[5] [6 <./figs/lol-1.pdf>] [7
+
+] (./00_main.aux)
+
+LaTeX Warning: There were undefined references.
+
 Package rerunfilecheck Info: File `00_main.out' has not changed.
-(rerunfilecheck)             Checksum: 6CC51CA8772F3E180F4B0E449FA01E27;2172.
+(rerunfilecheck)             Checksum: 1A134DB193AF809298952E936F9157F3;1598.
  ) 
 Here is how much of TeX's memory you used:
- 11768 strings out of 477984
- 189655 string characters out of 5838315
+ 11789 strings out of 477984
+ 190201 string characters out of 5838315
  1873388 words of memory out of 5000000
- 31750 multiletter control sequences out of 15000+600000
- 548620 words of font info for 104 fonts, out of 8000000 for 9000
+ 31744 multiletter control sequences out of 15000+600000
+ 538004 words of font info for 78 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 75i,11n,76p,298b,455s stack positions out of 10000i,1000n,20000p,200000b,200000s
-{/Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}</Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on 00_main.pdf (3 pages, 322483 bytes).
+ 75i,11n,76p,710b,465s stack positions out of 10000i,1000n,20000p,200000b,200000s
+
+pdfTeX warning (dest): name{cite.raz2023modeling} has been referenced but does not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{cite.cao2023habituation} has been referenced but does not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{cite.dubey} has been referenced but does not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{cite.chater} has been referenced but does not exist, replaced by a fixed one
+
+{/Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}</Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on 00_main.pdf (7 pages, 3354976 bytes).
 PDF statistics:
- 197 PDF objects out of 1000 (max. 8388607)
- 165 compressed objects within 2 object streams
- 50 named destinations out of 1000 (max. 500000)
- 152 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 233 PDF objects out of 1000 (max. 8388607)
+ 197 compressed objects within 2 object streams
+ 77 named destinations out of 1000 (max. 500000)
+ 120 words of extra memory for PDF output out of 10000 (max. 10000000)
 

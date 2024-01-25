@@ -1,0 +1,34 @@
+
+We next wanted to ask whether looking time in our task can be seen as rational information acquisition, using a “rational analysis” approach previously described for a variety of aspects of human behavior \cite{chater, dubey}. To do so, we developed RANCH, a Bayesian perception/action model, in which a learner makes optimal perceptual sampling decisions to maximize its learning \cite{cao2023habituation, raz2023modeling}. To the extent that the model behaves similarly to behavior observed in our task, we can argue that human behavior on this task is optimized for perceptual learning.
+
+Our goal was to develop a model which formalizes the entire process underlying looking time: from perception of a stimulus to deciding how long to look at it. To do so, our model has three separate components describing 1) how RANCH takes raw images and embeds them into a low-dimensional perceptual space, 2) how RANCH learns a concept over this perceptual space and 3) how RANCH makes decisions about how long to sample from a stimulus based on its expected information gain. Here, we describe these three components in turn.
+
+
+
+```{r model_fig, fig.env = "figure", fig.pos = "H", fig.align='center', fig.width=3.5, fig.height=3.5, set.cap.width=T, num.cols.cap=1, fig.cap = "A: Stimulus embeddings in PC-space (showing first two components only for visualization purposes). (B) Plate diagram of the learning model, which learns distributions over a mean and standard deviation from noisy perceptual samples. t refers to the number of samples taken from y, i is the number of exemplars shown from the concept, and j is the number of features of the concept."}
+img <- png::readPNG("figs/model_bad.png")
+grid::grid.raster(img)
+```
+
+## Perceptual representation 
+
+To allow RANCH to operate on raw images, we used perceptual embeddings obtained from a model presented recently by Lee & DiCarlo. This deep neural network uses ResNet50 for encoding and then projects the final layer onto a lower-dimensional embedding. This final projection is "perceptually-aligned", in that it was trained to match perceptual dissimilarity matrices derived from human adult reaction times in a 2-AFC match-to-sample task. We use these projections into a perceptually-aligned embedding space as a principled low-dimensional representation of stimuli, over which our learning model can form perceptual concepts. We used the first three principal components of the embedding space. A visualization of experimental stimuli in the embedding space can be seen in Figure 2A.
+
+## Learning model 
+
+RANCH's goal is to learn a concept in the perceptual embedding space described above, through noisy perceptual samples from a stimulus. The concept is parameterized by a 3D Gaussian $(\mu,\sigma)$, which represents beliefs about the location and variance of the concept in the embedding space. This concept $(\mu,\sigma)$ generates exemplars $(y)$: exemplars of the concept. RANCH observes repeated noisy samples $(\bar{z})$ from each exemplar. For any sample $(z)$ from an exemplar $(y)$, the model expects the observation to get corrupted by zero-mean noise, represented by $(\epsilon)$. A plate diagram is shown in Figure 1B. We used a normal-inverse-gamma prior on the concept, the conjugate prior for a normal with unknown mean and variance, on the concept parameterized as $\mu_{p}$,$\nu_{p}$,$\alpha_{p}$, $\beta_{p}$. Still, applying perceptual noise to $y$ breaks the conjugate relation, so we computed approximate posteriors using grid approximation over $(\mu,\sigma)$ and $(\epsilon)$. 
+
+
+## Decision model 
+
+To decide whether to take an additional sample from the same stimulus, RANCH computes expected information gain (EIG) of the next sample. EIG is computed as the product of the posterior predictive probability of the next sample and the information gained conditioned on that next sample, by iterating through a grid of possible subsequent samples. RANCH then makes a softmax choice (with temperature = 1) between taking another sample and looking away. We assumed that participants expect a constant information gain from looking away (the “world EIG”). Therefore, as EIG from the stimulus drops below world EIG, it becomes increasingly likely that RANCH will look away.
+
+
+## Simulating the experiment 
+
+To model the behavioral experiment, we first extracted the first three principal components of the embeddings of all the stimuli used in the experiment. We assembled the stimuli into sequences following the stimuli sequence participants saw in each block. For the block with deviating stimuli, we sampled deviant stimuli from corresponding violation categories. We sampled 23 stimuli pairs for each combination of violation type and deviant position. Since the model makes stochastic sampling decisions, we conducted 400 runs for each stimuli sequence for each parameter setting. 
+
+
+## Alternative models 
+
+To test the importance of each of RANCH’s components for its performance, we defined three lesioned models. First, to test the importance of the perceptual embeddings, we ran a version of RANCH in which the mappings from stimulus labels to embeddings were permuted, such that which embedding was associated with which violation type was randomized (“Random embeddings”). Second, we ran a version in which RANCH assumes that each perceptual sample in the learning process is noiseless, rather than corrupted by $\epsilon$ (“No noise”).Third, we ran a version in which RANCH made decisions randomly rather than based on the learning model (“No learning”).

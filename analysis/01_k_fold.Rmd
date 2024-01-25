@@ -27,11 +27,11 @@ eig_gen_sim <- read_csv(here("data/model_sim_data/eig_gen_summarised.csv"))
 
 # eig 
 full_k_fold_res <- lapply(
-  unique(eig_gen_sim$param_id), 
+  unique(nonoise_sim$param_id), 
   function(id){
     run_k_fold(p_id = id, 
                raw_bd = raw_d, 
-               sd = eig_gen_sim)
+               sd = nonoise_sim)
   }
 ) %>% 
   bind_rows()

@@ -63,6 +63,8 @@ permuted_best_fit <- get_best_fit_res(raw_d, permuted_fit_res, permuted_sim)
 ## fit to the full dataset 
 
 ```{r}
+dataset_name = "nolearning"
+dataset = nolearning_best_fit
 # fitting the eig gen to the full dataset
 
 rmse_interval <- function(rmse, deg_free, p_lower = 0.025, p_upper = 0.975){
@@ -70,30 +72,30 @@ rmse_interval <- function(rmse, deg_free, p_lower = 0.025, p_upper = 0.975){
            .pred_upper = sqrt(deg_free / qchisq(p_lower, df = deg_free)) * rmse)
 }
 
-rsquared <- cor(permuted_best_fit$mean_lt, permuted_best_fit$scaled_samples)^2
-r_conf <- confintr::ci_cor(permuted_best_fit$mean_lt, permuted_best_fit$scaled_samples, method = "pearson", type = "bootstrap")["interval"][[1]]
+rsquared <- cor(dataset$mean_lt, dataset$scaled_samples)^2
+r_conf <- confintr::ci_cor(dataset$mean_lt, dataset$scaled_samples, method = "pearson", type = "bootstrap")["interval"][[1]]
 r_conf_print <- paste0("[", round(r_conf[1],2), ", ", round(r_conf[2],2), "]")
 
 rmse_interval
 
-rmse <- rmse(permuted_best_fit$mean_lt, permuted_best_fit$scaled_samples)
-rmse_interval <- rmse_interval(rmse, nrow(permuted_best_fit))
+rmse <- rmse(dataset$mean_lt, dataset$scaled_samples)
+rmse_interval <- rmse_interval(rmse, nrow(dataset))
 rmse_conf_print <- paste0("[", round(rmse_interval$.pred_lower,2), ", ", 
                               round(rmse_interval$.pred_upper,2), "]")
 
 fit_stats_df <- tibble(
-  "type" = c("random_embedding"), 
+  "type" = c(dataset_name), 
   "rsquared" = rsquared, 
   "r_conf_lb" = r_conf[[1]], 
   "r_conf_ub" = r_conf[[2]], 
   "r_conf_print" = r_conf_print, 
   "rmse"= rmse, 
-  "rmse_interval_lb" = rmse_interval$.pred_lower, 
-  "rmse_interval_ub" = rmse_interval$.pred_upper, 
+  "rmse_interval_lb" = dataset$.pred_lower, 
+  "rmse_interval_ub" = dataset$.pred_upper, 
   "rmse_conf_print" = rmse_conf_print
 )
 
-saveRDS(fit_stats_df, here("random_embedding.Rds"))
+saveRDS(fit_stats_df, here("nolearning.Rds"))
 ```
 
 
@@ -106,15 +108,24 @@ ggpubr::as_ggplot(leg)
 
 
 ```{r}
-
-#legend <- ggpubr::as_ggplot(leg)
-
-behavioral_plot  <- raw_d %>% 
+behavior_plot_df <- raw_d %>% 
   mutate(trial_type = case_when(
     trial_type == "background" ~ "background", 
     block_type == "deviant_block" & trial_type == "deviant" ~ violation_type
   )) %>% 
-  filter(trial_type != "background") %>% 
+  mutate(scaled_samples = log(total_rt)) %>% 
+  ungroup() %>% 
+  group_by(trial_type, trial_number) %>% 
+  tidyboot::tidyboot_mean(scaled_samples, na.rm=T) %>% 
+  rename(scaled_samples = empirical_stat, 
+         scaled_lb = ci_lower, 
+         scaled_ub = ci_upper)
+
+
+#legend <- ggpubr::as_ggplot(leg)
+
+behavioral_plot  <- behavior_plot_df %>% 
+  #filter(trial_type != "background") %>% 
   ggplot(aes(x = trial_number, y = total_rt, color = trial_type)) + 
   #scale_y_log10() +
    stat_summary(fun.data = "mean_cl_boot", position = position_dodge(width = .2)) + 
@@ -128,7 +139,7 @@ behavioral_plot  <- raw_d %>%
 
 
 eig_search_plot <- eig_best_fit %>% 
-  filter(trial_type != "background") %>% 
+  #filter(trial_type != "background") %>% 
   ggplot(aes(x = trial_number, y = scaled_samples, ymin = scaled_lb, ymax = scaled_ub, color  = trial_type)) + 
   #scale_y_log10() + 
   geom_pointrange(position = position_dodge(width = .2)) + 
@@ -142,7 +153,7 @@ eig_search_plot <- eig_best_fit %>%
 
 
 eig_gen_plot <- eig_gen_best_fit %>% 
-  filter(trial_type != "background") %>% 
+  #filter(trial_type != "background") %>% 
   ggplot(aes(x = trial_number, y = scaled_samples, ymin = scaled_lb, ymax = scaled_ub, color  = trial_type)) + 
   #scale_y_log10() + 
   geom_pointrange(position = position_dodge(width = .2)) + 
@@ -156,7 +167,7 @@ eig_gen_plot <- eig_gen_best_fit %>%
 
 
 permuted_plot <- permuted_best_fit %>%
-  filter(trial_type != "background") %>% 
+  #filter(trial_type != "background") %>% 
   ggplot(aes(x = trial_number, y = scaled_samples, ymin = scaled_lb, ymax = scaled_ub, color  = trial_type)) + 
   #scale_y_log10() + 
   geom_pointrange(position = position_dodge(width = .2)) + 
@@ -169,7 +180,7 @@ permuted_plot <- permuted_best_fit %>%
   theme(plot.title = element_text(hjust = 0.5))
 
 nolearning_plot <- nolearning_best_fit %>% 
-  filter(trial_type != "background") %>% 
+  #filter(trial_type != "background") %>% 
   ggplot(aes(x = trial_number, y = scaled_samples, ymin = scaled_lb, ymax = scaled_ub, color  = trial_type)) + 
   #scale_y_log10() + 
   geom_pointrange(position = position_dodge(width = .2)) + 
@@ -182,7 +193,7 @@ nolearning_plot <- nolearning_best_fit %>%
   theme(plot.title = element_text(hjust = 0.5))
 
 nonoise_plot <- nonoise_best_fit %>% 
-  filter(trial_type != "background") %>% 
+  #filter(trial_type != "background") %>% 
   ggplot(aes(x = trial_number, y = scaled_samples, ymin = scaled_lb, ymax = scaled_ub, color  = trial_type)) + 
   #scale_y_log10() + 
   geom_pointrange(position = position_dodge(width = .2)) + 
@@ -195,31 +206,172 @@ nonoise_plot <- nonoise_best_fit %>%
   theme(plot.title = element_text(hjust = 0.5))
 
 
-```
-
-```{r}
-eig_best_fit
-
-
-raw_d %>% 
-  mutate(trial_type = case_when(
-    trial_type == "background" ~ "background", 
-    block_type == "deviant_block" & trial_type == "deviant" ~ violation_type
-  )) %>% 
-  group_by(trial_number, trial_type) %>% 
-  summarise(mean = mean(total_rt))
-```
-
-
 
 # big plot 
 
-```{r}
 library(patchwork)
 
  behavioral_plot + eig_search_plot + eig_gen_plot + 
    permuted_plot + nolearning_plot + nonoise_plot + plot_layout(nrow = 2, widths = c(1, 1, 1))
+
 ```
+
+
+# FACET everything hab + dishab 
+
+
+## get model pred
+
+```{r}
+behavior_plot_df <- raw_d %>% 
+  mutate(trial_type = case_when(
+    trial_type == "background" ~ "background", 
+    block_type == "deviant_block" & trial_type == "deviant" ~ violation_type
+  )) %>% 
+  mutate(scaled_samples = total_rt) %>% 
+  ungroup() %>% 
+  group_by(trial_type, trial_number) %>% 
+  tidyboot::tidyboot_mean(scaled_samples, na.rm=T) %>% 
+  rename(scaled_samples = empirical_stat, 
+         scaled_lb = ci_lower, 
+         scaled_ub = ci_upper)
+
+
+new_data <- raw_d %>% 
+  mutate(is_first_trial = trial_number == 1) %>% 
+  mutate(violation_type_with_background = case_when(
+    trial_type == "background" ~ "background", 
+    TRUE ~ violation_type
+  )) %>% 
+  mutate(
+    animacy = case_when(
+    grepl("inanimate", background_type) ~ "inanimate", 
+    TRUE ~ "animate"), 
+    
+    number = case_when(
+    grepl("single", background_type) ~ "single", 
+    TRUE ~ "pair"
+  ),
+  
+    pose = case_when(
+    grepl("left", background_type) ~ "left", 
+    TRUE ~ "right"
+  )
+    ) %>% distinct(trial_number, is_first_trial, violation_type_with_background, number, pose, animacy,violation_type_with_background, block_number) %>% 
+  mutate(prolific_id = 1)
+
+m <- lmerTest::lmer(
+  total_rt ~ trial_number * is_first_trial + 
+    trial_number * is_first_trial * number + 
+    trial_number * is_first_trial * pose + 
+    trial_number * is_first_trial * animacy + 
+    trial_number * is_first_trial * violation_type_with_background + log(block_number) +  (1|prolific_id), 
+  data = bd
+)
+
+
+new_data <- new_data %>% distinct(trial_number, is_first_trial, violation_type_with_background, number, pose, animacy,violation_type_with_background, block_number) %>% 
+  mutate(prolific_id = 1)
+
+new_data$pred = stats::predict(m, re.form = NA, newdata = new_data) 
+
+
+new_data_summary <- new_data %>% 
+  ungroup() %>% 
+  group_by(violation_type_with_background, trial_number) %>% 
+  tidyboot::tidyboot_mean(pred, na.rm=T) %>% 
+  mutate(fit = empirical_stat, 
+         fit_lb = ci_lower, 
+         fit_ub = ci_upper)
+
+
+
+```
+
+
+```{r}
+all_data <- bind_rows(behavior_plot_df %>% mutate(type = "Human") %>% 
+            left_join(new_data_summary %>% rename(trial_type = violation_type_with_background), 
+                      by = c("trial_type", "trial_number")) %>% mutate(is_human = TRUE) %>% mutate(hue = "azure"), 
+          eig_best_fit %>% mutate(type = "RANCH - Best Fit") %>% mutate(is_human = FALSE) %>% mutate(hue = "white"), 
+          eig_gen_best_fit  %>% mutate(type = "RANCH - Out-of-Sample test") %>% mutate(is_human = FALSE)%>% mutate(hue = "white"), 
+          permuted_best_fit %>% mutate(type = "Random Embedding")%>% mutate(is_human = FALSE)%>% mutate(hue = "white"), 
+          nolearning_best_fit  %>% mutate(type = "No Learning")%>% mutate(is_human = FALSE) %>% mutate(hue = "white"), 
+          nonoise_best_fit %>% mutate(type = "No Noise")%>% mutate(is_human = FALSE)%>% mutate(hue = "white")) %>% 
+  mutate(across(type, ~factor(., levels=c("Human","RANCH - Best Fit","RANCH - Out-of-Sample test", 
+                                          "Random Embedding","No Learning", "No Noise")))) %>% 
+  mutate(trial_type = factor(trial_type, levels=c("background","animacy","identity", 
+                                          "number","pose"))) 
+
+
+#trial_color <- c("background" = "deepskyblue4", "animacy" = "cadetblue3", "identity" = "chocolate3", "number" = "cyan2", "pose" = "burlywood3") 
+trial_color <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442")
+all_data %>% 
+         
+  ggplot() + 
+  geom_rect(data = all_data, aes(fill = hue),
+            xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf, alpha = 0.1)+ 
+  #scale_y_log10() + 
+  geom_pointrange(
+    aes(x = trial_number, y = scaled_samples, ymin = scaled_lb, ymax = scaled_ub, color  = trial_type),
+    position = position_dodge(width = .2)) + 
+  geom_line(
+     aes(x = trial_number, y = scaled_samples, color = trial_type, alpha = is_human), 
+     position = position_dodge(width = .2)
+  )+
+  scale_alpha_discrete(range = c(1, 0), guide = "none") + 
+  scale_color_manual(values=trial_color) +  
+  theme_few()+ 
+  guides(color=guide_legend(title="Trial Type"))+
+  ylab("") + 
+  xlab("") + 
+  scale_x_continuous(breaks = seq(1, 6)) + 
+  facet_wrap(~type) + 
+  geom_line(data = subset(all_data, is_human == TRUE), aes(x = trial_number, y = fit, color = trial_type)) + 
+  scale_fill_identity() +
+  geom_rect(data = subset(all_data, is_human == TRUE),xmin = -Inf,xmax = Inf,ymin = -Inf,ymax = Inf,alpha=0.003, fill = "lightgray") + 
+  scale_fill_identity()
+  #geom_ribbon(data = subset(all_data, is_human == TRUE), aes(x = trial_number, y = fit, ymin = fit_lb, ymax = fit_ub, color = trial_type), 
+  #            alpha = .3)
+  
+
+#+ geom_line(data = new_data_summary, aes(x = trial_number, y = fit, color = violation_type_with_background)) 
+```
+
+
+# dishab only 
+
+```{r}
+# with linne
+bind_rows(behavior_plot_df %>% mutate(type = "Human"), 
+          eig_best_fit %>% mutate(type = "RANCH - Best Fit"), 
+          eig_gen_best_fit %>% mutate(type = "RANCH - Generalizability"), 
+          permuted_best_fit %>% mutate(type = "Random Embedding"), 
+          nolearning_best_fit %>% mutate(type = "No Learning"), 
+          nonoise_best_fit %>% mutate(type = "No Noise")) %>% 
+  mutate(across(type, ~factor(., levels=c("Human","RANCH - Best Fit","RANCH - Generalizability", 
+                                          "Random Embedding","No Learning", "No Noise")))) %>% 
+  mutate(trial_type = factor(trial_type, levels=c("background","animacy","identity", 
+                                          "number","pose"))) %>% 
+  filter(trial_type != "background") %>% 
+  ggplot(aes(x = trial_number, y = scaled_samples, ymin = scaled_lb, ymax = scaled_ub, color  = trial_type)) + 
+  #scale_y_log10() + 
+  geom_pointrange(position = position_dodge(width = .2)) + 
+  geom_line()+
+  theme_few()+ 
+  guides(color=guide_legend(title="Violation Type"))+
+  ylab("") + 
+  xlab("") + 
+  scale_x_continuous(breaks = c(2, 4, 6)) + 
+  facet_wrap(~type)
+
+
+
+```
+
+
+
+
 
 # habituation plot 
 
@@ -229,37 +381,32 @@ b_background_d <- raw_d %>%
     trial_type == "background" ~ "background", 
     block_type == "deviant_block" & trial_type == "deviant" ~ violation_type
   )) %>% 
+  rename(scaled_samples = total_rt) %>%
   filter(trial_type == "background") %>% 
-  select(trial_number, total_rt) %>% 
-  rename(val = total_rt) %>% 
-  mutate(type = "behavior")
+  ungroup() %>% 
+  group_by(trial_type, trial_number) %>% 
+  tidyboot::tidyboot_mean(scaled_samples, na.rm=T) %>% 
+  rename(scaled_samples = empirical_stat, 
+         scaled_lb = ci_lower, 
+         scaled_ub = ci_upper) %>% 
+  mutate(type = "Human")
 
 
 eig_background_d <- eig_best_fit %>% filter(trial_type == "background") %>% 
-  select(trial_number, scaled_samples) %>% 
-  rename(val = scaled_samples) %>% 
-  mutate(type = "eig")
+  mutate(type = "RANCH - Best Fit")
 
 eig_gen_background_d <- eig_gen_best_fit %>% filter(trial_type == "background") %>% 
-  select(trial_number, scaled_samples) %>% 
-  rename(val = scaled_samples) %>% 
-  mutate(type = "eig_gen")
+  mutate(type = "Ranch - Generalizability")
 
 
 nonoise_backgrounds_d <- nonoise_best_fit %>% filter(trial_type == "background") %>% 
-  select(trial_number, scaled_samples) %>% 
-  rename(val = scaled_samples) %>% 
-  mutate(type = "no noise")
+  mutate(type = "No Noise")
 
 nolearning_backgrounds_d <- nolearning_best_fit %>% filter(trial_type == "background") %>% 
-  select(trial_number, scaled_samples) %>% 
-  rename(val = scaled_samples) %>% 
-  mutate(type = "no learning")
+  mutate(type = "No Learning")
 
 permuted_backgrounds_d <- permuted_best_fit %>% filter(trial_type == "background") %>% 
-  select(trial_number, scaled_samples) %>% 
-  rename(val = scaled_samples) %>% 
-  mutate(type = "random embeddings")
+  mutate(type = "Random Embeddings")
 
 bind_rows(b_background_d, 
           eig_background_d, 
@@ -268,10 +415,45 @@ bind_rows(b_background_d,
           nolearning_backgrounds_d, 
           permuted_backgrounds_d
           ) %>% 
-  ggplot(aes(x = trial_number, y  = val, color = type)) + 
-  stat_summary(fun.data = "mean_cl_boot", position = position_dodge(width = .2)) + 
-  stat_summary(fun.data = "mean_cl_boot", geom = "line", position = position_dodge(width = .2), aes(group = type))
+  ggplot(aes(x = trial_number, y  = scaled_samples, color = type)) + 
+  geom_pointrange(aes(ymin = scaled_lb, ymax = scaled_ub), position = position_dodge(width = .2)) + 
+  geom_line(position = position_dodge(width = .2)) + 
+  theme_few() + 
+  guides(fill = guide_legend(title = "")) + 
+  ylab("") + 
+  xlab("Trial Number") + 
+  scale_x_continuous(breaks = seq(1, 6))
 ```
+
+## habituation plot separate
+
+```{r}
+good_fit <- bind_rows(b_background_d %>% mutate(data_type = "human"), 
+          eig_background_d %>% mutate(data_type = "model"), 
+          eig_gen_background_d %>% mutate(data_type = "model")) %>% 
+  mutate(fit_type = "Human vs RANCH")
+
+bad_fit <- bind_rows(b_background_d %>% mutate(data_type = "human"),  
+                     nonoise_backgrounds_d %>% mutate(data_type = "model"), 
+          nolearning_backgrounds_d %>% mutate(data_type = "model"), 
+          permuted_backgrounds_d %>% mutate(data_type = "model")) %>% 
+  mutate(fit_type = "Human vs Lesioned")
+
+bind_rows(good_fit, bad_fit) %>% 
+  mutate(fit_type = factor(fit_type, levels=c("Human vs RANCH", 
+                                              "Human vs Lesioned"))) %>% 
+  ggplot(aes(x = trial_number, y  = scaled_samples, color = type, linetype = data_type)) + 
+  geom_pointrange(aes(ymin = scaled_lb, ymax = scaled_ub), position = position_dodge(width = .2)) + 
+  geom_line(position = position_dodge(width = .2)) + 
+  theme_few() + 
+  guides(color = guide_legend(title = "Model Type"), 
+         linetype = FALSE) + 
+  facet_wrap(~fit_type) + 
+   ylab("") + 
+  xlab("Trial Number") + 
+  scale_x_continuous(breaks = seq(1, 6))
+```
+
 
 
 # dishabituation plot 
@@ -283,37 +465,62 @@ b_deviants_d <- raw_d %>%
     trial_type == "background" ~ "background", 
     block_type == "deviant_block" & trial_type == "deviant" ~ violation_type
   )) %>% 
+  rename(scaled_samples = total_rt) %>%
   filter(trial_type != "background") %>% 
-  select(trial_type, total_rt) %>% 
-  rename(val = total_rt) %>% 
-  mutate(type = "behavior")
+  ungroup() %>% 
+  group_by(trial_type) %>% 
+  tidyboot::tidyboot_mean(scaled_samples, na.rm=T) %>% 
+  rename(scaled_samples = empirical_stat, 
+         scaled_lb = ci_lower, 
+         scaled_ub = ci_upper) %>% 
+  mutate(type = "Human")
 
 
 eig_deviants_d <- eig_best_fit %>% filter(trial_type != "background") %>% 
-  select(trial_type, scaled_samples) %>% 
-  rename(val = scaled_samples) %>% 
-  mutate(type = "eig")
+  group_by(trial_type) %>% 
+  summarise(
+    scaled_samples = mean(scaled_samples), 
+    scaled_lb = mean(scaled_lb), 
+    scaled_ub = mean(scaled_ub)
+  ) %>% 
+  mutate(type = "RANCH - Best Fit")
 
 eig_gen_deviants_d <- eig_gen_best_fit %>% filter(trial_type != "background") %>% 
-  select(trial_type, scaled_samples) %>% 
-  rename(val = scaled_samples) %>% 
-  mutate(type = "eig_gen")
+  group_by(trial_type) %>% 
+  summarise(
+    scaled_samples = mean(scaled_samples), 
+    scaled_lb = mean(scaled_lb), 
+    scaled_ub = mean(scaled_ub)
+  ) %>% 
+  mutate(type = "Ranch - Generalizability")
+
 
 nonoise_deviants_d <- nonoise_best_fit %>% filter(trial_type != "background") %>% 
-  select(trial_type, scaled_samples) %>% 
-  rename(val = scaled_samples) %>% 
-  mutate(type = "no noise")
+  group_by(trial_type) %>% 
+  summarise(
+    scaled_samples = mean(scaled_samples), 
+    scaled_lb = mean(scaled_lb), 
+    scaled_ub = mean(scaled_ub)
+  ) %>% 
+  mutate(type = "No Noise")
 
 nolearning_deviants_d <- nolearning_best_fit %>% filter(trial_type != "background") %>% 
-  select(trial_type, scaled_samples) %>% 
-  rename(val = scaled_samples) %>% 
-  mutate(type = "no learning")
+  group_by(trial_type) %>% 
+  summarise(
+    scaled_samples = mean(scaled_samples), 
+    scaled_lb = mean(scaled_lb), 
+    scaled_ub = mean(scaled_ub)
+  ) %>% 
+  mutate(type = "No Learning")
 
 permuted_deviants_d <- permuted_best_fit %>% filter(trial_type != "background") %>% 
-  select(trial_type, scaled_samples) %>% 
-  rename(val = scaled_samples) %>% 
-  mutate(type = "random embeddings")
-
+  group_by(trial_type) %>% 
+  summarise(
+    scaled_samples = mean(scaled_samples), 
+    scaled_lb = mean(scaled_lb), 
+    scaled_ub = mean(scaled_ub)
+  ) %>% 
+  mutate(type = "Random Embeddings")
 
 bind_rows(b_deviants_d, 
           eig_deviants_d, 
@@ -321,12 +528,42 @@ bind_rows(b_deviants_d,
           nonoise_deviants_d, 
           nolearning_deviants_d, 
           permuted_deviants_d) %>% 
-  ggplot(aes(x = trial_type, y  = val, color = type)) + 
-  stat_summary(fun.data = "mean_cl_boot", position = position_dodge(width = .2)) + 
-  stat_summary(fun.data = "mean_cl_boot", geom = "line", position = position_dodge(width = .2), aes(group = type)) + 
-  facet_wrap(~type)
+  ggplot(aes(x = trial_type, y  = scaled_samples)) + 
+  geom_pointrange(aes(ymin = scaled_lb, ymax = scaled_ub)) + 
+  facet_wrap(~type) + 
+  theme_few() + 
+  xlab("") + 
+  ylab("")
 
 
+```
+
+
+# dishab #2
+
+```{r}
+good_fits <- bind_rows(b_deviants_d, 
+          eig_deviants_d, 
+          eig_gen_deviants_d) %>% 
+  mutate(fit_type = "Human vs RANCH")
+
+bad_fits <- bind_rows(b_deviants_d, 
+          nonoise_deviants_d, 
+          nolearning_deviants_d, 
+          permuted_deviants_d) %>% 
+  mutate(fit_type = "Human vs Lesioned")
+
+
+bind_rows(good_fits, 
+          bad_fits) %>% 
+  mutate(fit_type = factor(fit_type, levels=c("Human vs RANCH", 
+                                              "Human vs Lesioned"))) %>% 
+  ggplot(aes(x = trial_type, y  = scaled_samples, color = type)) + 
+  geom_pointrange(aes(ymin = scaled_lb, ymax = scaled_ub), position = position_dodge(width = .3)) + 
+  theme_few() + 
+  facet_wrap(~fit_type) + 
+  ylab("") + 
+  xlab("")
 ```
 
 
