@@ -7,7 +7,26 @@ library(ggthemes)
 
 source(here('analysis/helper/summarize_behavioral_data.R'))
 
-raw_d <- read_csv(here("data/behavioral_data/trimmed_lt_d.csv"))
+raw_d <- read_csv(here("data/behavioral_data/trimmed_lt_d.csv")) %>% 
+  mutate(is_first_trial = trial_number == 1) %>% 
+  mutate(violation_type_with_background = case_when(
+    trial_type == "background" ~ "background", 
+    TRUE ~ violation_type
+  )) %>% 
+  mutate(
+    animacy = case_when(
+    grepl("inanimate", background_type) ~ "inanimate", 
+    TRUE ~ "animate"), 
+    
+    number = case_when(
+    grepl("single", background_type) ~ "single", 
+    TRUE ~ "pair"
+  ),
+  
+    pose = case_when(
+    grepl("left", background_type) ~ "left", 
+    TRUE ~ "right"
+  ))
 
 eig_sim <- read_csv(here("data/model_sim_data/eig_summarised.csv"))
 eig_gen_sim <- read_csv(here("data/model_sim_data/eig_gen_summarised.csv"))
@@ -271,7 +290,7 @@ m <- lmerTest::lmer(
     trial_number * is_first_trial * pose + 
     trial_number * is_first_trial * animacy + 
     trial_number * is_first_trial * violation_type_with_background + log(block_number) +  (1|prolific_id), 
-  data = bd
+  data = raw_d
 )
 
 
@@ -312,11 +331,13 @@ all_data <- bind_rows(behavior_plot_df %>% mutate(type = "Human") %>%
             left_join(new_data_summary %>% rename(trial_type = violation_type_with_background), 
                       by = c("trial_type", "trial_number")) %>% mutate(is_human = TRUE) %>% mutate(hue = "azure"), 
           eig_best_fit %>% mutate(type = "RANCH - Best Fit") %>% mutate(is_human = FALSE) %>% mutate(hue = "white"), 
-          eig_gen_best_fit  %>% mutate(type = "RANCH - Out-of-Sample test") %>% mutate(is_human = FALSE)%>% mutate(hue = "white"), 
+          eig_gen_best_fit  %>% mutate(type = "RANCH - Parameter-free prediction") %>% mutate(is_human = FALSE)%>% mutate(hue = "white"), 
           permuted_best_fit %>% mutate(type = "Random Embedding")%>% mutate(is_human = FALSE)%>% mutate(hue = "white"), 
           nolearning_best_fit  %>% mutate(type = "No Learning")%>% mutate(is_human = FALSE) %>% mutate(hue = "white"), 
           nonoise_best_fit %>% mutate(type = "No Noise")%>% mutate(is_human = FALSE)%>% mutate(hue = "white")) %>% 
-  mutate(across(type, ~factor(., levels=c("Human","RANCH - Best Fit","RANCH - Out-of-Sample test", 
+  mutate(across(type, ~factor(., levels=c("Human",
+                                          "RANCH - Parameter-free prediction",
+                                          "RANCH - Best Fit",
                                           "Random Embedding","No Learning", "No Noise")))) %>% 
   mutate(trial_type = factor(trial_type, levels=c("background","animacy","identity", 
                                           "number","pose"))) 
@@ -344,6 +365,7 @@ all_data %>%
   ylab("") + 
   xlab("") + 
   scale_x_continuous(breaks = seq(1, 6)) + 
+  theme(strip.text.x = element_text(size = 8)) +
   facet_wrap(~type) + 
   geom_line(data = subset(all_data, is_human == TRUE), aes(x = trial_number, y = fit, color = trial_type)) + 
   scale_fill_identity() +
