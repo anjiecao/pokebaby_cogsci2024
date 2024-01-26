@@ -347,52 +347,31 @@ pose (\emph{M} = 2201.44) and number (\emph{M} = 2117.63).
 
 We next wanted to ask whether looking time in our task can be seen as
 rational information acquisition, using a ``rational analysis'' approach
-previously described for a variety of aspects of human behavior
-\cite{chater, dubey}. To do so, we developed RANCH, a Bayesian
-perception/action model, in which a learner makes optimal perceptual
-sampling decisions to maximize its learning
-\cite{cao2023habituation, raz2023modeling}. To the extent that the model
-behaves similarly to behavior observed in our task, we can argue that
-human behavior on this task is optimized for perceptual learning.
-
-Our goal was to develop a model which formalizes the entire process
-underlying looking time: from perception of a stimulus to deciding how
-long to look at it. To do so, our model has three separate components
-describing 1) how RANCH takes raw images and embeds them into a
-low-dimensional perceptual space, 2) how RANCH learns a concept over
-this perceptual space and 3) how RANCH makes decisions about how long to
+previously described for a variety of aspects of human behavior (Dubey
+\& Griffiths, 2020; Oaksford \& Chater, 1994). Our goal was to develop a
+model which formalizes the entire process underlying looking time: from
+perception of a stimulus to deciding how long to look at it. To do so,
+our model has three separate components describing 1) the perceptual
+embeddings RANCH learns from 2) how RANCH learns a concept over this
+perceptual space and 3) how RANCH makes decisions about how long to
 sample from a stimulus based on its expected information gain. Here, we
 describe these three components in turn.
 
-\begin{CodeChunk}
-\begin{figure}[H]
-
-{\centering \includegraphics{figs/model_fig-1} 
-
-}
-
-\caption[A]{A: Stimulus embeddings in PC-space (showing first two components only for visualization purposes). (B) Plate diagram of the learning model, which learns distributions over a mean and standard deviation from noisy perceptual samples. t refers to the number of samples taken from y, i is the number of exemplars shown from the concept, and j is the number of features of the concept.}\label{fig:model_fig}
-\end{figure}
-\end{CodeChunk}
-
 \hypertarget{perceptual-representation}{%
-\subsection{Perceptual representation}\label{perceptual-representation}}
+\subsubsection{Perceptual
+representation}\label{perceptual-representation}}
 
-To allow RANCH to operate on raw images, we used perceptual embeddings
-obtained from a model presented recently by Lee \& DiCarlo. This deep
-neural network uses ResNet50 for encoding and then projects the final
-layer onto a lower-dimensional embedding. This final projection is
-``perceptually-aligned'', in that it was trained to match perceptual
-dissimilarity matrices derived from human adult reaction times in a
-2-AFC match-to-sample task. We use these projections into a
-perceptually-aligned embedding space as a principled low-dimensional
-representation of stimuli, over which our learning model can form
-perceptual concepts. We used the first three principal components of the
-embedding space. A visualization of experimental stimuli in the
-embedding space can be seen in Figure 2A.
+To allow RANCH to operate on raw images, we used the
+perceptually-aligned embeddings obtained from a model presented recently
+by Lee (2022). We use these projections into a perceptually-aligned
+embedding space as a principled low-dimensional representation of
+stimuli, over which our learning model can form perceptual concepts. We
+used the first three principal components of the embedding space. 57.9\%
+of the variance was captured by these first three PCs. A visualization
+of experimental stimuli in the embedding space can be seen in Figure 2A.
 
 \hypertarget{learning-model}{%
-\subsection{Learning model}\label{learning-model}}
+\subsubsection{Learning model}\label{learning-model}}
 
 RANCH's goal is to learn a concept in the perceptual embedding space
 described above, through noisy perceptual samples from a stimulus. The
@@ -402,16 +381,19 @@ embedding space. This concept \((\mu,\sigma)\) generates exemplars
 \((y)\): exemplars of the concept. RANCH observes repeated noisy samples
 \((\bar{z})\) from each exemplar. For any sample \((z)\) from an
 exemplar \((y)\), the model expects the observation to get corrupted by
-zero-mean noise, represented by \((\epsilon)\). A plate diagram is shown
-in Figure 1B. We used a normal-inverse-gamma prior on the concept, the
-conjugate prior for a normal with unknown mean and variance, on the
-concept parameterized as \(\mu_{p}\),\(\nu_{p}\),\(\alpha_{p}\),
-\(\beta_{p}\). Still, applying perceptual noise to \(y\) breaks the
-conjugate relation, so we computed approximate posteriors using grid
-approximation over \((\mu,\sigma)\) and \((\epsilon)\).
+zero-mean gaussian noise with standard deviation \((\epsilon)\). A plate
+diagram is shown in Figure 1B. We used a normal-inverse-gamma prior on
+the concept, the conjugate prior for a normal with unknown mean and
+variance, on the concept parameterized as
+\(\mu_{p}\),\(\nu_{p}\),\(\alpha_{p}\), \(\beta_{p}\). Still, applying
+perceptual noise to \(y\) breaks the conjugate relation, so we computed
+approximate posteriors using grid approximation over \((\mu,\sigma)\)
+and \((\epsilon)\). This computationally expensive approximation was
+accomplished through a pytorch implementation and distributed GPU
+computation.
 
 \hypertarget{decision-model}{%
-\subsection{Decision model}\label{decision-model}}
+\subsubsection{Decision model}\label{decision-model}}
 
 To decide whether to take an additional sample from the same stimulus,
 RANCH computes expected information gain (EIG) of the next sample. EIG
@@ -425,7 +407,8 @@ Therefore, as EIG from the stimulus drops below world EIG, it becomes
 increasingly likely that RANCH will look away.
 
 \hypertarget{simulating-the-experiment}{%
-\subsection{Simulating the experiment}\label{simulating-the-experiment}}
+\subsubsection{Simulating the
+experiment}\label{simulating-the-experiment}}
 
 To model the behavioral experiment, we first extracted the first three
 principal components of the embeddings of all the stimuli used in the
@@ -438,18 +421,33 @@ sampling decisions, we conducted 400 runs for each stimuli sequence for
 each parameter setting.
 
 \hypertarget{alternative-models}{%
-\subsection{Alternative models}\label{alternative-models}}
+\subsubsection{Alternative models}\label{alternative-models}}
 
 To test the importance of each of RANCH's components for its
-performance, we defined three lesioned models. First, to test the
-importance of the perceptual embeddings, we ran a version of RANCH in
-which the mappings from stimulus labels to embeddings were permuted,
-such that which embedding was associated with which violation type was
-randomized (``Random embeddings''). Second, we ran a version in which
-RANCH assumes that each perceptual sample in the learning process is
-noiseless, rather than corrupted by \(\epsilon\) (``No noise'').Third,
-we ran a version in which RANCH made decisions randomly rather than
-based on the learning model (``No learning'').
+performance, we defined three lesioned models, in which one key feature
+of the model was removed. First, to test the importance of the
+perceptual embeddings, we ran a version of RANCH in which the mappings
+from stimulus labels to embeddings were permuted, such that which
+embedding was associated with which violation type was randomized
+(``Random embeddings''). Second, we ran a version in which RANCH assumes
+that each perceptual sample in the learning process is noiseless, rather
+than corrupted by \(\epsilon\) (``No noise'').Third, we ran a version in
+which RANCH made decisions randomly rather than based on the learning
+model (``No learning'').
+
+\hypertarget{training-data}{%
+\subsubsection{Training Data}\label{training-data}}
+
+We used the behavioral dataset reported in Cao et al. (2023) as the
+training data. In this prior experiment, 449 adults participated in a
+self-paced viewing of sequences of simple stimuli. The procedure was
+similar to the present experiment with two key differences: First,
+stimuli used in this previous experiment were animated monsters. Second,
+unlike the current study, the previous experiment only contained
+dishabituation stimuli that varied in the identity of the monster
+(comparable to the ``identity violation'' stimuli in the current
+experiment) There was no manipulation on the dissimilarity between the
+repeating stimulus and the deviant stimulus in a block.
 
 \hypertarget{model-evaluation}{%
 \section{Model Evaluation}\label{model-evaluation}}
@@ -558,6 +556,11 @@ Cognitive Science}, \emph{15}(2), 290--302.
 Doshi, F. R., \& Konkle, T. (2023). Cortical topographic motifs emerge
 in a self-organized map of object space. \emph{Science Advances},
 \emph{9}(25), eade8187.
+
+\leavevmode\vadjust pre{\hypertarget{ref-dubey2020reconciling}{}}%
+Dubey, R., \& Griffiths, T. L. (2020). Reconciling novelty and
+complexity through a rational analysis of curiosity. \emph{Psychological
+Review}, \emph{127}(3), 455.
 
 \leavevmode\vadjust pre{\hypertarget{ref-fantz1963pattern}{}}%
 Fantz, R. L. (1963). Pattern vision in newborn infants. \emph{Science},
