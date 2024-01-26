@@ -1,4 +1,40 @@
 
+
+run_no_fold <- function(p_id, raw_bd, sd){
+  
+  
+    # separate the data in to train & test
+    data = summarize_behavioral_data(raw_bd) %>% ungroup() %>% left_join(sd %>% filter(param_id == p_id) %>% ungroup(), by = c("trial_number", "trial_type"))
+
+    # fit the training set
+    
+    
+    fitted_stats = colf_nlxb(mean_lt ~ mean_sample, data = data, lower = c(-Inf, 0.0000001))
+    sample_slope = fitted_stats$coefficients["param_mean_sample"]
+    sample_intercept = fitted_stats$coefficients["param_X.Intercept."]
+    
+    test_scaled <- data %>% 
+      mutate(scaled_samples = mean_sample * sample_slope  + sample_intercept)
+    
+    # save results for each fold 
+    rsquared <- cor(test_scaled$mean_lt, test_scaled$scaled_samples)^2
+    rmse <- rmse(test_scaled$mean_lt, test_scaled$scaled_samples)
+    
+  
+  
+  return(
+    tibble(
+      "param_id" = p_id, 
+      "rsquared" = rsquared, 
+      "rmse" = rmse, 
+
+    )
+  )
+  
+}
+
+
+
 run_k_fold <- function(p_id, raw_bd, sd){
   
   # get all the subjects 

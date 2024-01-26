@@ -452,6 +452,65 @@ repeating stimulus and the deviant stimulus in a block.
 \hypertarget{model-evaluation}{%
 \section{Model Evaluation}\label{model-evaluation}}
 
+\hypertarget{parameter-generalizability}{%
+\subsubsection{Parameter
+generalizability}\label{parameter-generalizability}}
+
+We conducted an interactive grid search across free parameters to find
+the best parameters that fit to the training dataset. The best fitting
+parameter (\(\mu_{p}\) = 0,\(\nu_{p}\) = 1, \(\alpha_{p}\) = 1,
+\(\beta_{p}\) = 1, \(\epsilon\) = 0.0001) predicted the habituation and
+dishabituation in the training data (\(r^2\) = 0.95 {[}0.90, 0.98{]}).
+Using these previously obtained parameters, we now test RANCH's
+performance on the current experiment with different stimuli and design.
+We found that the parameters generalized to the current context well
+(\(r^2\): 0.75 {[}0.68, 0.96{]}, \emph{RMSE}: 148.46 {[}112.18,
+219.54{]}). Moreover, RANCH also showed the qualitative ordering of the
+graded dishabituation similar to the behavioral data: animacy
+\textgreater{} identity \textgreater{} number \textgreater{} pose.
+
+\hypertarget{parameter-robustness}{%
+\subsubsection{Parameter robustness}\label{parameter-robustness}}
+
+To evaluate RANCH's robustness to different parameters, we then
+conducted a grid search over the parameters. We selected the best
+fitting parameters (\(\mu_{p}\) = 0,\(\nu_{p}\) = 2, \(\alpha_{p}\) =
+10, \(\beta_{p}\) = 1, \(\epsilon\) = 0.0001) using a 10-fold
+cross-validation on the behavioral dataset. When fit to the full
+dataset, the best fitting parameter from this search was comparable with
+the parameters generalized from the training dataset (\(r^2\): 0.77
+{[}0.71, 0.95{]}, \emph{RMSE}: 142.69 {[}107.82, 211.02{]}). Moreover,
+the performance across the 162 parameter settings are relatively stable,
+yielding a moderate range of R-squared (\emph{M} = 0.62; \emph{SD} =
+0.1) and RMSE (\emph{M} = 181.75; \emph{SD} = 23.28). Finally, the
+qualitative ordering of the dishabituation magnitude is also preserved
+when averaged across all parameter settings.
+
+\hypertarget{comparison-with-alternative-models}{%
+\subsubsection{Comparison with alternative
+models}\label{comparison-with-alternative-models}}
+
+Finally, to examine whether the assumptions in our models are critical
+to the success of our models, we ran three alternative models: Random
+Embedding model, No Noise model, and No Learning Model. We ran a
+parameter search for each of the model, and all of the models showed
+worse performance compared to RANCH (Random Embedding: \(r^2\): 0.57
+{[}0.08, 0.89{]}, \emph{RMSE}: 195.06 {[}147.39, 288.47{]}; No Noise:
+\(r^2\): 0.45 {[}0.34, 0.85{]}, \emph{RMSE}: 221.46 {[}167.34, 327.5{]};
+No Learning: 0.28 {[}0.19, 0.76{]}, \emph{RMSE}: 253.46 {[}191.52,
+374.83{]}).
+
+\begin{CodeChunk}
+\begin{figure*}[h]
+
+{\centering \includegraphics{figs/lol-1} 
+
+}
+
+\caption[This image spans both columns]{This image spans both columns. And the caption text is limited to 0.8 of the width of the document.}\label{fig:lol}
+\end{figure*}
+\end{CodeChunk}
+
 \hypertarget{discussion}{%
 \section{Discussion}\label{discussion}}
 
@@ -461,54 +520,57 @@ their dishabituation to different types of violations of familiar
 stimuli. We find that adults' dishabituation is graded by the type of
 violation they see, and that the magnitude of dishabituation is
 predicted by a rational model which takes noisy samples from perceptual
-embeddings of the same stimuli that participants saw.
+embeddings of the same stimuli that participants saw. Our model, RANCH,
+through its use of perceptual embeddings, operates directly on raw
+images and therefore can generate predictions for previously unseen
+stimuli or even tasks. Making use of this property, we tested RANCH's
+performance on our graded dishabituation task using parameters fit to
+behavior on a completely different self-paced looking time task.
 
-Our model, RANCH, through its use of perceptual embeddings, operates
-directly on raw images and therefore can generate predictions for
-previously unseen stimuli or even tasks. Making use of this property, we
-tested RANCH's performance on our graded dishabituation task using
-parameters fit to behavior on a completely different self-paced looking
-timefree-viewing task \{raz2023modeling\} another behavioral task.
+Lesioning RANCH by removing key components caused its fit to the data to
+drop substantially relative to the full model and eliminated any sense
+of qualitative correspondence to the human data. This result suggests
+that the aspects that we lesioned - a psychologically-plausible
+embedding space, noisy perception, connecting sampling to concept
+learning - are all essential for explaining behavior in our task.
 
-Lesioning RANCH by removing key components caused its performance to
-drop significantly relative to its original implementation. This
-suggests that the aspects that we lesioned - noisy perception,
-connecting sampling to concept learning and a psychologically-plausible
-embedding space - are essential for explaining behavior in our task.
-
-Our work is limited in a variety of ways: First, in the current work, we
-implemented a version of RANCH which takes a specific form for each of
-its components: the perceptual representation, the learning model and
-the linking hypothesis between learning and attentional sampling.
-However, RANCH's modular and interpretable structure allows researchers
-to adjust its components according to the population or task for which
-predictions are being generated. For example, the perceptual embedding
-space used in this paper was aligned to adult behavior @lee2022rapid,
-but infants likely represent visual objects differently from adults.
-Using perceptual representations based on visual input experienced by
-infants may provide a better fit to infant data \{Zhuang et al. (2021),
-Orhan \& Lake (2023)\}. Similarly, task settings in which there was
-hierarchical structure to the stimuli sequences would call for more
-complicated learning models. In previous work we have also explored the
-effect of varying the linking hypothesis by replacing the rational, but
-computationally expensive, expected information gain (EIG) with
-easier-to-compute information-theoretic quantities such as surprisal or
-KL-divergence (Cao et al. (2023), Raz et al. (2023)).
+There are several directions in which RANCH could be extended in future
+work. First, in the current paper, we implemented a specific version of
+RANCH, with a specific form for each of its components: the perceptual
+representation, the learning model and the linking hypothesis between
+learning and attentional sampling. However, RANCH's modular and
+interpretable structure allows researchers to adjust its components
+according to the population or task for which predictions are being
+generated. For example, the perceptual embedding space used in this
+paper was aligned to adult behavior (Lee, 2022), but infants likely
+represent visual objects differently from adults. Using perceptual
+representations based on visual input experienced by infants may provide
+a better fit to infant data (Orhan \& Lake, 2023; Zhuang et al., 2021).
+Similarly, task settings in which there was hierarchical structure to
+the stimuli sequences would call for more complicated learning models.
+The linking hypothesis can also vary: In previous work we have also
+explored the effect of replacing the rational, but computationally
+expensive, expected information gain (EIG) with easier-to-compute
+information-theoretic quantities such as surprisal or KL-divergence (Cao
+et al., 2023; Raz et al., 2023). While previous works have found that
+these linking hypotheses are interchangeable in the current context, it
+is possible that they would dissociate under different task settings or
+different assumptions about the perceptual representations.
 
 Second, while inspired by infant looking time research, our current work
 only has adult participants. Beyond encoding stimuli differently from
 infants, adults may conceptualize our task differently from infants, and
 experience different task demands. In particular, infants are quite
-sensitive to changes in the number of objects that are displayed (REFS),
-but in the current study, adults dishabituated to number violations as
-little as to pose violations, the sublest violation in our task.
-Conducting this study in infants may reveal qualitative differences
-between infant and adult dishabituation. Furthermore, given the
-interpretability of the model parameters we fit to behavior, conducting
-the same experiment with infants may lead to interpretable developmental
-differences in the model parameters, such as priors on perceptual noise
-and prior uncertainty about the mean and standard deviation of
-perceptual concepts.
+sensitive to changes in the number of objects that are displayed
+(Feigenson \& Carey, 2003; Wynn, 1992), but in the current study, adults
+dishabituated to number violations as little as to pose violations, the
+sublest violation in our task. This suggests that adults may have not
+engaged their number cognition in the way we would expect infants to in
+this task. Furthermore, given the interpretability of the model
+parameters we fit to behavior, conducting the same experiment with
+infants may lead to interpretable developmental differences in the model
+parameters, such as priors on perceptual noise and prior uncertainty
+about the mean and standard deviation of perceptual concepts.
 
 Overall, our work presents a rational model, RANCH, which describes how
 humans decide how long to look at stimuli. Using a psychologically
@@ -565,6 +627,11 @@ Review}, \emph{127}(3), 455.
 \leavevmode\vadjust pre{\hypertarget{ref-fantz1963pattern}{}}%
 Fantz, R. L. (1963). Pattern vision in newborn infants. \emph{Science},
 \emph{140}(3564), 296--297.
+
+\leavevmode\vadjust pre{\hypertarget{ref-feigenson2003tracking}{}}%
+Feigenson, L., \& Carey, S. (2003). Tracking individuals via
+object-files: Evidence from infants' manual search. \emph{Developmental
+Science}, \emph{6}(5), 568--584.
 
 \leavevmode\vadjust pre{\hypertarget{ref-haith1980rules}{}}%
 Haith, M. M. (1980). \emph{Rules that babies look by: The organization
@@ -644,6 +711,10 @@ Schrimpf, M., Kubilius, J., Lee, M. J., Murty, N. A. R., Ajemian, R., \&
 DiCarlo, J. J. (2020). Integrative benchmarking to advance neurally
 mechanistic models of human intelligence. \emph{Neuron}, \emph{108}(3),
 413--423.
+
+\leavevmode\vadjust pre{\hypertarget{ref-wynn1992addition}{}}%
+Wynn, K. (1992). Addition and subtraction by human infants.
+\emph{Nature}, \emph{358}(6389), 749--750.
 
 \leavevmode\vadjust pre{\hypertarget{ref-yamins2014performance}{}}%
 Yamins, D. L., Hong, H., Cadieu, C. F., Solomon, E. A., Seibert, D., \&

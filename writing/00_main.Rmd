@@ -32,6 +32,7 @@ library(here)
 library(tidyverse)
 library(grid)
 library(ggplot2)
+library(ggthemes)
 library(xtable)
 ```
 
@@ -57,7 +58,7 @@ library(xtable)
 
 # Model Evaluation 
 
-```{r eval=FALSE, include=FALSE}
+```{r child = "04_model_fits.Rmd"}
 ```
 
 # Discussion

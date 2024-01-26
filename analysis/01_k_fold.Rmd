@@ -36,16 +36,22 @@ full_k_fold_res <- lapply(
   }
 ) %>% 
   bind_rows()
+
+
 ```
 
 ```{r}
-full_k_fold_res %>% 
-  ggplot(aes(x = mean_rsquared)) + 
-  geom_histogram(bins = 40)
 
-full_k_fold_res %>% 
-  ggplot(aes(x = mean_rmse)) + 
-  geom_histogram(bins = 40)
+full_no_fold_res <- lapply(
+  unique(resnet_sim$param_id), 
+  function(id){
+    run_no_fold(p_id = id, 
+               raw_bd = raw_d, 
+               sd = eig_sim)
+  }
+) %>% 
+  bind_rows()
+
 
 
 ```
