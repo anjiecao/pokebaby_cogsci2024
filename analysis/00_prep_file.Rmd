@@ -475,7 +475,7 @@ nolearning_summarised <- trial_info %>%
   
 write_csv(nolearning_summarised, here("data/model_sim_data/nolearning_summarised.csv"))
 
-nonoise_summarized %>%   
+nolearning_summarised %>%   
    ggplot(aes(x = trial_number, y = mean_sample, color = trial_type)) +
  scale_y_log10() +
  stat_summary(fun.data = "mean_cl_boot") 

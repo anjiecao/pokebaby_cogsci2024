@@ -5,10 +5,14 @@
 ### Parameter generalizability 
 
 ```{r}
+
 eig_gen_stats <- readRDS(here("cached_data/writing_cache/clean_eig_gen_stats.Rds"))
 eig_qual_order <- readRDS(here("cached_data/writing_cache/clean_eig_gen_qual_order.Rds"))
 ```
 
+RANCH was previously evaluated with behavioral data obtained from a different task. In CITE, participants, both participants and models were presented with a different set of stimuli. Unlike the current study, the previous experiment only contained “identity violation”. 
+
+We found that using these previously obtained parameters, RANCH predicted the current task well (rsquared: RMSE: ). Qualitatively, it shows the ordering of the graded dishabituation similar to the behavioral data: animacy(M) > identity (M) > pose (M) > number (M). 
 
 
 ### Parameter robustness 
@@ -34,11 +38,208 @@ eig_qual_order <- readRDS(here("cached_data/writing_cache/clean_eig_qual_order.R
 #   pivot_wider(names_from = trial_type, values_from = mean_sample) %>% saveRDS(here("cached_data/writing_cache/clean_eig_qual_order.Rds"))
 ```
 
+To evaluate RANCH’s robustness to different parameters, we conducted a grid search over the parameters. For each parameter setting, we conducted a 10-fold cross-validation on the behavioral results. 
+
+Across the N parameter setting, the k-fold validation yields a moderate range of R-squared (Mean; SD: )and RMSE (Mean: SD). When fit to the full dataset, the fit of the winning parameter from this search was comparable with the previous fit (rsquared; RMSE;). In addition, it also preserved the qualitative ordering of the graded dishabituation (Animacy: M; Identity (M)...)
 
 
 ### Comparison with alternative models
 
 ```{r}
-nonoise_stats <- readRDS(here("cached_data/writing_cache/clean_eig_gen_stats.Rds"))
+nonoise_stats <- readRDS(here("cached_data/writing_cache/clean_nonoise_stats.Rds"))
+nolearning_stats <- readRDS(here("cached_data/writing_cache/clean_nolearning_stats.Rds"))
+randemb_stats <- readRDS(here("cached_data/writing_cache/clean_randemb_stats.Rds"))
+
+```
+
+Finally, to examine whether the assumptions in our models are critical to the success of our models, we ran three alternative models: Random Embedding model, No Noise model, and No Learning Model. We ran a parameter search for each of the model, and all of the models showed worse performance compared to RANCH (STATS). 
+
+
+```{r lol, fig.env = "figure*", fig.pos = "h", fig.width=6.6, fig.height=5, fig.align = "center", set.cap.width=T, num.cols.cap=2, fig.cap = "This image spans both columns. And the caption text is limited to 0.8 of the width of the document."}
+#library(tidyverse)
+library(here)
+library(colf)
+library(ggthemes)
+
+source(here('analysis/helper/summarize_behavioral_data.R'))
+
+raw_d <- read_csv(here("data/behavioral_data/trimmed_lt_d.csv"))
+
+eig_sim <- read_csv(here("data/model_sim_data/eig_summarised.csv"))
+eig_gen_sim <- read_csv(here("data/model_sim_data/eig_gen_summarised.csv"))
+nolearning_sim <- read_csv(here("data/model_sim_data/nolearning_summarised.csv"))
+nonoise_sim <- read_csv(here("data/model_sim_data/nonoise_summarised.csv"))
+permuted_sim <- read_csv(here("data/model_sim_data/permuted_eig_summarised.csv"))
+
+
+# read in all the cached sim results 
+
+eig_fit_res <- readRDS(here("cached_data/eig_aligned_fit_res.Rds"))
+eig_gen_fit_res <- readRDS(here("cached_data/eig_gen_fit_res.Rds"))
+nolearning_fit_res <- readRDS(here("cached_data/nolearning_fit_res.Rds"))
+nonoise_fit_res <- readRDS(here("cached_data/nonoise_fit_res.rds"))
+permuted_fit_res <- readRDS(here("cached_data/randomembedding_fit_res.Rds"))
+
+get_best_fit_res <- function(raw_d, fit_res, sim_res){
+  best_fit_id = (fit_res %>% arrange(-mean_rsquared) %>% head(1))$param_id
+  best_fit_res <- sim_res %>% filter(param_id == best_fit_id) 
+  
+  data = summarize_behavioral_data(raw_d) %>% ungroup() %>% left_join(best_fit_res %>% ungroup(), by = c("trial_number", "trial_type"))
+
+  #fitted_stats = colf_nlxb(mean_lt ~ mean_sample, data = data, lower = c(-Inf, 0.001))
+  fitted_stats = colf_nlxb(mean_lt ~ mean_sample, data = data)
+  sample_slope = fitted_stats$coefficients["param_mean_sample"]
+  sample_intercept = fitted_stats$coefficients["param_X.Intercept."]
+    
+    test_scaled <- data %>% 
+      mutate(scaled_samples = mean_sample * sample_slope  + sample_intercept, 
+             scaled_ub = ub_sample * sample_slope + sample_intercept, 
+             scaled_lb = lb_sample * sample_slope + sample_intercept)
+  
+  return(test_scaled)
+}
+
+
+eig_best_fit <- get_best_fit_res(raw_d, eig_fit_res, eig_sim)
+eig_gen_best_fit <- get_best_fit_res(raw_d, eig_gen_fit_res, eig_gen_sim)
+nolearning_best_fit <- get_best_fit_res(raw_d, nolearning_fit_res, nolearning_sim)
+nonoise_best_fit <- get_best_fit_res(raw_d, nonoise_fit_res, nonoise_sim)
+permuted_best_fit <- get_best_fit_res(raw_d, permuted_fit_res, permuted_sim)
+
+behavior_plot_df <- raw_d %>% 
+  mutate(trial_type = case_when(
+    trial_type == "background" ~ "background", 
+    block_type == "deviant_block" & trial_type == "deviant" ~ violation_type
+  )) %>% 
+  mutate(scaled_samples = log(total_rt)) %>% 
+  ungroup() %>% 
+  group_by(trial_type, trial_number) %>% 
+  tidyboot::tidyboot_mean(scaled_samples, na.rm=T) %>% 
+  rename(scaled_samples = empirical_stat, 
+         scaled_lb = ci_lower, 
+         scaled_ub = ci_upper)
+
+behavior_plot_df <- raw_d %>% 
+  mutate(trial_type = case_when(
+    trial_type == "background" ~ "background", 
+    block_type == "deviant_block" & trial_type == "deviant" ~ violation_type
+  )) %>% 
+  mutate(scaled_samples = total_rt) %>% 
+  ungroup() %>% 
+  group_by(trial_type, trial_number) %>% 
+  tidyboot::tidyboot_mean(scaled_samples, na.rm=T) %>% 
+  rename(scaled_samples = empirical_stat, 
+         scaled_lb = ci_lower, 
+         scaled_ub = ci_upper)
+
+raw_d <- raw_d %>% 
+  mutate(is_first_trial = trial_number == 1) %>% 
+  mutate(violation_type_with_background = case_when(
+    trial_type == "background" ~ "background", 
+    TRUE ~ violation_type
+  )) %>% 
+  mutate(
+    animacy = case_when(
+    grepl("inanimate", background_type) ~ "inanimate", 
+    TRUE ~ "animate"), 
+    
+    number = case_when(
+    grepl("single", background_type) ~ "single", 
+    TRUE ~ "pair"
+  ),
+  
+    pose = case_when(
+    grepl("left", background_type) ~ "left", 
+    TRUE ~ "right"
+  )
+    )
+
+new_data <- raw_d %>% 
+  mutate(is_first_trial = trial_number == 1) %>% 
+  mutate(violation_type_with_background = case_when(
+    trial_type == "background" ~ "background", 
+    TRUE ~ violation_type
+  )) %>% 
+  mutate(
+    animacy = case_when(
+    grepl("inanimate", background_type) ~ "inanimate", 
+    TRUE ~ "animate"), 
+    
+    number = case_when(
+    grepl("single", background_type) ~ "single", 
+    TRUE ~ "pair"
+  ),
+  
+    pose = case_when(
+    grepl("left", background_type) ~ "left", 
+    TRUE ~ "right"
+  )
+    ) %>% distinct(trial_number, is_first_trial, violation_type_with_background, number, pose, animacy,violation_type_with_background, block_number) %>% 
+  mutate(prolific_id = 1)
+
+m <- lmerTest::lmer(
+  total_rt ~ trial_number * is_first_trial + 
+    trial_number * is_first_trial * number + 
+    trial_number * is_first_trial * pose + 
+    trial_number * is_first_trial * animacy + 
+    trial_number * is_first_trial * violation_type_with_background + log(block_number) +  (1|prolific_id), 
+  data = raw_d
+)
+
+
+new_data <- new_data %>% distinct(trial_number, is_first_trial, violation_type_with_background, number, pose, animacy,violation_type_with_background, block_number) %>% 
+  mutate(prolific_id = 1)
+
+new_data$pred = stats::predict(m, re.form = NA, newdata = new_data) 
+
+
+new_data_summary <- new_data %>% 
+  ungroup() %>% 
+  group_by(violation_type_with_background, trial_number) %>% 
+  tidyboot::tidyboot_mean(pred, na.rm=T) %>% 
+  mutate(fit = empirical_stat, 
+         fit_lb = ci_lower, 
+         fit_ub = ci_upper)
+all_data <- bind_rows(behavior_plot_df %>% mutate(type = "Human") %>% 
+            left_join(new_data_summary %>% rename(trial_type = violation_type_with_background), 
+                      by = c("trial_type", "trial_number")) %>% mutate(is_human = TRUE) %>% mutate(hue = "azure"), 
+          eig_best_fit %>% mutate(type = "RANCH - Best Fit") %>% mutate(is_human = FALSE) %>% mutate(hue = "white"), 
+          eig_gen_best_fit  %>% mutate(type = "RANCH - Out-of-Sample test") %>% mutate(is_human = FALSE)%>% mutate(hue = "white"), 
+          permuted_best_fit %>% mutate(type = "Random Embedding")%>% mutate(is_human = FALSE)%>% mutate(hue = "white"), 
+          nolearning_best_fit  %>% mutate(type = "No Learning")%>% mutate(is_human = FALSE) %>% mutate(hue = "white"), 
+          nonoise_best_fit %>% mutate(type = "No Noise")%>% mutate(is_human = FALSE)%>% mutate(hue = "white")) %>% 
+  mutate(across(type, ~factor(., levels=c("Human","RANCH - Best Fit","RANCH - Out-of-Sample test", 
+                                          "Random Embedding","No Learning", "No Noise")))) %>% 
+  mutate(trial_type = factor(trial_type, levels=c("background","animacy","identity", 
+                                          "number","pose"))) 
+
+
+#trial_color <- c("background" = "deepskyblue4", "animacy" = "cadetblue3", "identity" = "chocolate3", "number" = "cyan2", "pose" = "burlywood3") 
+trial_color <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442")
+all_data %>% 
+         
+  ggplot() + 
+  geom_rect(data = all_data, aes(fill = hue),
+            xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf, alpha = 0.1)+ 
+  #scale_y_log10() + 
+  geom_pointrange(
+    aes(x = trial_number, y = scaled_samples, ymin = scaled_lb, ymax = scaled_ub, color  = trial_type),
+    position = position_dodge(width = .2)) + 
+  geom_line(
+     aes(x = trial_number, y = scaled_samples, color = trial_type, alpha = is_human), 
+     position = position_dodge(width = .2)
+  )+
+  scale_alpha_discrete(range = c(1, 0), guide = "none") + 
+  scale_color_manual(values=trial_color) +  
+  theme_few()+ 
+  guides(color=guide_legend(title="Trial Type"))+
+  ylab("") + 
+  xlab("") + 
+  scale_x_continuous(breaks = seq(1, 6)) + 
+  facet_wrap(~type) + 
+  geom_line(data = subset(all_data, is_human == TRUE), aes(x = trial_number, y = fit, color = trial_type)) + 
+  scale_fill_identity() +
+  geom_rect(data = subset(all_data, is_human == TRUE),xmin = -Inf,xmax = Inf,ymin = -Inf,ymax = Inf,alpha=0.003, fill = "lightgray") + 
+  scale_fill_identity()
 ```
 
