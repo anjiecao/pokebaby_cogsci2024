@@ -7,6 +7,7 @@ library(ggthemes)
 
 bd <- read_csv(here("data/behavioral_data/trimmed_lt_d.csv"))
 
+resnet_sd <- read_csv(here("data/model_sim_data/resnet50.csv"))
 eig_sd <- read_csv(here("data/model_sim_data/eig.csv"))
 nonoise_sd <- read_csv(here("data/model_sim_data/nonoise.csv"))
 nolearning_sd <- read_csv(here("data/model_sim_data/nolearning.csv"))
@@ -544,6 +545,44 @@ gen_summarised %>%
 ```
 
 
+## resnet 50
+
+```{r}
+
+resnet_summarised <- trial_info %>% 
+  select(-test_type) %>% 
+  distinct(trial_id, stim_id, fam_duration, violation_type) %>% 
+  right_join(resnet_sd, by = c("trial_id", "stim_id")) %>% 
+  mutate(trial_number = index + 1) %>% 
+  select(param_id, trial_number, fam_duration, violation_type, sample_n_mean, sample_n_std) %>% 
+  mutate(trial_type = case_when(
+    violation_type == "background" ~ "background", 
+    violation_type == "identity" & (trial_number == fam_duration + 1) ~ "identity", 
+    violation_type == "number" & (trial_number == fam_duration + 1) ~ "number", 
+    violation_type == "pose" & (trial_number == fam_duration + 1) ~ "pose", 
+    violation_type == "animacy" & (trial_number == fam_duration + 1) ~ "animacy", 
+    TRUE ~ "background"
+  )) %>% 
+  select(param_id, trial_type, trial_number, sample_n_mean, sample_n_std) %>% 
+  group_by(param_id, trial_type, trial_number) %>% 
+  summarise(
+    count = n(),
+    #ssd = sum((20-1) * (sample_n_std ** 2)),
+    #sd_sample = (ssd / 20 * count - count) ** .5, 
+    sd_sample = pooled_sd(sample_n_std, 20),
+    mean_sample = mean(sample_n_mean), 
+    ub_sample = mean_sample + 1.96 * (sd_sample /((400 * count) ** .5)),
+    lb_sample = mean_sample - 1.96 * (sd_sample /((400 * count) ** .5)),) %>% # missing SD here!
+  ungroup() 
+  
+write_csv(resnet_summarised, here("data/model_sim_data/resnet50_summarised.csv"))
+
+resnet_summarised %>%   
+   ggplot(aes(x = trial_number, y = mean_sample, color = trial_type)) +
+ scale_y_log10() +
+ stat_summary(fun.data = "mean_cl_boot") 
+ theme_few()
+```
 
 
 # Archive 

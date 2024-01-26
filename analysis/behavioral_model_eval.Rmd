@@ -7,12 +7,11 @@ library(caret)
 library(ggthemes)
 
 
-new <- read_csv(here("data/behavioral_data/trimmed_lt_d.csv"))
-old <- read_csv(here("data/behavioral_data/old.csv"))
 ```
 
 ```{r}
-new <- new %>% 
+d <- read_csv(here("data/behavioral_data/trimmed_lt_d.csv"))
+d <- d %>% 
   mutate(is_first_trial = trial_number == 1) %>% 
   mutate(violation_type_with_background = case_when(
     trial_type == "background" ~ "background", 
@@ -34,73 +33,58 @@ new <- new %>%
   )
     )
 
-old <- old %>% 
-  mutate(is_first_trial = trial_number == 1) %>% 
-  mutate(violation_type_with_background = case_when(
-    trial_type == "background" ~ "background", 
-    TRUE ~ violation_type
-  )) %>% 
-  mutate(
-    animacy = case_when(
-    grepl("inanimate", background_type) ~ "inanimate", 
-    TRUE ~ "animate"), 
-    
-    number = case_when(
-    grepl("single", background_type) ~ "single", 
-    TRUE ~ "pair"
-  ),
-  
-    pose = case_when(
-    grepl("left", background_type) ~ "left", 
-    TRUE ~ "right"
-  )
-    )
-```
-
-# fit fixed effects  model 
-
-```{r}
-new_m <- lm(
-  log(total_rt) ~ trial_number * is_first_trial,
-  data = new %>% filter(trial_type == "background")
-)
-
-old_m <- lm(
-  log(total_rt) ~ trial_number * is_first_trial,
-  data = old %>% filter(trial_type == "background")
-)
 
 ```
 
-```{r}
-new_m %>% summary()
-old_m %>% summary()
-```
+
 # fix mixed effect model 
 
+background as baseline
+
+trial_number                                        -2.21e-02   3.73e-03  4.43e+04   -5.93  3.0e-09 ***
+violation_type_with_backgroundpose                   1.70e-02   2.71e-02  4.43e+04    0.63  0.53159    
+violation_type_with_backgroundanimacy                1.99e-01   2.80e-02  4.43e+04    7.12  1.1e-12 ***
+violation_type_with_backgroundnumber                 3.25e-02   2.73e-02  4.43e+04    1.19  0.23327    
+violation_type_with_backgroundidentity               2.11e-01   2.70e-02  4.43e+04    7.81  5.6e-15 ***
+trial_number:violation_type_with_backgroundpose      1.48e-02   6.43e-03  4.43e+04    2.30  0.02124 *  
+trial_number:violation_type_with_backgroundanimacy   2.27e-02   6.52e-03  4.43e+04    3.49  0.00049 ***
+trial_number:violation_type_with_backgroundnumber    5.35e-03   6.44e-03  4.43e+04    0.83  0.40609    
+trial_number:violation_type_with_backgroundidentity  1.01e-02   6.47e-03  4.43e+04    1.56  0.11901    
+
+animacy as baseline
+
+violation_type_with_backgroundpose                    -1.82e-01   3.74e-02  4.43e+04   -4.88  1.1e-06 ***
+violation_type_with_backgroundbackground              -1.99e-01   2.80e-02  4.43e+04   -7.12  1.1e-12 ***
+violation_type_with_backgroundnumber                  -1.67e-01   3.75e-02  4.43e+04   -4.45  8.7e-06 ***
+violation_type_with_backgroundidentity                 1.17e-02   3.73e-02  4.43e+04    0.31  0.75485    
+trial_number:violation_type_with_backgroundpose       -7.93e-03   8.61e-03  4.43e+04   -0.92  0.35725    
+trial_number:violation_type_with_backgroundbackground -2.27e-02   6.52e-03  4.43e+04   -3.49  0.00049 ***
+trial_number:violation_type_with_backgroundnumber     -1.74e-02   8.62e-03  4.43e+04   -2.02  0.04346 *  
+trial_number:violation_type_with_backgroundidentity   -1.27e-02   8.64e-03  4.43e+04   -1.47  0.14270    
+
 ```{r}
-new_m <- lmerTest::lmer(
+d$violation_type_with_background = factor(d$violation_type_with_background, 
+                                          levels = c("pose", 
+
+                                                     "identity",
+                                                     "background", 
+                                                     "number", 
+                                                     "animacy"))
+
+m <- lmerTest::lmer(
   log(total_rt) ~ trial_number * is_first_trial + (1|prolific_id) + 
     trial_number * is_first_trial * number + 
     trial_number * is_first_trial * pose + 
     trial_number * is_first_trial * animacy + 
     trial_number * is_first_trial * violation_type_with_background + log(block_number),
-  data = new 
+  data = d 
 )
+summary(m)
 
-old_m <- lmerTest::lmer(
-  log(total_rt) ~ trial_number * is_first_trial + (1|prolific_id) + 
-    trial_number * is_first_trial * number + 
-    trial_number * is_first_trial * pose + 
-    trial_number * is_first_trial * animacy + 
-    trial_number * is_first_trial * violation_type_with_background + log(block_number),
-  data = old 
-)
 
-new_m %>% summary()
-old_m %>% summary()
 ```
 
 
 
-#
+
+

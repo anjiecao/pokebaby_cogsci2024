@@ -57,7 +57,7 @@ library(xtable)
 
 # Model Evaluation 
 
-```{r child = "04_model_fits.Rmd"}
+```{r eval=FALSE, include=FALSE}
 ```
 
 # Discussion

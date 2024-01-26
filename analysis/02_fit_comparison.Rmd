@@ -14,7 +14,7 @@ eig_gen_sim <- read_csv(here("data/model_sim_data/eig_gen_summarised.csv"))
 nolearning_sim <- read_csv(here("data/model_sim_data/nolearning_summarised.csv"))
 nonoise_sim <- read_csv(here("data/model_sim_data/nonoise_summarised.csv"))
 permuted_sim <- read_csv(here("data/model_sim_data/permuted_eig_summarised.csv"))
-
+resnet50_sim <- read_csv(here("data/model_sim_data/resnet50_summarised.csv"))
 
 # read in all the cached sim results 
 
@@ -23,6 +23,7 @@ eig_gen_fit_res <- readRDS(here("cached_data/eig_gen_fit_res.Rds"))
 nolearning_fit_res <- readRDS(here("cached_data/nolearning_fit_res.Rds"))
 nonoise_fit_res <- readRDS(here("cached_data/nonoise_fit_res.rds"))
 permuted_fit_res <- readRDS(here("cached_data/randomembedding_fit_res.Rds"))
+resnet50_fit_res <- readRDS(here("cached_data/eig_resnet50_fit_res.Rds"))
 
 ```
 
@@ -57,14 +58,15 @@ eig_gen_best_fit <- get_best_fit_res(raw_d, eig_gen_fit_res, eig_gen_sim)
 nolearning_best_fit <- get_best_fit_res(raw_d, nolearning_fit_res, nolearning_sim)
 nonoise_best_fit <- get_best_fit_res(raw_d, nonoise_fit_res, nonoise_sim)
 permuted_best_fit <- get_best_fit_res(raw_d, permuted_fit_res, permuted_sim)
+resnet50_best_fit <- get_best_fit_res(raw_d, resnet50_fit_res, resnet50_sim)
 
 ```
 
 ## fit to the full dataset 
 
 ```{r}
-dataset_name = "nolearning"
-dataset = nolearning_best_fit
+dataset_name = "resnet50"
+dataset = resnet50_best_fit
 # fitting the eig gen to the full dataset
 
 rmse_interval <- function(rmse, deg_free, p_lower = 0.025, p_upper = 0.975){
@@ -90,14 +92,17 @@ fit_stats_df <- tibble(
   "r_conf_ub" = r_conf[[2]], 
   "r_conf_print" = r_conf_print, 
   "rmse"= rmse, 
-  "rmse_interval_lb" = dataset$.pred_lower, 
-  "rmse_interval_ub" = dataset$.pred_upper, 
+  "rmse_interval_lb" = rmse_interval$.pred_lower, 
+  "rmse_interval_ub" = rmse_interval$.pred_upper, 
   "rmse_conf_print" = rmse_conf_print
 )
 
-saveRDS(fit_stats_df, here("nolearning.Rds"))
+saveRDS(fit_stats_df, here("resnet50.Rds"))
 ```
 
+```{r}
+fit_stats_df
+```
 
 # plot everything together 
 
@@ -286,6 +291,19 @@ new_data_summary <- new_data %>%
 
 
 
+```
+
+
+```{r}
+eig_gen_best_fit %>% 
+  ggplot()+
+  geom_pointrange(
+    aes(x = trial_number, y = scaled_samples, ymin = scaled_lb, ymax = scaled_ub, color  = trial_type),
+    position = position_dodge(width = .2)) + 
+  geom_line(
+     aes(x = trial_number, y = scaled_samples, color = trial_type), 
+     position = position_dodge(width = .2)
+  )
 ```
 
 

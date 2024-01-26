@@ -10,6 +10,13 @@ eig_gen_stats <- readRDS(here("cached_data/writing_cache/clean_eig_gen_stats.Rds
 eig_qual_order <- readRDS(here("cached_data/writing_cache/clean_eig_gen_qual_order.Rds"))
 ```
 
+
+```{r}
+eig_gen_stats
+
+eig_qual_order
+```
+
 RANCH was previously evaluated with behavioral data obtained from a different task. In CITE, participants, both participants and models were presented with a different set of stimuli. Unlike the current study, the previous experiment only contained “identity violation”. 
 
 We found that using these previously obtained parameters, RANCH predicted the current task well (rsquared: RMSE: ). Qualitatively, it shows the ordering of the graded dishabituation similar to the behavioral data: animacy(M) > identity (M) > pose (M) > number (M). 
@@ -36,6 +43,10 @@ eig_qual_order <- readRDS(here("cached_data/writing_cache/clean_eig_qual_order.R
 #   group_by(trial_type) %>% 
 #   summarise(mean_sample = mean(mean_sample)) %>% 
 #   pivot_wider(names_from = trial_type, values_from = mean_sample) %>% saveRDS(here("cached_data/writing_cache/clean_eig_qual_order.Rds"))
+
+
+eig_stats
+eig_qual_order
 ```
 
 To evaluate RANCH’s robustness to different parameters, we conducted a grid search over the parameters. For each parameter setting, we conducted a 10-fold cross-validation on the behavioral results. 
@@ -50,6 +61,10 @@ nonoise_stats <- readRDS(here("cached_data/writing_cache/clean_nonoise_stats.Rds
 nolearning_stats <- readRDS(here("cached_data/writing_cache/clean_nolearning_stats.Rds"))
 randemb_stats <- readRDS(here("cached_data/writing_cache/clean_randemb_stats.Rds"))
 
+
+nonoise_stats
+nolearning_stats
+randemb_stats
 ```
 
 Finally, to examine whether the assumptions in our models are critical to the success of our models, we ran three alternative models: Random Embedding model, No Noise model, and No Learning Model. We ran a parameter search for each of the model, and all of the models showed worse performance compared to RANCH (STATS). 

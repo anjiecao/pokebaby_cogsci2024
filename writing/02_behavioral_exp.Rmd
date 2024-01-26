@@ -2,7 +2,7 @@ The experimental paradigm is modeled after the behavioral experiment described i
 
 
 ```{r design_fig, fig.env = "figure", fig.pos = "H", fig.align='center', fig.width=3.5, fig.height=3.5, set.cap.width=T, num.cols.cap=1, fig.cap = "Experimental design of behavioral task: Adults watched sequences of stimuli consisting a familiarization to a stimulus (left), following by one of five trial types, which violates one property of the familiar stimulus: In the violation trials, participants saw either (1) the same exact stimulus (Background), (2) the same stimulus in a different orientation (Pose), (3) the same stimulus, but duplicated (or single if it was already duplicated; Number), (4) a different stimulus but in the same animacy class (Identity), or (5) a different stimulus of the opposite animacy (Animacy)."}
-img <- png::readPNG("figs/design.png")
+img <- png::readPNG("figs/lab_logo_stanford.png")
 grid::grid.raster(img)
 ```
 

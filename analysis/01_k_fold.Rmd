@@ -17,6 +17,7 @@ nolearning_sim <- read_csv(here("data/model_sim_data/nolearning_summarised.csv")
 nonoise_sim <- read_csv(here("data/model_sim_data/nonoise_summarised.csv"))
 permuted_sim <- read_csv(here("data/model_sim_data/permuted_eig_summarised.csv"))
 eig_gen_sim <- read_csv(here("data/model_sim_data/eig_gen_summarised.csv"))
+resnet_sim <- read_csv(here("data/model_sim_data/resnet50_summarised.csv"))
 ```
 
 
@@ -27,11 +28,11 @@ eig_gen_sim <- read_csv(here("data/model_sim_data/eig_gen_summarised.csv"))
 
 # eig 
 full_k_fold_res <- lapply(
-  unique(nonoise_sim$param_id), 
+  unique(resnet_sim$param_id), 
   function(id){
     run_k_fold(p_id = id, 
                raw_bd = raw_d, 
-               sd = nonoise_sim)
+               sd = resnet_sim)
   }
 ) %>% 
   bind_rows()
