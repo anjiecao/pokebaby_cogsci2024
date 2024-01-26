@@ -21,6 +21,12 @@ param_info <- read_csv(here("data/model_sim_data/sim_info/eig_selfpaced.csv"))
 
 # behavioral dataset
 
+## participants n 
+```{r}
+participant_n <- (bd %>% distinct(prolific_id) %>% count())$n
+saveRDS(participant_n, here("cached_data/writing_cache/participant_n.Rds"))
+```
+
 
 ```{r}
 library(lme4)

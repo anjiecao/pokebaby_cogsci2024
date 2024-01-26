@@ -65,11 +65,10 @@ trial_number:violation_type_with_backgroundidentity   -1.27e-02   8.64e-03  4.43
 ```{r}
 d$violation_type_with_background = factor(d$violation_type_with_background, 
                                           levels = c("pose", 
-
-                                                     "identity",
-                                                     "background", 
+                                                     "background",
+                                                     "animacy", 
                                                      "number", 
-                                                     "animacy"))
+                                                     "identity"))
 
 m <- lmerTest::lmer(
   log(total_rt) ~ trial_number * is_first_trial + (1|prolific_id) + 
@@ -79,7 +78,9 @@ m <- lmerTest::lmer(
     trial_number * is_first_trial * violation_type_with_background + log(block_number),
   data = d 
 )
-summary(m)
+
+
+(broom.mixed::tidy(m)) %>% saveRDS(here("cached_data/writing_cache/lmer_pose_baseline.Rds"))
 
 
 ```

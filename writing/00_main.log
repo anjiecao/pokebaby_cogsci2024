@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.3.17)  25 JAN 2024 22:09
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.3.17)  26 JAN 2024 10:25
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -399,24 +399,51 @@ Underfull \vbox (badness 4279) has occurred while \output is active []
 <figs/design_fig-1.pdf, id=64, 252.945pt x 192.72pt>
 File: figs/design_fig-1.pdf Graphic file (type pdf)
 <use figs/design_fig-1.pdf>
-Package pdftex.def Info: figs/design_fig-1.pdf  used on input line 234.
+Package pdftex.def Info: figs/design_fig-1.pdf  used on input line 230.
 (pdftex.def)             Requested size: 252.94438pt x 192.71951pt.
 
-Overfull \hbox (9.03313pt too wide) in paragraph at lines 234--235
+Overfull \hbox (9.03313pt too wide) in paragraph at lines 230--231
  [][] 
  []
 
 [2 <./figs/design_fig-1.pdf>]
-Underfull \hbox (badness 1852) in paragraph at lines 295--305
-\OT1/ptm/m/n/10 re-cruited from Pro-lific(Mean Age: SD:). Par-tic-i-pants
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 322.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 322.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 322.
+
+Underfull \hbox (badness 10000) in paragraph at lines 312--323
+\OT1/pcr/m/n/10 trial[]number +  is[]first[]trial +  (trial[]number +
  []
 
-LaTeX Font Info:    Trying to load font information for OML+ptm on input line 340.
+
+Underfull \hbox (badness 10000) in paragraph at lines 312--323
+\OT1/pcr/m/n/10 is[]first[]trial) * stimulus[]number + (trial[]number
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 312--323
+\OT1/pcr/m/n/10 + is[]first[]trial) * stimulus[]pose +(trial[]number
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 312--323
+\OT1/pcr/m/n/10 + is[]first[]trial) * stimulus[]animacy +
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 312--323
+\OT1/pcr/m/n/10 (trial[]number + is[]first[]trial) * violation[]type
+ []
+
+LaTeX Font Info:    Trying to load font information for OML+ptm on input line 328.
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/psnfss/omlptm.fd
 File: omlptm.fd 
 )
 LaTeX Font Info:    Font shape `OML/ptm/m/n' in size <10> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 340.
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 328.
 
 LaTeX Warning: Citation `chater' undefined on input line 351.
 
@@ -429,7 +456,7 @@ LaTeX Warning: Citation `cao2023habituation' undefined on input line 354.
 
 LaTeX Warning: Citation `raz2023modeling' undefined on input line 354.
 
-<figs/model_fig-1.pdf, id=89, 252.945pt x 150.5625pt>
+<figs/model_fig-1.pdf, id=95, 252.945pt x 150.5625pt>
 File: figs/model_fig-1.pdf Graphic file (type pdf)
 <use figs/model_fig-1.pdf>
 Package pdftex.def Info: figs/model_fig-1.pdf  used on input line 370.
@@ -463,11 +490,11 @@ Package rerunfilecheck Info: File `00_main.out' has not changed.
 (rerunfilecheck)             Checksum: F2BBEEA33FA8B9960FEE97305497374A;1598.
  ) 
 Here is how much of TeX's memory you used:
- 11765 strings out of 477984
- 189768 string characters out of 5838315
+ 11803 strings out of 477984
+ 190237 string characters out of 5838315
  1873388 words of memory out of 5000000
- 31728 multiletter control sequences out of 15000+600000
- 538004 words of font info for 78 fonts, out of 8000000 for 9000
+ 31759 multiletter control sequences out of 15000+600000
+ 550445 words of font info for 107 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  75i,11n,76p,710b,461s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
@@ -482,11 +509,11 @@ pdfTeX warning (dest): name{cite.dubey} has been referenced but does not exist, 
 
 pdfTeX warning (dest): name{cite.chater} has been referenced but does not exist, replaced by a fixed one
 
-{/Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}</Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on 00_main.pdf (6 pages, 507152 bytes).
+{/Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}</Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on 00_main.pdf (6 pages, 518527 bytes).
 PDF statistics:
- 209 PDF objects out of 1000 (max. 8388607)
- 176 compressed objects within 2 object streams
- 70 named destinations out of 1000 (max. 500000)
+ 220 PDF objects out of 1000 (max. 8388607)
+ 185 compressed objects within 2 object streams
+ 71 named destinations out of 1000 (max. 500000)
  115 words of extra memory for PDF output out of 10000 (max. 10000000)
 

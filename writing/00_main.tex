@@ -224,10 +224,6 @@ the decision process are all critical to its performance.
 \hypertarget{behavioral-experiment}{%
 \section{Behavioral Experiment}\label{behavioral-experiment}}
 
-The experimental paradigm is modeled after the behavioral experiment
-described in CITE. In previous work, this paradigm has successfully
-captured habituation and dishabituation in adults.
-
 \begin{CodeChunk}
 \begin{figure}[H]
 
@@ -245,102 +241,106 @@ captured habituation and dishabituation in adults.
 \hypertarget{stimuli}{%
 \subsubsection{Stimuli}\label{stimuli}}
 
-All stimuli were created using images selected from Unity assets Quirky
-Series - Animals (LINK) and 3D Prop Vegetables and Fruits (LINK) with
-added shaking animation. For each image from the animal set, we created
-a mirrored version to create an image with a different pose. Since most
-stimuli from the vegetable set are symmetrical, the images were slightly
-tilted before the mirroring.
+All stimuli were created using images selected from Unity assets
+\href{https://assetstore.unity.com/packages/3d/characters/animals/quirky-series-animals-mega-pack-vol-2-183280}{``Quirky
+Series - Animals''} and
+\href{https://assetstore.unity.com/packages/3d/props/food/3d-prop-vegetables-and-fruits-237790}{``3D
+Prop Vegetables and Fruits''}. We added the same minor shaking animation
+to each image to increase interest. For each image from the animal set,
+we created a mirrored version to create an image with a different pose.
+Since most stimuli from the vegetable set were symmetrical, the images
+were slightly tilted before mirroring.
 
 \hypertarget{procedure}{%
 \subsubsection{Procedure}\label{procedure}}
 
-The experiment was a web-based self-paced experiment that consisted of
-two phases. In the first phase, participants saw 24 blocks that
-consisted of either two, four, or six trials. On each trial, a schematic
-screen would rise up to reveal a stimulus behind it. Participants
-pressed the spacebar to go on to the next trial after a minimum viewing
-time of 500 ms, triggering the schematic screen to drop and raise again
-to reveal the next stimulus.
+The experiment was a self-paced web-based experiment. Participants saw
+24 blocks that consisted of either two, four, or six trials. On each
+trial, a schematic screen would rise up to reveal a stimulus behind it.
+Participants pressed the spacebar to go on to the next trial after a
+minimum viewing time of 500 ms, triggering the schematic screen to drop
+and raise again to reveal the next stimulus.
 
 Each participant saw eight types of repeating stimuli. The eight types
-of stimuli include all combinations of the three features that each
-include two levels: animacy (e.g.~animate or inanimate), number
+of stimuli included all combinations of the three features that each
+included two levels: animacy (e.g.~animate or inanimate), number
 (singleton or pair), and pose (facing left or right).
 
-8 blocks consisted of one stimulus being repeatedly presented throughout
-the block (i.e.~background trials). The remaining 16 blocks included two
-stimuli, including one that was repeatedly present and one that deviated
-from the trial. The deviant trial was always different from the
-repeating stimulus in one of the four dimensions: animacy violation,
-identity violation, number violation, and pose violation. The deviant
-trial always showed up in the last trial of the block. In the first
-three violation types, the feature would be switched to the previously
-unseen level (e.g.~an inanimate deviant after an animate repeating
-stimulus, keeping the number and the pose the same). For identity
-violation, the participants would see a different, but within-category,
-exemplar from the repeating stimuli type. Among the sixteen blocks, the
-four violation type each appeared four times. After each block,
-participants performed a simple memory task as a filler task.
+Eight blocks consisted of one stimulus being repeatedly presented
+throughout the block (i.e.~background trials). The remaining sixteen
+blocks included two stimuli, including one that was repeatedly present
+and one that deviated from the trial. The deviant trial was always
+different from the repeating stimulus in one of the four dimensions:
+animacy violation, identity violation, number violation, and pose
+violation. The deviant trial always showed up in the last trial of the
+block. In the first three violation types, the feature would be switched
+to the previously unseen level (e.g.~an inanimate deviant after an
+animate repeating stimulus, keeping the number and the pose the same).
+For identity violation, the participants would see a different, but
+within-category, exemplar from the repeating stimuli type. Among the
+sixteen blocks, the four violation types each appeared four times. After
+each block, participants performed a simple memory task as a filler
+task.
 
-The order of the block was semi-randomized. To control for the
-distribution of background blocks and deviant blocks, we group the
-twenty-four blocks into four groups. Each group consisted of two
+To control the distribution of background blocks and deviant blocks, we
+grouped the 24 blocks into four groups. Each group consisted of two
 background blocks, and one deviant block from each violation type. The
 order of blocks within each group was randomized.
 
 \hypertarget{participants}{%
 \subsubsection{Participants}\label{participants}}
 
-The final sample included XXX participants recruited from Prolific(Mean
-Age: SD:). Participants were excluded if either (1) the standard
-deviation of log-transformed of their reaction times on all trials is
-less than 0.15 (indicating key-smashing); (2) spent more than three
-absolute deviations above the median of the task completion time as
-reported by Prolific, or (3) provided the incorrect response to more
-than 20\% of the memory task. After the participant-level exclusion, we
-also applied trial-level exclusion. A trial was excluded from final
-analysis if it is three absolute deviations away from the median in the
-log-transformed space across all participants.
+We recruited 550 adult participants on Prolific. Participants were
+excluded if either (1) the standard deviation of log-transformed of
+their reaction times on all trials is less than 0.15 (indicating
+key-smashing); (2) spent more than three absolute deviations above the
+median of the task completion time as reported by Prolific, or (3)
+provided the incorrect response to more than 20\% of the memory task.
+After the participant-level exclusion, we also applied trial-level
+exclusion. A trial was excluded from final analysis if it is three
+absolute deviations away from the median in the log-transformed space
+across all participants. The final sample included 468 participants.
 
 \hypertarget{results}{%
 \subsection{Results}\label{results}}
 
 The sample size and analysis plan are all pre-registered and can be
-found here {[}LINK{]}. All experimental materials are publicly available
-and can be found here {[}LINK{]}.
+found \href{https://aspredicted.org/blind.php?x=WGF_J7K}{here}. All
+analyses scripts are publicly available and can be found here
+{[}LINK{]}.
 
 We were primarily interested in (1) whether our experimental paradigm
 captured habituation and dishabituation and (2) whether the magnitude of
 dishabituation was influenced by the type of violation. We tested these
 two hypotheses in a linear mixed-effect model with maximal random effect
 structure that predicts log-transformed looking time with the following
-specification: log(total\_rt) \textasciitilde{} trial\_number +
-is\_first\_trial + (trial\_number + is\_first\_trial) * number +
-(trial\_number + is\_first\_trial) * pose +(trial\_number +
-is\_first\_trial) * animacy + (trial\_number + is\_first\_trial) *
-trial\_type. The combination of trial\_number and is\_first\_trial
-models habituation.
+specification on the fixed effect:
+\texttt{log(total\_rt)\ \textasciitilde{}\ trial\_number\ +\ \ is\_first\_trial\ +\ \ (trial\_number\ +\ is\_first\_trial)\ *\ stimulus\_number\ +\ (trial\_number\ +\ is\_first\_trial)\ *\ stimulus\_pose\ +(trial\_number\ +\ is\_first\_trial)\ *\ stimulus\_animacy\ +\ (trial\_number\ +\ is\_first\_trial)\ *\ violation\_type\ +\ log(block\_number)}.
+The violation\_type has five levels, including the background trial and
+four types of violation. \footnote{In our preregistered model, we
+  specified an interaction between trial\_number and is\_first\_trial
+  that is automatically removed in the final model.}.
 
-interaction between trial number number and whether the trial is the
-first trial models the habituation effect, testing the first hypothesis.
-The following three interactions investigates whether the feature of
-background trials would have an impact on the looking time. The last
-interaction term, with trial type having five levels (background trial
-or four types of violation), aims to test the second hypothesis. The
-model with maximum random effect structure failed to converge, so we
-pruned the model following the pre-registered procedure. The final model
-included per-subject random intercepts.
+Through different parameterization of the model (i.e.~setting different
+baseline levels for violation type), we found evidence for habituation
+and graded dishabituation. When background was treated as the baseline,
+there was a significant effect of trial number (\(\beta\) = -0.02,
+\emph{SE} = 0, \emph{p} \textless{} .001). Moreover, looking time to
+animacy violations was significantly longer than to number violations
+(\(\beta\) = 0.17, \emph{SE} = 0.04, \emph{p} \textless{} .001) and pose
+violations (\(\beta\) = 0.18, \emph{SE} = 0.04, \emph{p} \textless{}
+.001), so are identity violations (cf.~number: \(\beta\) = 0.18,
+\emph{SE} = 0.04, \emph{p} \textless{} .001; cf.~pose: \(\beta\) = 0.19,
+\emph{SE} = 0.04, \emph{p} \textless{} .001). But animacy violation was
+not different from the identity violation, nor was the number violation
+different from the pose violation (all p \textgreater{} 0.1)
 
-There was also some evidence that participants showed graded
-dishabituation to different types of violation. Animacy violation was
-significantly greater than the number violation (STATS) as well as the
-number violation (STATS). We also pre-registered a qualitative
-prediction on the ordering of the dishabituation magnitude
-(i.e.~category \textgreater{} number \textgreater{} identity
-\textgreater{} pose). However, we did not find evidence consistent with
-this prediction. The qualitative ordering in our data was animacy (M,
-SD), identity (M, SD), pose (M, SD) and number (M, SD).
+We also pre-registered a qualitative prediction on the ordering of the
+dishabituation magnitude (i.e.~category \textgreater{} number
+\textgreater{} identity \textgreater{} pose). However, we did not find
+evidence consistent with this prediction. The qualitative ordering in
+our data was animacy (\emph{M} = 2694.74), identity (\emph{M} = 2489.2),
+pose (\emph{M} = 2201.44) and number (\emph{M} = 2117.63).
 
 \hypertarget{model}{%
 \section{Model}\label{model}}
