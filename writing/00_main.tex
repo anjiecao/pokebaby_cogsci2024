@@ -69,18 +69,19 @@ embeddings in a rational learning model}
 \maketitle
 
 \begin{abstract}
-How do humans decide what to look at and when to stop looking? Many
-computational models have been proposed to address the mechanisms
-underlying such processes, but they are all limited in scope. In this
-paper, we present a version of the rational action, noisy choice for
-habituation (RANCH) model with an instantiated hypothesis about the
-perceptual encoding process. We showed that the model can not only
-capture key looking time patterns such as habituation and
-dishabituation, but also make more fine grained predictions about
-dishabituation magnitude. RANCH's performance is relatively robust
-across parameters, and the parameters can be generalized to other tasks.
-However, the assumptions about the perceptual encoding process, the
-learning process and the decision process are critical for the model
+How do humans decide what to look at and when to stop looking? The
+Rational action, noisy choice for Habituation (RANCH) model formulates
+looking behaviors as a rational information acquisition process. RANCH
+instantiates a hypothesis about the perceptual encoding process through
+neural network-derived embedding space, allowing it to operate on raw
+images. In this paper, we show that the model not only captures key
+looking time patterns such as habituation and dishabituation, but also
+makes fine-grained, out-of-sample predictions about magnitudes of
+dishabituation to previously unseen stimuli. We validate those
+predictions experimentally with a self-paced looking time task in adults
+(N = 468). We also show that the model is robust across parameters, but
+the assumptions about the perceptual encoding process, the learning
+process and the decision process are all critical for the model
 performance.
 
 \textbf{Keywords:}
@@ -102,7 +103,7 @@ Baillargeon, Spelke, \& Wasserman, 1985; Fantz, 1963).
 Two key phenomena are particularly critical for these inferences:
 habituation and dishabituation. Habituation refers to the decrease in
 looking time upon seeing the same or similar stimuli repeatedly;
-dishabituation refers to the increase in looking time following
+dishabituation refers to the increase in looking time following the
 presentation of a novel stimulus after habituation. In order to
 dishabituate, the infant must distinguish between the original stimulus
 and the novel one. While habituation and dishabituation have been
@@ -125,20 +126,20 @@ interpretation of looking time measurements. A stimulus could be argued
 to be novel because it has distinct perceptual features, but it could
 also be familiar because of its conceptual characteristics. In part as a
 result of this interpretive ambiguity, concerns have been raised about
-looking time measurements should be the foundation for central claims in
-developmental psychology (Blumberg \& Adolph, 2023; Haith, 1998; Paulus,
-2022).
+whether looking time measurements should be the foundation for central
+claims in developmental psychology (Blumberg \& Adolph, 2023; Haith,
+1998; Paulus, 2022).
 
 Computational models provide an important tool for formalizing the
 details of the habituation and dishabituation process. One set of models
-describe infants' looking behaviors with information-theoretic measures
+describes infants' looking behaviors with information-theoretic measures
 derived from ideal observer models (Kidd, Piantadosi, \& Aslin, 2012;
 Francesco Poli, Ghilardi, Mars, Hinne, \& Hunnius, 2023; F. Poli,
 Serino, Mars, \& Hunnius, 2020). For example, Francesco Poli et al.
 (2023) developed a model that calculates the Kullback--Leibler (KL)
 divergence of each event infants saw in an experiment. This measure was
-shown to predict infants' looking time, with higher KL links to longer
-looking time.
+shown to predict infants' looking time, with higher KL associated with
+to longer looking time.
 
 While these models provided quantitative accounts of the habituation
 process, they do not model the infant's information sampling process
@@ -153,8 +154,8 @@ the ability of these models to make principled predictions on new,
 unseen stimuli.
 
 To address these issues, Rational Action, Noisy Choice for Habituation
-(RANCH) was developed (Cao, Raz, Saxe, \& Frank, 2023; Raz, Cao, Saxe,
-\& Frank, 2023). RANCH described an agent's looking behavior as a
+(RANCH) model was developed (Cao, Raz, Saxe, \& Frank, 2023; Raz, Cao,
+Saxe, \& Frank, 2023). RANCH describes an agent's looking behavior as a
 rational exploration of noisy perceptual samples. This model construes
 the looking time paradigm as a series of binary decisions: to keep
 sampling from the current stimulus, or to move on to the next stimulus.
@@ -163,23 +164,21 @@ Gain (EIG) of the perceptual samples, and therefore can be seen as a
 rational analysis of looking behavior (Anderson, 1991; Lieder \&
 Griffiths, 2020; Oaksford \& Chater, 1994).
 
-Newer versions of RANCH also incorporate recent progress in
-convolutional neural networks, which have offered insights into how the
-visual system encodes objects (Doshi \& Konkle, 2023; Hebart, Zheng,
-Pereira, \& Baker, 2020; Yamins et al., 2014). The activations of these
-brain-inspired neural networks form embedding spaces, each of which can
-be seen as a quantitative hypothesis about the representations that
-humans form for visual stimuli (Schrimpf et al., 2020). For example, Lee
-(2022) projected the final layer of a ResNet50 into a
-``perceptually-aligned'' space, by making its representations match
-dissimilarity matrices derived from human adult reaction times in a
-2-AFC match-to-sample task. Passing new stimuli through this perceptual
-alignment yields a possible representation of how humans embed different
-visual stimuli in a low-dimensional space. Using this
-perceptually-aligned embedding space as a model of perceptual encoding,
-RANCH can generate fine-grained predictions about how long observers
-will look at stimuli sequence previously unseen by the model in the
-training.
+RANCH incorporates recent progress in convolutional neural networks,
+which have offered insights into how the visual system encodes objects
+(Doshi \& Konkle, 2023; Hebart, Zheng, Pereira, \& Baker, 2020; Yamins
+et al., 2014). The activations of these brain-inspired neural networks
+form embedding spaces, each of which can be seen as a quantitative
+hypothesis about how humans represent visual stimuli (Schrimpf et al.,
+2020). For example, Lee (2022) projected the final layer of a trained
+ResNet50 into a ``perceptually-aligned'' space, by making its
+representations match dissimilarity matrices derived from human adult
+reaction times in a 2-AFC match-to-sample task. Passing new stimuli
+through this perceptual alignment yields a plausible representation of
+how humans embed different visual stimuli in a low-dimensional space.
+Using this perceptually-aligned embedding space as a model of perceptual
+encoding, RANCH can generate fine-grained predictions about how long
+observers will look at previously unseen stimuli.
 
 Previously, Cao et al. (2023) and Raz et al. (2023) have shown that
 RANCH can successfully model habituation and dishabituation in adults
@@ -194,16 +193,16 @@ magnitude should be related to the similarity between the habituated
 stimulus and the novel stimulus. The more dissimilar two stimuli are,
 the more one should dishabituate to the novel stimulus.
 
-To conduct these tests, we first fit RANCH's parameters to a
-habituation-dishabituation experiment in which participants saw
-sequences of monsters which were either familiar or novel (dataset
-reported in Cao et al., 2023, Fig 1A). Then, we use the best-fitting
-parameters to generate predictions for a new experiment that measure the
-subtle differences in dishabituation magnitude based on stimulus
-similarity (Fig 1C). In this experiment, we systematically varied the
-similarity between habituation and dishabituation stimuli such that
-dishabituation stimuli differed in their pose angle, their number, their
-identity, or their animacy.
+To conduct these tests, we first fit RANCH's parameters to the training
+data, a dataset from the habituation-dishabituation experiment in which
+participants saw sequences of monsters which were either familiar or
+novel (dataset reported in Cao et al., 2023, Fig 1A). Then, we use the
+best-fitting parameters to generate predictions for a new experiment
+that measure the subtle differences in dishabituation magnitude based on
+stimulus similarity (Fig 1C). In this experiment, we systematically
+varied the similarity between habituation and dishabituation stimuli
+such that dishabituation stimuli differed in their pose angle, their
+number, their identity, or their animacy.
 
 To preview our results, we show that RANCH can predict looking time
 responses in new data just by transferring model parameters fit from
@@ -216,8 +215,137 @@ RANCH is relatively robust across parameter settings, but the
 assumptions about its perceptual representation, learning process, and
 the decision process are all critical to its performance.
 
+\hypertarget{model}{%
+\section{Model}\label{model}}
+
+\hypertarget{model-components}{%
+\subsection{Model Components}\label{model-components}}
+
+We modeled looking behaviors in our task as rational information
+acquisition, using a ``rational analysis'' approach previously described
+for different information-seeking behaviors (Dubey \& Griffiths, 2020;
+Oaksford \& Chater, 1994). Our goal was to develop a model which
+formalizes the entire process underlying looking time: from perception
+of a stimulus to deciding how long to look at it. To do so, our model
+has three separate components describing (1) how stimuli are embedded a
+low-dimensional perceptual space (2) how RANCH learns a concept over
+this perceptual space and (3) how RANCH makes decisions about how long
+to sample from a stimulus based on its expected information gain. Here,
+we describe these three components in turn.
+
+\begin{CodeChunk}
+\begin{figure}[t]
+
+{\centering \includegraphics{figs/design_fig-1} 
+
+}
+
+\caption[Workflow of the current study]{Workflow of the current study. (A) The experimental design and stimuli used in the training dataset. (B)The core components of RANCH, with the top showing the stimuli embedding in PC-space. The bottom is the plate diagram of the learning model. (C) The experimental design of the test data. RANCH model is first fit using the training data in A, and we test its prediction on the test data collected in the experiment illustrated in C.}\label{fig:design_fig}
+\end{figure}
+\end{CodeChunk}
+
+\hypertarget{perceptual-representation}{%
+\subsubsection{Perceptual
+representation}\label{perceptual-representation}}
+
+To allow RANCH to operate on raw images, we used the
+perceptually-aligned embeddings obtained from a model presented recently
+by Lee (2022). We use these projections into a perceptually-aligned
+embedding space as a principled low-dimensional representation of
+stimuli, over which our learning model can form perceptual concepts. We
+used the first three principal components of the embedding space, which
+captured 57.9\% of the variance. A visualization of experimental stimuli
+in the embedding space can be seen in Figure 1B.
+
+\hypertarget{learning-model}{%
+\subsubsection{Learning model}\label{learning-model}}
+
+RANCH's goal is to learn a concept in the perceptual embedding space
+described above, through noisy perceptual samples from a stimulus. The
+concept is parameterized by a 3D Gaussian \((\mu,\sigma)\), which
+represents beliefs about the location and variance of the concept in the
+embedding space. This concept \((\mu,\sigma)\) generates exemplars
+\((y)\): exemplars of the concept. RANCH observes repeated noisy samples
+\((\bar{z})\) from each exemplar. For any sample \((z)\) from an
+exemplar \((y)\), the model expects the observation to get corrupted by
+zero-mean gaussian noise with standard deviation \((\epsilon)\). A plate
+diagram is shown in Figure 1B. We used a normal-inverse-gamma prior on
+the concept, the conjugate prior for a normal with unknown mean and
+variance, on the concept parameterized as
+\(\mu_{p}\),\(\nu_{p}\),\(\alpha_{p}\), \(\beta_{p}\). Still, applying
+perceptual noise to \(y\) breaks the conjugate relation, so we computed
+approximate posteriors using grid approximation over \((\mu,\sigma)\)
+and \((\epsilon)\). This computationally expensive approximation was
+accomplished through a PyTorch implementation and distributed GPU
+computation.
+
+\hypertarget{decision-model}{%
+\subsubsection{Decision model}\label{decision-model}}
+
+To decide whether to take an additional sample from the same stimulus,
+RANCH computes expected Information Gain (EIG) of the next sample. EIG
+is computed as the product of the posterior predictive probability of
+the next sample and the information gained conditioned on that next
+sample, by iterating through a grid of possible subsequent samples.
+RANCH then makes a softmax choice (with temperature = 1) between taking
+another sample and looking away. We assumed that participants expect a
+constant information gain from looking away (the ``world EIG'').
+Therefore, as EIG from the stimulus drops below world EIG, it becomes
+increasingly likely that RANCH will look away.
+
+\hypertarget{alternative-models}{%
+\subsection{Alternative models}\label{alternative-models}}
+
+To test the importance of each of RANCH's components for its
+performance, we defined three lesioned models, in which one key feature
+of the model was removed. First, to test the importance of the
+perceptual embeddings, we ran a version of RANCH in which the mappings
+from stimulus labels to embeddings were permuted, such that the
+associations between embeddings and violation type were randomized
+(``Random embeddings''). Second, we ran a version in which RANCH assumes
+that each perceptual sample in the learning process is noiseless, rather
+than corrupted by \(\epsilon\) (``No noise'').Third, we ran a version in
+which RANCH made decisions randomly rather than based on the learning
+model (``No learning'').
+
+\hypertarget{training-procedure}{%
+\subsection{Training Procedure}\label{training-procedure}}
+
+We used the behavioral dataset reported in Cao et al. (2023) as the
+training data. In this prior experiment, 449 adults participated in an
+online self-paced looking time paradigm (Fig. 1A). In this paradigm,
+participants watched blocks of six animated monsters. Each block
+consisted of one repeating monster (the background), and one monster
+different from the repeated one (the deviant). The deviant, if shown,
+was on either the 2nd, 4th, or 6th trial of the block. Adults can
+proceed to the next trial whenever they press a key on the keyboard, and
+the interval between the onset of the stimuli and the key press was used
+as the proxy for looking time. To train on this dataset, we first
+converted the raw stimuli into perceptual embeddings, and combined them
+into stimuli sequences identical to the sequence participants have seen.
+Since the model makes stochastic sampling decisions, we conducted 400
+runs for each stimuli sequence for each parameter setting. To avoid
+numerical instabilities due to the granularity of our grid
+approximation, for each run we slightly jittered all parameter grid
+values by a constant offset. We conducted an iterative grid search
+across the priors over \(\mu\), \(\nu\) and \(\epsilon\), along with the
+actual noise \(\epsilon\). We selected the parameters that yielded the
+highest \(R^2\) between the model output and the behavioral data as the
+best fitting parameters. The best fitting parameters were (\(\mu_{p}\) =
+0,\(\nu_{p}\) = 1, \(\alpha_{p}\) = 1, \(\beta_{p}\) = 1, \(\epsilon\) =
+0.0001).
+
 \hypertarget{behavioral-experiment}{%
 \section{Behavioral Experiment}\label{behavioral-experiment}}
+
+Next, we introduce the novel experiment used to test the
+generalizability of the parameter setting found above. The procedure was
+similar to the previous training data with two key differences: First,
+stimuli used in this previous experiment were animated monsters, but the
+current experiment used images of animals and vegetables with added
+shaking animations. Second, unlike the previous experiment, the current
+study manipulated the dissimilarity between the repeating stimulus and
+the deviant stimulus by introducing different types of deviant stimuli.
 
 \hypertarget{methods}{%
 \subsection{Methods}\label{methods}}
@@ -238,12 +366,12 @@ were slightly tilted before mirroring.
 \hypertarget{procedure}{%
 \subsubsection{Procedure}\label{procedure}}
 
-The experiment was a self-paced web-based experiment. Participants saw
-24 blocks that consisted of either two, four, or six trials. On each
-trial, a schematic screen would rise up to reveal a stimulus behind it.
-Participants pressed the spacebar to go on to the next trial after a
-minimum viewing time of 500 ms, triggering the schematic screen to drop
-and raise again to reveal the next stimulus.
+The experiment was a self-paced web-based experiment (Fig. 1C).
+Participants saw 24 blocks that consisted of either two, four, or six
+trials. On each trial, a schematic screen would rise up to reveal a
+stimulus behind it. Participants pressed the spacebar to go on to the
+next trial after a minimum viewing time of 500 ms, triggering the
+schematic screen to drop and raise again to reveal the next stimulus.
 
 Each participant saw eight types of repeating stimuli. The eight types
 of stimuli included all combinations of the three features that each
@@ -251,20 +379,19 @@ included two levels: animacy (e.g.~animate or inanimate), number
 (singleton or pair), and pose (facing left or right).
 
 Eight blocks consisted of one stimulus being repeatedly presented
-throughout the block (i.e.~background trials). The remaining sixteen
-blocks included two stimuli, including one that was repeatedly present
-and one that deviated from the trial. The deviant trial was always
+throughout the block (background blocks). The remaining sixteen blocks
+included two stimuli, including one that was repeatedly present and one
+that deviated from the repeating trial. The deviant trial was always
 different from the repeating stimulus in one of the four dimensions:
-animacy violation, identity violation, number violation, and pose
-violation. The deviant trial always showed up in the last trial of the
-block. In the first three violation types, the feature would be switched
-to the previously unseen level (e.g.~an inanimate deviant after an
-animate repeating stimulus, keeping the number and the pose the same).
-For identity violation, the participants would see a different, but
-within-category, exemplar from the repeating stimuli type. Among the
-sixteen blocks, the four violation types each appeared four times. After
-each block, participants performed a simple memory task as a filler
-task.
+animacy, identity, number, and pose. The deviant trial always showed up
+in the last trial of the block. In the first three violation types, the
+feature would be switched to the previously unseen level (e.g.~an
+inanimate deviant after an animate repeating stimulus, keeping the
+number and the pose the same). For identity violations, the participants
+would see a different, but within-category, exemplar from the repeating
+stimuli type. Among the sixteen blocks, the four violation types each
+appeared four times. After each block, participants performed a simple
+memory task as a filler task.
 
 To control the distribution of background blocks and deviant blocks, we
 grouped the 24 blocks into four groups. Each group consisted of two
@@ -276,48 +403,49 @@ order of blocks within each group was randomized.
 
 We recruited 550 adult participants on Prolific. Participants were
 excluded if either (1) the standard deviation of log-transformed of
-their reaction times on all trials is less than 0.15 (indicating
-key-smashing); (2) spent more than three absolute deviations above the
-median of the task completion time as reported by Prolific, or (3)
-provided the incorrect response to more than 20\% of the memory task.
-After the participant-level exclusion, we also applied trial-level
-exclusion. A trial was excluded from final analysis if it is three
+their reaction times on all trials was less than 0.15 (indicating
+key-smashing); (2) they spent more than three absolute deviations above
+the median of the task completion time as reported by Prolific, or (3)
+they provided the incorrect response to more than 20\% of the memory
+task. After the participant-level exclusion, we also applied trial-level
+exclusion. A trial was excluded from final analysis if it was three
 absolute deviations away from the median in the log-transformed space
 across all participants. The final sample included 468 participants.
 
 \hypertarget{results}{%
 \subsection{Results}\label{results}}
 
-The sample size and analysis plan are all pre-registered and can be
+The sample size and analysis plan were all pre-registered and can be
 found \href{https://aspredicted.org/blind.php?x=WGF_J7K}{here}. All
-analyses scripts are publicly available and can be found here
+analysis scripts are publicly available and can be found here
 {[}LINK{]}.
 
 We were primarily interested in (1) whether our experimental paradigm
 captured habituation and dishabituation and (2) whether the magnitude of
 dishabituation was influenced by the type of violation. We tested these
 two hypotheses in a linear mixed-effect model with maximal random effect
-structure that predicts log-transformed looking time with the following
-specification on the fixed effect:
-\texttt{log(total\_rt)\ \textasciitilde{}\ trial\_number\ +\ \ is\_first\_trial\ +\ \ (trial\_number\ +\ is\_first\_trial)\ *\ stimulus\_number\ +\ (trial\_number\ +\ is\_first\_trial)\ *\ stimulus\_pose\ +(trial\_number\ +\ is\_first\_trial)\ *\ stimulus\_animacy\ +\ (trial\_number\ +\ is\_first\_trial)\ *\ violation\_type\ +\ log(block\_number)}.
+structure that predicted log-transformed looking time with the following
+specification on the fixed effect: \texttt{log(total\_rt)} \(\sim\)
+\texttt{trial\_number\ +\ \ is\_first\_trial\ +\ \ (trial\_number\ +\ is\_first\_trial)\ *\ stimulus\_number\ +\ (trial\_number\ +\ is\_first\_trial)\ *\ stimulus\_pose\ +(trial\_number\ +\ is\_first\_trial)\ *\ stimulus\_animacy\ +\ (trial\_number\ +\ is\_first\_trial)\ *\ violation\_type\ +\ log(block\_number)}.
 The violation\_type has five levels, including the background trial and
-four types of violation. \footnote{In our preregistered model, we
+four types of violation.\footnote{In our preregistered model, we
   specified an interaction between trial\_number and is\_first\_trial
-  that is automatically removed in the final model.}.
+  that was automatically removed in the final model.}
 
 Through different parameterization of the model (i.e.~setting different
 baseline levels for violation type), we found evidence for habituation
-and graded dishabituation (Fig.2). When background was treated as the
-baseline, there was a significant effect of trial number (\(\beta\) =
--0.02, \emph{SE} = 0, \emph{p} \textless{} .001). Moreover, looking time
-to animacy violations was significantly longer than to number violations
-(\(\beta\) = 0.17, \emph{SE} = 0.04, \emph{p} \textless{} .001) and pose
-violations (\(\beta\) = 0.18, \emph{SE} = 0.04, \emph{p} \textless{}
-.001), so are identity violations (cf.~number: \(\beta\) = 0.18,
-\emph{SE} = 0.04, \emph{p} \textless{} .001; cf.~pose: \(\beta\) = 0.19,
-\emph{SE} = 0.04, \emph{p} \textless{} .001). But animacy violation was
-not different from the identity violation, nor was the number violation
-different from the pose violation (all p \textgreater{} 0.1)
+and graded dishabituation (Fig. 2). When the background test trial was
+treated as the baseline, there was a significant effect of trial number
+(\(\beta\) = -0.02, \emph{SE} = 0, \emph{p} \textless{} .001). Moreover,
+looking time to animacy violations was significantly longer than to
+number violations (\(\beta\) = 0.17, \emph{SE} = 0.04, \emph{p}
+\textless{} .001) and pose violations (\(\beta\) = 0.18, \emph{SE} =
+0.04, \emph{p} \textless{} .001), and so were identity violations
+(cf.~number: \(\beta\) = 0.18, \emph{SE} = 0.04, \emph{p} \textless{}
+.001; cf.~pose: \(\beta\) = 0.19, \emph{SE} = 0.04, \emph{p} \textless{}
+.001). But animacy violation was not different from the identity
+violation, nor was the number violation different from the pose
+violation (all p \textgreater{} 0.1)
 
 We also pre-registered a qualitative prediction on the ordering of the
 dishabituation magnitude (i.e.~category \textgreater{} number
@@ -325,122 +453,6 @@ dishabituation magnitude (i.e.~category \textgreater{} number
 evidence consistent with this prediction. The qualitative ordering in
 our data was animacy (\emph{M} = 2694.74), identity (\emph{M} = 2489.2),
 pose (\emph{M} = 2201.44) and number (\emph{M} = 2117.63).
-
-\hypertarget{model}{%
-\section{Model}\label{model}}
-
-We next wanted to ask whether looking time in our task can be seen as
-rational information acquisition, using a ``rational analysis'' approach
-previously described for a variety of aspects of human behavior (Dubey
-\& Griffiths, 2020; Oaksford \& Chater, 1994). Our goal was to develop a
-model which formalizes the entire process underlying looking time: from
-perception of a stimulus to deciding how long to look at it. To do so,
-our model has three separate components describing 1) the perceptual
-embeddings RANCH learns from 2) how RANCH learns a concept over this
-perceptual space and 3) how RANCH makes decisions about how long to
-sample from a stimulus based on its expected information gain. Here, we
-describe these three components in turn.
-
-\begin{CodeChunk}
-\begin{figure}[H]
-
-{\centering \includegraphics{figs/design_fig-1} 
-
-}
-
-\caption[Workflow of the current study]{Workflow of the current study. (A) The experimental design and stimuli used in the training dataset. (B)The core components of RANCH, with the top showing the stimuli embedding in PC-space. The bottom is the plate diagram of the learning model. (C) The experimental design of the test data. RANCH model is first fit using the training data in A, and we test its prediction on the test data collected in the experiment illustrated in C.}\label{fig:design_fig}
-\end{figure}
-\end{CodeChunk}
-
-\hypertarget{perceptual-representation}{%
-\subsection{Perceptual representation}\label{perceptual-representation}}
-
-To allow RANCH to operate on raw images, we used the
-perceptually-aligned embeddings obtained from a model presented recently
-by Lee (2022). We use these projections into a perceptually-aligned
-embedding space as a principled low-dimensional representation of
-stimuli, over which our learning model can form perceptual concepts. We
-used the first three principal components of the embedding space. 57.9\%
-of the variance was captured by these first three PCs. A visualization
-of experimental stimuli in the embedding space can be seen in Figure 1B.
-
-\hypertarget{learning-model}{%
-\subsection{Learning model}\label{learning-model}}
-
-RANCH's goal is to learn a concept in the perceptual embedding space
-described above, through noisy perceptual samples from a stimulus. The
-concept is parameterized by a 3D Gaussian \((\mu,\sigma)\), which
-represents beliefs about the location and variance of the concept in the
-embedding space. This concept \((\mu,\sigma)\) generates exemplars
-\((y)\): exemplars of the concept. RANCH observes repeated noisy samples
-\((\bar{z})\) from each exemplar. For any sample \((z)\) from an
-exemplar \((y)\), the model expects the observation to get corrupted by
-zero-mean gaussian noise with standard deviation \((\epsilon)\). A plate
-diagram is shown in Figure 1B. We used a normal-inverse-gamma prior on
-the concept, the conjugate prior for a normal with unknown mean and
-variance, on the concept parameterized as
-\(\mu_{p}\),\(\nu_{p}\),\(\alpha_{p}\), \(\beta_{p}\). Still, applying
-perceptual noise to \(y\) breaks the conjugate relation, so we computed
-approximate posteriors using grid approximation over \((\mu,\sigma)\)
-and \((\epsilon)\). This computationally expensive approximation was
-accomplished through a pytorch implementation and distributed GPU
-computation.
-
-\hypertarget{decision-model}{%
-\subsection{Decision model}\label{decision-model}}
-
-To decide whether to take an additional sample from the same stimulus,
-RANCH computes expected information gain (EIG) of the next sample. EIG
-is computed as the product of the posterior predictive probability of
-the next sample and the information gained conditioned on that next
-sample, by iterating through a grid of possible subsequent samples.
-RANCH then makes a softmax choice (with temperature = 1) between taking
-another sample and looking away. We assumed that participants expect a
-constant information gain from looking away (the ``world EIG'').
-Therefore, as EIG from the stimulus drops below world EIG, it becomes
-increasingly likely that RANCH will look away.
-
-\hypertarget{simulating-the-experiment}{%
-\subsection{Simulating the experiment}\label{simulating-the-experiment}}
-
-To model the behavioral experiment, we first extracted the first three
-principal components of the embeddings of all the stimuli used in the
-experiment. We assembled the stimuli into sequences following the
-stimuli sequence participants saw in each block. For the block with
-deviating stimuli, we sampled deviant stimuli from corresponding
-violation categories. We sampled 23 stimuli pairs for each combination
-of violation type and deviant position. Since the model makes stochastic
-sampling decisions, we conducted 400 runs for each stimuli sequence for
-each parameter setting.
-
-\hypertarget{alternative-models}{%
-\subsubsection{Alternative models}\label{alternative-models}}
-
-To test the importance of each of RANCH's components for its
-performance, we defined three lesioned models, in which one key feature
-of the model was removed. First, to test the importance of the
-perceptual embeddings, we ran a version of RANCH in which the mappings
-from stimulus labels to embeddings were permuted, such that which
-embedding was associated with which violation type was randomized
-(``Random embeddings''). Second, we ran a version in which RANCH assumes
-that each perceptual sample in the learning process is noiseless, rather
-than corrupted by \(\epsilon\) (``No noise'').Third, we ran a version in
-which RANCH made decisions randomly rather than based on the learning
-model (``No learning'').
-
-\hypertarget{training-data}{%
-\subsection{Training Data}\label{training-data}}
-
-We used the behavioral dataset reported in Cao et al. (2023) as the
-training data. In this prior experiment, 449 adults participated in a
-self-paced viewing of sequences of simple stimuli. The procedure was
-similar to the present experiment with two key differences: First,
-stimuli used in this previous experiment were animated monsters. Second,
-unlike the current study, the previous experiment only contained
-dishabituation stimuli that varied in the identity of the monster
-(comparable to the ``identity violation'' stimuli in the current
-experiment) There was no manipulation on the dissimilarity between the
-repeating stimulus and the deviant stimulus in a block.
 
 \hypertarget{model-evaluation}{%
 \section{Model Evaluation}\label{model-evaluation}}
@@ -460,49 +472,59 @@ repeating stimulus and the deviant stimulus in a block.
 \subsection{Parameter
 generalizability}\label{parameter-generalizability}}
 
-We conducted an interactive grid search across free parameters to find
-the best parameters that fit to the training dataset. The best fitting
-parameter (\(\mu_{p}\) = 0,\(\nu_{p}\) = 1, \(\alpha_{p}\) = 1,
-\(\beta_{p}\) = 1, \(\epsilon\) = 0.0001) predicted the habituation and
-dishabituation in the training data (\(r^2\) = 0.95 {[}0.90, 0.98{]}).
-Using these previously obtained parameters, we now test RANCH's
-performance on the current experiment with different stimuli and design.
-We found that the parameters generalized to the current context well
-(\(r^2\): 0.75 {[}0.68, 0.96{]}, \emph{RMSE}: 148.46 {[}112.18,
-219.54{]}). Moreover, RANCH also showed the qualitative ordering of the
-graded dishabituation similar to the behavioral data: animacy
-\textgreater{} identity \textgreater{} number \textgreater{} pose.
+The procedure to model the current experiment is very similar to the
+training procedure., We first converted the raw images into the
+perceptual representations. Then, we assembled the stimuli into
+sequences following the stimuli sequence participants saw in each block.
+For the block with deviating stimuli, we sampled deviant stimuli from
+corresponding violation categories. We sampled 23 stimuli pairs for each
+combination of violation type and deviant position.
+
+However, instead of searching for a new set of best-fitting parameters,
+we used the best parameters found in the training dataset, and tested
+their generalizability to the new task.The best fitting parameters
+(\(\mu_{p}\) = 0,\(\nu_{p}\) = 1, \(\alpha_{p}\) = 1, \(\beta_{p}\) = 1,
+\(\epsilon\) = 0.0001) predicted the habituation and dishabituation in
+the training data (\(R^2\) = 0.95 {[}0.90, 0.98{]}). Using these
+previously obtained parameters, we now test RANCH's performance on the
+current experiment with different stimuli and design. We found that the
+parameters generalized to the current context well (\(R^2\): 0.75
+{[}0.68, 0.96{]}, \emph{RMSE}: 148.46 {[}112.18, 219.54{]}). Moreover,
+RANCH also showed a qualitative ordering of the graded dishabituation
+similar to the behavioral data: animacy \textgreater{} identity
+\textgreater{} number \textgreater{} pose.
 
 \hypertarget{parameter-robustness}{%
 \subsection{Parameter robustness}\label{parameter-robustness}}
 
 To evaluate RANCH's robustness to different parameters, we then
-conducted a grid search over the parameters. We selected the best
-fitting parameters (\(\mu_{p}\) = 0,\(\nu_{p}\) = 2, \(\alpha_{p}\) =
-10, \(\beta_{p}\) = 1, \(\epsilon\) = 0.0001) using a 10-fold
-cross-validation on the behavioral dataset. When fit to the full
+conducted a grid search over the parameters on the new experiment. We
+selected the best fitting parameters (\(\mu_{p}\) = 0,\(\nu_{p}\) = 2,
+\(\alpha_{p}\) = 10, \(\beta_{p}\) = 1, \(\epsilon\) = 0.0001) using a
+10-fold cross-validation on the behavioral dataset. When fit to the full
 dataset, the best fitting parameter from this search was comparable with
-the parameters generalized from the training dataset (\(r^2\): 0.77
+the parameters generalized from the training dataset (\(R^2\): 0.77
 {[}0.71, 0.95{]}, \emph{RMSE}: 142.69 {[}107.82, 211.02{]}). Moreover,
-the performance across the 162 parameter settings are relatively stable,
+performance across the 162 parameter settings was relatively stable,
 yielding a moderate range of R-squared (\emph{M} = 0.62; \emph{SD} =
 0.1) and RMSE (\emph{M} = 181.75; \emph{SD} = 23.28). Finally, the
-qualitative ordering of the dishabituation magnitude is also preserved
+qualitative ordering of the dishabituation magnitude was also preserved
 when averaged across all parameter settings.
 
 \hypertarget{comparison-with-alternative-models}{%
 \subsection{Comparison with alternative
 models}\label{comparison-with-alternative-models}}
 
-Finally, to examine whether the assumptions in our models are critical
-to the success of our models, we ran three alternative models: Random
-Embedding model, No Noise model, and No Learning Model. We ran a
-parameter search for each of the model, and all of the models showed
-worse performance compared to RANCH (Random Embedding: \(r^2\): 0.57
-{[}0.08, 0.89{]}, \emph{RMSE}: 195.06 {[}147.39, 288.47{]}; No Noise:
-\(r^2\): 0.45 {[}0.34, 0.85{]}, \emph{RMSE}: 221.46 {[}167.34, 327.5{]};
-No Learning: 0.28 {[}0.19, 0.76{]}, \emph{RMSE}: 253.46 {[}191.52,
-374.83{]}).
+To examine whether the three components --- the perceptual
+representation, the learning model, and the decision model -- in our
+models were critical to the success of our model, we ran three
+alternative models: Random Embedding model, No Noise model, and No
+Learning Model. We ran a parameter search for each of the model, and all
+of the models showed worse performance compared to RANCH (Random
+Embedding: \(R^2\): 0.57 {[}0.08, 0.89{]}, \emph{RMSE}: 195.06
+{[}147.39, 288.47{]}; No Noise: \(R^2\): 0.45 {[}0.34, 0.85{]},
+\emph{RMSE}: 221.46 {[}167.34, 327.5{]}; No Learning: \(R^2\): 0.28
+{[}0.19, 0.76{]}, \emph{RMSE}: 253.46 {[}191.52, 374.83{]}).
 
 \hypertarget{discussion}{%
 \section{Discussion}\label{discussion}}
@@ -530,7 +552,7 @@ learning - are all essential for explaining behavior in our task.
 There are several directions in which RANCH could be extended in future
 work. First, in the current paper, we implemented a specific version of
 RANCH, with a specific form for each of its components: the perceptual
-representation, the learning model and the linking hypothesis between
+representation, the learning model, and the linking hypothesis between
 learning and attentional sampling. However, RANCH's modular and
 interpretable structure allows researchers to adjust its components
 according to the population or task for which predictions are being
@@ -543,12 +565,12 @@ Similarly, task settings in which there was hierarchical structure to
 the stimuli sequences would call for more complicated learning models.
 The linking hypothesis can also vary: In previous work we have also
 explored the effect of replacing the rational, but computationally
-expensive, expected information gain (EIG) with easier-to-compute
-information-theoretic quantities such as surprisal or KL-divergence (Cao
-et al., 2023; Raz et al., 2023). While previous works have found that
-these linking hypotheses are interchangeable in the current context, it
-is possible that they would dissociate under different task settings or
-different assumptions about the perceptual representations.
+expensive, EIG with easier-to-compute information-theoretic quantities
+such as surprisal or KL-divergence (Cao et al., 2023; Raz et al., 2023).
+While previous work has found that these linking hypotheses are
+interchangeable in the current context, it is possible that they would
+dissociate under different task settings or different assumptions about
+the perceptual representations.
 
 Second, while inspired by infant looking time research, our current work
 only has adult participants. Beyond encoding stimuli differently from
@@ -557,7 +579,7 @@ experience different task demands. In particular, infants are quite
 sensitive to changes in the number of objects that are displayed
 (Feigenson \& Carey, 2003; Wynn, 1992), but in the current study, adults
 dishabituated to number violations as little as to pose violations, the
-sublest violation in our task. This suggests that adults may have not
+subtlest violation in our task. This suggests that adults may have not
 engaged their number cognition in the way we would expect infants to in
 this task. Furthermore, given the interpretability of the model
 parameters we fit to behavior, conducting the same experiment with
