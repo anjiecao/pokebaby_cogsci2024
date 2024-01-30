@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.3.17)  29 JAN 2024 11:59
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.3.17)  30 JAN 2024 11:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -483,7 +483,7 @@ Here is how much of TeX's memory you used:
  14 hyphenation exceptions out of 8191
  75i,11n,76p,590b,461s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}</Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on 00_main.pdf (7 pages, 464128 bytes).
+Output written on 00_main.pdf (7 pages, 464205 bytes).
 PDF statistics:
  237 PDF objects out of 1000 (max. 8388607)
  202 compressed objects within 3 object streams

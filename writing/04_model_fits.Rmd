@@ -23,7 +23,8 @@ nolearning_stats <- readRDS(here("cached_data/writing_cache/clean_nolearning_sta
 randemb_stats <- readRDS(here("cached_data/writing_cache/clean_randemb_stats.Rds"))%>% mutate(across(is.numeric, round, 2))
 
 # plotting 
-all_data <- readRDS(here("cached_data/writing_cache/plotting_df.Rds"))
+all_data <- readRDS(here("cached_data/writing_cache/plotting_df.Rds")) %>% 
+  mutate(type = if_else(type == "Human", "Human adult", type))
 ```
 
 
