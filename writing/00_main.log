@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.3.17)  30 JAN 2024 14:58
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.3.17)  30 JAN 2024 21:34
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -401,7 +401,10 @@ Overfull \hbox (9.03313pt too wide) in paragraph at lines 239--240
  [][] 
  []
 
-[2] [3 <./figs/design_fig-1.pdf>]
+[2 <./figs/design_fig-1.pdf>]
+Underfull \vbox (badness 5302) has occurred while \output is active []
+
+[3]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 436.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
@@ -433,24 +436,32 @@ Underfull \hbox (badness 10000) in paragraph at lines 426--437
 \OT1/pcr/m/n/10 (trial[]number + is[]first[]trial) * violation[]type
  []
 
-LaTeX Font Info:    Trying to load font information for OML+ptm on input line 445.
+
+Underfull \hbox (badness 1466) in paragraph at lines 426--437
+\OT1/pcr/m/n/10 + log(block[]number)\OT1/ptm/m/n/10 . The \OT1/pcr/m/n/10 violation[]type \OT1/ptm/m/n/10 has five
+ []
+
+LaTeX Font Info:    Trying to load font information for OML+ptm on input line 444.
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/psnfss/omlptm.fd
 File: omlptm.fd 
 )
 LaTeX Font Info:    Font shape `OML/ptm/m/n' in size <10> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 445.
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 444.
 <figs/lol-1.pdf, id=110, 451.6875pt x 253.94875pt>
 File: figs/lol-1.pdf Graphic file (type pdf)
 <use figs/lol-1.pdf>
-Package pdftex.def Info: figs/lol-1.pdf  used on input line 468.
+Package pdftex.def Info: figs/lol-1.pdf  used on input line 467.
 (pdftex.def)             Requested size: 451.68639pt x 253.94812pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [4] [5 <./figs/lol-1.pdf>]
-Underfull \hbox (badness 1168) in paragraph at lines 598--606
+Underfull \hbox (badness 1168) in paragraph at lines 603--611
 \OT1/ptm/m/n/10 mod-el-ing of adult, and even-tu-ally in-fant, look-ing time,
  []
+
+
+Underfull \vbox (badness 4279) has occurred while \output is active []
 
 [6] [7
 
@@ -461,13 +472,13 @@ Package rerunfilecheck Info: File `00_main.out' has not changed.
 Here is how much of TeX's memory you used:
  11808 strings out of 477984
  190289 string characters out of 5838315
- 1873388 words of memory out of 5000000
+ 1874388 words of memory out of 5000000
  31752 multiletter control sequences out of 15000+600000
  552453 words of font info for 111 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 75i,11n,76p,590b,461s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,11n,76p,589b,461s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}</Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on 00_main.pdf (7 pages, 464997 bytes).
+Output written on 00_main.pdf (7 pages, 465169 bytes).
 PDF statistics:
  238 PDF objects out of 1000 (max. 8388607)
  203 compressed objects within 3 object streams
