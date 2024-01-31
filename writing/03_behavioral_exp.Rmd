@@ -12,6 +12,52 @@ behavior_qua_order <- readRDS(here("cached_data/writing_cache/clean_behavioral_q
 
 Next, we introduce the novel experiment used to test the generalizability of the parameter setting found above. The procedure was similar to the previous training data with two key differences: First, stimuli used in the training data were animated monsters, whereas the current experiment (test data) used images of animals and vegetables with added shaking animations. Second, unlike the training data, the current experiment varied the dissimilarity between the repeating stimuli and the deviant stimuli by introducing four different types of deviant stimuli. 
 
+```{r lol, fig.env = "figure*", fig.pos = "h!", fig.width=6.6, fig.height=4, fig.align = "center", set.cap.width=T, num.cols.cap=2, fig.cap = "Human behaviors and model performance of RANCH and alternative models. For the human panel, X-axis shows the trial number, y-axis shows the looking time at each trial to the test stimuli in milliseconds. The line shows the fit from the preregistered linear mixed effect model. For the remaining panels, Y-axis represents the samples model made on each trial, scaled to the behavioral data. Different colors represent different trial types."}
+
+
+# plotting 
+all_data <- readRDS(here("cached_data/writing_cache/plotting_df.Rds")) %>% 
+  mutate(type = if_else(type == "Human", "Human adult", type), 
+         type = if_else(type == "RANCH - Parameter-free prediction", "RANCH - Parameter-free Prediction", type)) %>% 
+  mutate(type = factor(type, levels = c("Human adult", 
+                                        "RANCH - Parameter-free Prediction", 
+                                        "RANCH - Best Fit", 
+                                        "Random Embedding", 
+                                        "No Noise", 
+                                        "No Learning")))
+
+trial_color <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442")
+all_data %>% 
+  ggplot() + 
+  geom_rect(data = all_data, aes(fill = hue),
+            xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf, alpha = 0.1)+ 
+  #scale_y_log10() + 
+  geom_pointrange(
+    aes(x = trial_number, y = scaled_samples, ymin = scaled_lb, ymax = scaled_ub, color  = trial_type),
+    position = position_dodge(width = .2)) + 
+  geom_line(
+     aes(x = trial_number, y = scaled_samples, color = trial_type, alpha = is_human), 
+     position = position_dodge(width = .2)
+  )+
+  scale_alpha_discrete(range = c(1, 0), guide = "none") + 
+  scale_color_manual(values=trial_color) +  
+  theme_few()+ 
+  guides(color=guide_legend(title="Trial Type"))+
+  ylab("") + 
+  xlab("") + 
+  scale_x_continuous(breaks = seq(1, 6)) + 
+  theme(legend.position = "right", 
+        strip.text.x = element_text(size = 6.2), 
+        legend.text=element_text(size=8), 
+        legend.title = element_text(size = 8), 
+        legend.margin=margin(c(0,0,0,0))) + 
+  facet_wrap(~type) + 
+  geom_line(data = subset(all_data, is_human == TRUE), aes(x = trial_number, y = fit, color = trial_type)) + 
+  scale_fill_identity() +
+  geom_rect(data = subset(all_data, is_human == TRUE),xmin = -Inf,xmax = Inf,ymin = -Inf,ymax = Inf,alpha=0.003, fill = "lightgray") + 
+  scale_fill_identity()
+```
+
 
 ## Methods
 
@@ -34,9 +80,9 @@ To control the distribution of background blocks and deviant blocks, we grouped 
 
 ### Participants 
 
-We recruited 550 adult participants on Prolific. Participants were excluded if either (1) the standard deviation of log-transformed of their reaction times on all trials was less than 0.15 (indicating key-smashing); (2) they spent more than three absolute deviations above the median of the task completion time as reported by Prolific, or (3) they provided the incorrect response to more than 20% of the memory task.  In total, `r round((550 - participant_n) / 550, 2) * 100` % of the participants were excluded by these criteria. After the participant-level exclusion, we also applied trial-level exclusion. A trial was excluded from final analysis if it was three absolute deviations away from the median in the log-transformed space across all participants. The final sample included `r participant_n` participants.
+We recruited 550 adult participants on Prolific. Participants were excluded if either (1) the standard deviation of log-transformed of their reaction times on all trials was less than 0.15 [indicating key-smashing, e.g. @tothemoon]; (2) they spent more than three absolute deviations above the median of the task completion time as reported by Prolific, or (3) they provided the incorrect response to more than 20% of the memory task.  In total, `r round((550 - participant_n) / 550, 2) * 100` % of the participants were excluded by these criteria. After the participant-level exclusion, we also applied trial-level exclusion. A trial was excluded from final analysis if it was three absolute deviations away from the median in the log-transformed space across all participants. The final sample included `r participant_n` participants.
 
-## Results
+## Results and discussion
 
 The sample size and analysis plan were all pre-registered and can be found [here](https://aspredicted.org/blind.php?x=WGF_J7K). All analysis scripts are publicly available and can be found [here](https://anonymous.4open.science/r/pokebaby_cogsci2024-3636/README.md).
 
@@ -46,7 +92,6 @@ To examine the specific contrast between different violations, we set different 
 
 We also pre-registered a qualitative prediction on the ordering of the dishabituation magnitude (i.e. animacy > number > identity > pose). However, we did not find evidence consistent with this prediction. The qualitative ordering in our data was animacy (*M* = `r behavior_qua_order$animacy`), identity (*M* = `r behavior_qua_order$identity`), pose (*M* = `r behavior_qua_order$pose`) and number (*M* = `r behavior_qua_order$number`). 
 
-
-
+In conclusion, our experiment successfully captured habituation and dishabituation. We observed that participants exhibited varying levels of dishabituation in response to different deviating stimuli. Notably, they did not show sensitivity to violations within or across categories; their responses to within-category stimuli (identity violations) were similar to their responses to out-of-category stimuli (animacy violations). Intriguingly, and contrary to our initial hypotheses, the concept of number did not serve as a strong perceptual cue to trigger a robust dishabituation response. The degree of dishabituation to number was on par with that to pose changes, which were the most subtle form of violation.
 
 

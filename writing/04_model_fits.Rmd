@@ -22,49 +22,10 @@ nonoise_stats <- readRDS(here("cached_data/writing_cache/clean_nonoise_stats.Rds
 nolearning_stats <- readRDS(here("cached_data/writing_cache/clean_nolearning_stats.Rds"))%>% mutate(across(is.numeric, round, 2))
 randemb_stats <- readRDS(here("cached_data/writing_cache/clean_randemb_stats.Rds"))%>% mutate(across(is.numeric, round, 2))
 
-# plotting 
-all_data <- readRDS(here("cached_data/writing_cache/plotting_df.Rds")) %>% 
-  mutate(type = if_else(type == "Human", "Human adult", type), 
-         type = if_else(type == "RANCH - Parameter-free prediction", "RANCH - Parameter-free Prediction", type)) %>% 
-  mutate(type = factor(type, levels = c("Human adult", 
-                                        "RANCH - Parameter-free Prediction", 
-                                        "RANCH - Best Fit", 
-                                        "Random Embedding", 
-                                        "No Noise", 
-                                        "No Learning")))
 ```
 
 
-```{r lol, fig.env = "figure*", fig.pos = "h!", fig.width=6.6, fig.height=4, fig.align = "center", set.cap.width=T, num.cols.cap=2, fig.cap = "Human behaviors and model performance of RANCH and alternative models. For the human panel, X-axis shows the trial number, y-axis shows the looking time at each trial to the test stimuli in milliseconds. The line shows the fit from the preregistered linear mixed effect model. For the remaining panels, Y-axis represents the samples model made on each trial, scaled to the behavioral data. Different colors represent different trial types."}
 
-trial_color <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442")
-all_data %>% 
-  ggplot() + 
-  geom_rect(data = all_data, aes(fill = hue),
-            xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf, alpha = 0.1)+ 
-  #scale_y_log10() + 
-  geom_pointrange(
-    aes(x = trial_number, y = scaled_samples, ymin = scaled_lb, ymax = scaled_ub, color  = trial_type),
-    position = position_dodge(width = .2)) + 
-  geom_line(
-     aes(x = trial_number, y = scaled_samples, color = trial_type, alpha = is_human), 
-     position = position_dodge(width = .2)
-  )+
-  scale_alpha_discrete(range = c(1, 0), guide = "none") + 
-  scale_color_manual(values=trial_color) +  
-  theme_few()+ 
-  guides(color=guide_legend(title="Trial Type"))+
-  ylab("") + 
-  xlab("") + 
-  scale_x_continuous(breaks = seq(1, 6)) + 
-  theme(legend.position = "top", 
-        strip.text.x = element_text(size = 8)) + 
-  facet_wrap(~type) + 
-  geom_line(data = subset(all_data, is_human == TRUE), aes(x = trial_number, y = fit, color = trial_type)) + 
-  scale_fill_identity() +
-  geom_rect(data = subset(all_data, is_human == TRUE),xmin = -Inf,xmax = Inf,ymin = -Inf,ymax = Inf,alpha=0.003, fill = "lightgray") + 
-  scale_fill_identity()
-```
 
 We evaluate RANCH in three ways. First, we evaluate whether RANCH can make parameter-free predictions on the new data that it has not been trained on. Second, we investigate to what extent RANCH's performance is robust across parameter settings. Finally, we examined to what extent each component of RANCH is critical to predicting human behaviors. 
 

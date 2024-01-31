@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.3.17)  31 JAN 2024 11:32
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.3.17)  31 JAN 2024 14:53
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -391,94 +391,90 @@ Underfull \vbox (badness 10000) detected at line 70
 ]
 Underfull \vbox (badness 4279) has occurred while \output is active []
 
-<figs/design_fig-1.pdf, id=68, 477.785pt x 269.005pt>
+<figs/design_fig-1.pdf, id=68, 477.785pt x 218.8175pt>
 File: figs/design_fig-1.pdf Graphic file (type pdf)
 <use figs/design_fig-1.pdf>
-Package pdftex.def Info: figs/design_fig-1.pdf  used on input line 239.
-(pdftex.def)             Requested size: 477.78383pt x 269.00433pt.
+Package pdftex.def Info: figs/design_fig-1.pdf  used on input line 224.
+(pdftex.def)             Requested size: 477.78383pt x 218.81696pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[2]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+[2] [3 <./figs/design_fig-1.pdf>]
+<figs/lol-1.pdf, id=99, 450.68375pt x 255.95625pt>
+File: figs/lol-1.pdf Graphic file (type pdf)
+<use figs/lol-1.pdf>
+Package pdftex.def Info: figs/lol-1.pdf  used on input line 353.
+(pdftex.def)             Requested size: 450.68263pt x 255.95561pt.
 
-[3 <./figs/design_fig-1.pdf>]
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 436.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 447.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 436.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 447.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 436.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 447.
 
-Underfull \hbox (badness 10000) in paragraph at lines 426--437
+Underfull \hbox (badness 10000) in paragraph at lines 437--448
 \OT1/pcr/m/n/10 trial[]number +  is[]first[]trial +  (trial[]number +
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 426--437
+Underfull \hbox (badness 10000) in paragraph at lines 437--448
 \OT1/pcr/m/n/10 is[]first[]trial) * stimulus[]number + (trial[]number
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 426--437
+Underfull \hbox (badness 10000) in paragraph at lines 437--448
 \OT1/pcr/m/n/10 + is[]first[]trial) * stimulus[]pose +(trial[]number
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 426--437
+Underfull \hbox (badness 10000) in paragraph at lines 437--448
 \OT1/pcr/m/n/10 + is[]first[]trial) * stimulus[]animacy +
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 426--437
+Underfull \hbox (badness 10000) in paragraph at lines 437--448
 \OT1/pcr/m/n/10 (trial[]number + is[]first[]trial) * violation[]type
  []
 
 
-Underfull \hbox (badness 1466) in paragraph at lines 426--437
+Underfull \hbox (badness 1466) in paragraph at lines 437--448
 \OT1/pcr/m/n/10 + log(block[]number)\OT1/ptm/m/n/10 . The \OT1/pcr/m/n/10 violation[]type \OT1/ptm/m/n/10 has five
  []
 
-LaTeX Font Info:    Trying to load font information for OML+ptm on input line 444.
+LaTeX Font Info:    Trying to load font information for OML+ptm on input line 455.
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/psnfss/omlptm.fd
 File: omlptm.fd 
 )
 LaTeX Font Info:    Font shape `OML/ptm/m/n' in size <10> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 444.
-[4]
-<figs/lol-1.pdf, id=120, 451.6875pt x 253.94875pt>
-File: figs/lol-1.pdf Graphic file (type pdf)
-<use figs/lol-1.pdf>
-Package pdftex.def Info: figs/lol-1.pdf  used on input line 467.
-(pdftex.def)             Requested size: 451.68639pt x 253.94812pt.
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[5]
-Underfull \hbox (badness 1168) in paragraph at lines 603--611
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 455.
+[4] [5 <./figs/lol-1.pdf>]
+Underfull \hbox (badness 1168) in paragraph at lines 615--623
 \OT1/ptm/m/n/10 mod-el-ing of adult, and even-tu-ally in-fant, look-ing time,
  []
 
-[6 <./figs/lol-1.pdf>] [7] (./00_main.aux)
+[6] [7] (./00_main.aux)
 Package rerunfilecheck Info: File `00_main.out' has not changed.
-(rerunfilecheck)             Checksum: 9C56BCEFA6358C939826AE6568C6542E;1845.
+(rerunfilecheck)             Checksum: A9CF49E8D4E2D75DF2DE6C63B419690F;1969.
  ) 
 Here is how much of TeX's memory you used:
- 11808 strings out of 477984
- 190289 string characters out of 5838315
- 1874388 words of memory out of 5000000
+ 11809 strings out of 477984
+ 190348 string characters out of 5838315
+ 1873388 words of memory out of 5000000
  31752 multiletter control sequences out of 15000+600000
  552453 words of font info for 111 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 75i,11n,76p,589b,465s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,11n,76p,589b,461s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}</Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on 00_main.pdf (7 pages, 4285015 bytes).
+Output written on 00_main.pdf (7 pages, 737585 bytes).
 PDF statistics:
- 238 PDF objects out of 1000 (max. 8388607)
- 203 compressed objects within 3 object streams
- 79 named destinations out of 1000 (max. 500000)
+ 241 PDF objects out of 1000 (max. 8388607)
+ 206 compressed objects within 3 object streams
+ 80 named destinations out of 1000 (max. 500000)
  123 words of extra memory for PDF output out of 10000 (max. 10000000)
 
