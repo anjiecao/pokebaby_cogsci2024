@@ -1,5 +1,5 @@
 ---
-title: "Predicting graded dishabituation via perceptual stimulus embeddings in a rational learning model"
+title: "Predicting graded dishabituation using perceptual stimulus embeddings in a rational learning model"
 bibliography: library.bib
 csl: apa6.csl
 document-params: "10pt, letterpaper"
@@ -9,11 +9,11 @@ author-information: >
     \AND {\large \bf Sharon J.~Derry (SDJ@Macc.Wisc.Edu)} \\ Department of Educational Psychology, 1025 W. Johnson Street \\ Madison, WI 53706 USA}
 
 abstract: >
-  How do humans decide what to look at and when to stop looking? Many computational models have been proposed to address the mechanisms underlying such processes, but they are all limited in scope. In this paper, we present a version of the rational action, noisy choice for habituation (RANCH) model with an instantiated hypothesis about the perceptual encoding process. We showed that the model can not only capture key looking time patterns such as habituation and dishabituation, but also make more fine grained predictions about dishabituation magnitude. RANCH’s performance is relatively robust across parameters, and the parameters can be generalized to other tasks. However, the assumptions about the perceptual encoding process, the learning process and the decision process are critical for the model performance. 
+  How do humans decide what to look at and when to stop looking? The Rational Action, Noisy Choice for Habituation (RANCH) model formulates looking behaviors as a rational information acquisition process. RANCH instantiates a hypothesis about the perceptual encoding process using a neural network-derived embedding space, which allows it to operate on raw images. In this paper,  we show that the model not only captures key looking time patterns such as habituation and dishabituation, but also makes fine-grained, out-of-sample predictions about magnitudes of dishabituation to previously unseen stimuli. We validate those predictions experimentally with a self-paced looking time task in adults (N = 468). We also show that model fits are robust across parameters, but that assumptions about the perceptual encoding process, the learning process and the decision process are all critical for predicting human performance. 
 
     
 keywords: >
-    Add your choice of indexing terms or keywords; kindly use a semi-colon; between each term.
+    attention; learning; visual perception; bayesian models
     
 output: cogsci2016::cogsci_paper
 #final-submission: \cogscifinalcopy
@@ -45,16 +45,16 @@ library(xtable)
 ```
 
 
-# Behavioral Experiment   
-
-
-```{r child = "02_behavioral_exp.Rmd"}
-```
-
 # Model  
 
-```{r child = "03_model_spec.Rmd"}
+```{r child = "02_model_spec.Rmd"}
 ```
+
+# Behavioral Experiment   
+
+```{r child = "03_behavioral_exp.Rmd"}
+```
+
 
 # Model Evaluation 
 
