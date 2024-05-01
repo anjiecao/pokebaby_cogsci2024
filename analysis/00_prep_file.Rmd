@@ -591,6 +591,130 @@ resnet_summarised %>%
 ```
 
 
+
+# Residual dishabituation 
+
+## preprocessing data 
+
+Residual_dishabituation ~ embedding_distance * violation
+
+Residual dishabituation is the predicted dishabituation magnitude derived from model (1).
+Embedding distance is calculated from the eucledian distance between the stimulus used in the background trial and the stimulus used in the deviant trial of the same block.
+Violation is the type of violation, which has four levels: number violation, category violation, orientation violation, and identity violation.
+
+
+```{r}
+embedding <- read_csv(here("data/model_sim_data/embedding_distance.csv")) %>% 
+  rename(stim_name = `...1`)
+
+replace_name <- function(x) gsub("media/padded_stims/", "", x)
+bd_with_embedding <- bd %>% 
+  mutate_at(c("background_stimulus", "deviant_stimulus"), replace_name) %>% 
+  mutate(
+    background_stimulus = case_when(
+      grepl("pair", background_type) ~ gsub("(.*)(\\.)", paste0("\\1_pair\\2"), background_stimulus), 
+      TRUE ~ background_stimulus
+    ), 
+    deviant_stimulus = case_when(
+      grepl("pair", deviant_type) ~ gsub("(.*)(\\.)", paste0("\\1_pair\\2"), deviant_stimulus), 
+      TRUE ~ deviant_stimulus
+    )
+  )
+
+get_distance <- function(stim_a_name, stim_b_name,  dist){
+  if (stim_a_name  == "" | stim_b_name  == ""){
+    return (tibble("val" = NA_real_))
+  }else{
+    return( 
+      tibble("val" = dist %>%
+      filter(stim_name == {{stim_b_name}}) %>% 
+      select({{stim_a_name}}) %>% 
+      pull())
+      )
+  }
+  
+}
+
+pending_matching <- bd_with_embedding %>% 
+  distinct(background_stimulus, deviant_stimulus) %>% 
+  filter(!is.na(deviant_stimulus))
+
+matched_val <- pending_matching %>% 
+  ungroup() %>% 
+  mutate(edist = map2_df(.x = pending_matching$background_stimulus, 
+                        .y = pending_matching$deviant_stimulus, 
+                        .f = get_distance, embedding)) %>% 
+  unnest(edist)
+
+
+bd_with_embedding <- bd_with_embedding %>% 
+  left_join(matched_val, by = c("background_stimulus", "deviant_stimulus"))
+
+```
+## residual 
+
+```{r}
+bd_with_embedding
+
+bd_with_embedding <- bd_with_embedding %>% 
+  mutate(is_first_trial = trial_number == 1) %>% 
+  mutate(violation_type_with_background = case_when(
+    trial_type == "background" ~ "background", 
+    TRUE ~ violation_type
+  )) %>% 
+  mutate(
+    animacy = case_when(
+    grepl("inanimate", background_type) ~ "inanimate", 
+    TRUE ~ "animate"), 
+    
+    number = case_when(
+    grepl("single", background_type) ~ "single", 
+    TRUE ~ "pair"
+  ),
+  
+    pose = case_when(
+    grepl("left", background_type) ~ "left", 
+    TRUE ~ "right"
+  )
+    )
+
+bd_with_embedding$violation_type_with_background = factor(bd_with_embedding$violation_type_with_background, 
+                                          levels = c(
+                                                     "background",
+                                                     "pose", 
+                                                     "animacy", 
+                                                     "number", 
+                                                     "identity"))
+
+m <- lmerTest::lmer(
+  log(total_rt) ~ trial_number * is_first_trial + (1|prolific_id) + 
+    trial_number * is_first_trial * number + 
+    trial_number * is_first_trial * pose + 
+    trial_number * is_first_trial * animacy + 
+    trial_number * is_first_trial * violation_type_with_background + log(block_number),
+  data = bd_with_embedding 
+)
+
+bd_with_embedding$residual = resid(m)
+  
+
+
+```
+
+## run the model 
+
+```{r}
+new_d <- bd_with_embedding %>% 
+  filter(trial_type == "deviant")
+
+
+#Residual_dishabituation ~ embedding_distance * violation
+
+lm(residual ~ val * violation_type, data = new_d) %>% 
+  summary()
+```
+
+
 # Archive 
 
 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.3.17)  31 JAN 2024 14:55
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2024.4.29)  1 MAY 2024 10:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -313,32 +313,32 @@ File: l3backend-pdftex.def 2023-01-16 L3 backend support: PDF output (pdfTeX)
 ) (./00_main.aux)
 \openout1 = `00_main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 67.
-LaTeX Font Info:    ... okay on input line 67.
-LaTeX Font Info:    Checking defaults for OMS/pzccm/m/n on input line 67.
-LaTeX Font Info:    Trying to load font information for OMS+pzccm on input line 67.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 69.
+LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    Checking defaults for OMS/pzccm/m/n on input line 69.
+LaTeX Font Info:    Trying to load font information for OMS+pzccm on input line 69.
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/psnfss/omspzccm.fd
 File: omspzccm.fd 2000/01/03 Fontinst v1.801 font definitions for OMS/pzccm.
 )
-LaTeX Font Info:    ... okay on input line 67.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 67.
-LaTeX Font Info:    ... okay on input line 67.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 67.
-LaTeX Font Info:    ... okay on input line 67.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 67.
-LaTeX Font Info:    ... okay on input line 67.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 67.
-LaTeX Font Info:    ... okay on input line 67.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 67.
-LaTeX Font Info:    ... okay on input line 67.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 67.
-LaTeX Font Info:    ... okay on input line 67.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 67.
-LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 69.
+LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 69.
+LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 69.
+LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 69.
+LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 69.
+LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 69.
+LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 69.
+LaTeX Font Info:    ... okay on input line 69.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: hyperref package is loaded.
 Package caption Info: End \AtBeginDocument code.
-Package hyperref Info: Link coloring OFF on input line 67.
+Package hyperref Info: Link coloring OFF on input line 69.
 (./00_main.out) (./00_main.out)
 \@outlinefile=\write4
 \openout4 = `00_main.out'.
@@ -355,33 +355,33 @@ File: english.apc 2013/07/21 v6.03 apacite language file
 LaTeX Info: Redefining \BPBI on input line 129.
 LaTeX Info: Redefining \BHBI on input line 130.
 )
-LaTeX Font Info:    Trying to load font information for OT1+ptmcm on input line 70.
+LaTeX Font Info:    Trying to load font information for OT1+ptmcm on input line 72.
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/psnfss/ot1ptmcm.fd
 File: ot1ptmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OT1/ptmcm.
 )
-LaTeX Font Info:    Trying to load font information for OML+ptmcm on input line 70.
+LaTeX Font Info:    Trying to load font information for OML+ptmcm on input line 72.
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/psnfss/omlptmcm.fd
 File: omlptmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OML/ptmcm.
 )
-LaTeX Font Info:    Trying to load font information for OMX+psycm on input line 70.
+LaTeX Font Info:    Trying to load font information for OMX+psycm on input line 72.
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/psnfss/omxpsycm.fd
 File: omxpsycm.fd 2000/01/03 Fontinst v1.801 font definitions for OMX/psycm.
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 70.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 72.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 70.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 72.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 70.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 70.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 72.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 72.
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 70.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 72.
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Underfull \vbox (badness 10000) detected at line 70
+Underfull \vbox (badness 10000) detected at line 72
  []
 
 [1{/Users/caoanjie/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
@@ -391,74 +391,76 @@ Underfull \vbox (badness 10000) detected at line 70
 ]
 Underfull \vbox (badness 4279) has occurred while \output is active []
 
-<figs/design_fig-1.pdf, id=68, 477.785pt x 200.75pt>
+<figs/design_fig-1.pdf, id=68, 477.785pt x 228.855pt>
 File: figs/design_fig-1.pdf Graphic file (type pdf)
 <use figs/design_fig-1.pdf>
-Package pdftex.def Info: figs/design_fig-1.pdf  used on input line 224.
-(pdftex.def)             Requested size: 477.78383pt x 200.7495pt.
+Package pdftex.def Info: figs/design_fig-1.pdf  used on input line 226.
+(pdftex.def)             Requested size: 477.78383pt x 228.85443pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[2]
+Underfull \vbox (badness 1838) has occurred while \output is active []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[2]
-<figs/lol-1.pdf, id=84, 450.68375pt x 255.95625pt>
+[3 <./figs/design_fig-1.pdf>]
+<figs/lol-1.pdf, id=99, 450.68375pt x 255.95625pt>
 File: figs/lol-1.pdf Graphic file (type pdf)
 <use figs/lol-1.pdf>
-Package pdftex.def Info: figs/lol-1.pdf  used on input line 353.
+Package pdftex.def Info: figs/lol-1.pdf  used on input line 359.
 (pdftex.def)             Requested size: 450.68263pt x 255.95561pt.
-[3 <./figs/design_fig-1.pdf>]
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 447.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 456.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 447.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 456.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 447.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 456.
 
-Underfull \hbox (badness 10000) in paragraph at lines 437--448
+Underfull \hbox (badness 10000) in paragraph at lines 446--457
 \OT1/pcr/m/n/10 trial[]number +  is[]first[]trial +  (trial[]number +
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 437--448
+Underfull \hbox (badness 10000) in paragraph at lines 446--457
 \OT1/pcr/m/n/10 is[]first[]trial) * stimulus[]number + (trial[]number
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 437--448
+Underfull \hbox (badness 10000) in paragraph at lines 446--457
 \OT1/pcr/m/n/10 + is[]first[]trial) * stimulus[]pose +(trial[]number
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 437--448
+Underfull \hbox (badness 10000) in paragraph at lines 446--457
 \OT1/pcr/m/n/10 + is[]first[]trial) * stimulus[]animacy +
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 437--448
+Underfull \hbox (badness 10000) in paragraph at lines 446--457
 \OT1/pcr/m/n/10 (trial[]number + is[]first[]trial) * violation[]type
  []
 
 
-Underfull \hbox (badness 1466) in paragraph at lines 437--448
+Underfull \hbox (badness 1466) in paragraph at lines 446--457
 \OT1/pcr/m/n/10 + log(block[]number)\OT1/ptm/m/n/10 . The \OT1/pcr/m/n/10 violation[]type \OT1/ptm/m/n/10 has five
  []
 
-LaTeX Font Info:    Trying to load font information for OML+ptm on input line 455.
+LaTeX Font Info:    Trying to load font information for OML+ptm on input line 464.
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/psnfss/omlptm.fd
 File: omlptm.fd 
 )
 LaTeX Font Info:    Font shape `OML/ptm/m/n' in size <10> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 455.
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 464.
 [4]
-Underfull \vbox (badness 1946) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [5 <./figs/lol-1.pdf>]
-Underfull \hbox (badness 1168) in paragraph at lines 615--623
+Underfull \hbox (badness 1168) in paragraph at lines 633--641
 \OT1/ptm/m/n/10 mod-el-ing of adult, and even-tu-ally in-fant, look-ing time,
  []
 
@@ -469,13 +471,13 @@ Package rerunfilecheck Info: File `00_main.out' has not changed.
 Here is how much of TeX's memory you used:
  11809 strings out of 477984
  190348 string characters out of 5838315
- 1873388 words of memory out of 5000000
+ 1875388 words of memory out of 5000000
  31752 multiletter control sequences out of 15000+600000
  552453 words of font info for 111 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 75i,11n,76p,589b,478s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,11n,76p,578b,461s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}</Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on 00_main.pdf (7 pages, 737878 bytes).
+Output written on 00_main.pdf (7 pages, 726484 bytes).
 PDF statistics:
  241 PDF objects out of 1000 (max. 8388607)
  206 compressed objects within 3 object streams
